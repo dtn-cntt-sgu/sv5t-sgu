@@ -1,0 +1,20 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Sinh viên 5 Tốt | SGU",
+    template: "%s | SV5T SGU",
+  },
+  description: "Cổng đăng ký, xét duyệt và quản lý danh hiệu Sinh viên 5 Tốt.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="vi">
+      <body>{children}</body>
+    </html>
+  );
+}

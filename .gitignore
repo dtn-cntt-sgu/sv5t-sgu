@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Next.js / build output
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets (commit only the template)
+.env
+.env.*
+!.env.example
+
+# Local Supabase state
+supabase/.branches/
+supabase/.temp/
+
+# Editors / operating systems
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+
+# Private project notes supplied out-of-band
+/nii_notes/
+/docs
