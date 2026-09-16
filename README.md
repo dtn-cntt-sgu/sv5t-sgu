@@ -1,6 +1,6 @@
 # SV5T SGU
 
-Cổng đăng ký, xét duyệt và quản lý danh hiệu **Sinh viên 5 Tốt**. Repository dùng một ứng dụng Next.js full-stack để dễ triển khai trên Vercel, Supabase cho Auth/Postgres/RLS và Cloudflare R2 private bucket cho minh chứng.
+Website xét duyệt và quản lý danh hiệu **Sinh viên 5 Tốt**. Repository dùng một ứng dụng Next.js full-stack để dễ triển khai trên Vercel, Supabase cho Auth/Postgres/RLS và Cloudflare R2 private bucket cho minh chứng.
 
 ## Trạng thái hiện tại
 
