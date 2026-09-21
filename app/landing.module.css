@@ -1,0 +1,531 @@
+.page {
+  --accent: #0878f9;
+  min-height: 100svh;
+  background: #fff;
+  color: #172026;
+}
+.page a:focus-visible,
+.page summary:focus-visible {
+  outline: 3px solid #0878f9;
+  outline-offset: 5px;
+}
+.header {
+  border-bottom: 1px solid #f0f2f5;
+  background: #fff;
+  position: relative;
+  z-index: 20;
+  box-shadow: 0 12px 32px #192f4e04;
+}
+.navInner {
+  width: 90%;
+  min-height: 88px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 3vw, 64px);
+}
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2vw, 36px);
+  font-size: 15px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.desktopNav a,
+.loginLink,
+.managerLink {
+  font-weight: 700;
+  transition: color 0.15s ease;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.desktopNav a:hover,
+.navActions a:hover {
+  color: var(--accent);
+}
+.desktopNav .activeLink {
+  color: var(--accent);
+  font-weight: 750;
+}
+.navActions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 1.4;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.managerLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #697581;
+  font-size: 14px;
+}
+.navDivider {
+  height: 22px;
+  width: 1px;
+  background: #e7ebef;
+}
+.registerLink {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 13px 20px;
+  border-radius: 12px;
+  background: #e6f1ff;
+  color: #066ce0;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.mobileMenu {
+  display: none;
+}
+.hero {
+  width: 90%;
+  margin: auto;
+  min-height: calc(100svh - 88px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  align-items: center;
+  gap: clamp(30px, 4vw, 80px);
+  padding: 48px 0;
+}
+.copy {
+  min-width: 0;
+  padding-bottom: 16px;
+}
+.copy :global(.eyebrow) {
+  color: #0878f9;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  line-height: 1.7;
+}
+.copy h1 {
+  margin: 24px 0;
+  font-size: clamp(40px, 3.8vw, 76px);
+  line-height: 1.18;
+  letter-spacing: -0.045em;
+  font-weight: 750;
+}
+.copy h1 span {
+  color: var(--accent);
+}
+.description {
+  max-width: 550px;
+  margin: 0;
+  color: #707b86;
+  font-size: clamp(16px, 1.1vw, 20px);
+  line-height: 1.8;
+}
+.description strong {
+  color: #4f5d6b;
+  font-weight: 600;
+}
+.introduction {
+  margin: 0;
+  text-align: justify;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 30px;
+}
+.primaryButton,
+.secondaryButton {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 12px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+.primaryButton {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 6px 16px #0878f91a;
+}
+.primaryButton:hover {
+  background: #0065db;
+}
+.secondaryButton {
+  color: #405064;
+  background: #f3f5f8;
+}
+.secondaryButton:hover {
+  background: #e8edf3;
+}
+.benefits {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin: 24px 0 0;
+  padding: 0;
+  color: #596873;
+  font-size: 14px;
+  line-height: 1.6;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.benefits li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* font-weight: 600; */
+}
+.benefits svg {
+  color: #17b879;
+  flex-shrink: 0;
+}
+.organization {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 48px;
+}
+.organizationLine {
+  height: 32px;
+  width: 2px;
+  background: #d6e6fb;
+}
+.organization p {
+  margin: 0;
+  color: #8c95a0;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.organization strong {
+  font-weight: 500;
+  color: #697785;
+}
+.documentSection {
+  min-width: 0;
+  scroll-margin-top: 24px;
+}
+.window {
+  overflow: hidden;
+  border: 1px solid #e6eaf0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow:
+    0 24px 48px -20px #253d613b,
+    0 4px 16px #253d6105;
+}
+.windowBar {
+  height: 40px;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  background: linear-gradient(
+    110deg,
+    #fce0e3 0%,
+    #f4e8ed 30%,
+    #e0edf7 65%,
+    #d7eaf6 100%
+  );
+}
+.trafficLights {
+  display: flex;
+  gap: 7px;
+}
+.trafficLights span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff6059;
+}
+.trafficLights span:nth-child(2) {
+  background: #ffbd2e;
+}
+.trafficLights span:nth-child(3) {
+  background: #28c840;
+}
+.windowCaption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #687786;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.windowBar > a {
+  justify-self: end;
+  color: #6d7f91;
+  display: flex;
+  padding: 5px;
+}
+.documentHeader {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e8ecf1;
+}
+.documentHeader > div {
+  min-width: 0;
+}
+.fileIcon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  height: 44px;
+  width: 40px;
+  color: var(--accent);
+  border-radius: 10px;
+  background: #edf5ff;
+}
+.documentLabel {
+  color: #8c97a4;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  font-weight: 700;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.documentHeader h2 {
+  margin: 5px 0 0;
+  color: #344256;
+  font-size: clamp(14px, 1.15vw, 18px);
+  line-height: 1.5;
+  font-weight: 700;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.downloadButton {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin-left: auto;
+  color: #6c7c90;
+  border: 1px solid #e4e9ef;
+  border-radius: 9px;
+}
+.downloadButton:hover {
+  color: var(--accent);
+  background: #f0f6ff;
+}
+.pdf {
+  display: block;
+  width: 100%;
+  height: clamp(280px, calc(100svh - 440px), 680px);
+  border: 0;
+  background: #f2f4f7;
+}
+.pdfFallback {
+  min-height: 100%;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  color: #697785;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.documentFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 20px;
+  border-top: 1px solid #e8ecf1;
+  color: #8490a0;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+.documentFooter span,
+.documentFooter a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.documentFooter a:hover {
+  color: var(--accent);
+}
+.documentNote {
+  margin: 17px 0 0;
+  color: #7d8893;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.7;
+  font-family: "Segoe UI", "Inter", "Arial", sans-serif;
+}
+@media (min-width: 1800px) {
+  .navInner {
+    min-height: 96px;
+  }
+  .hero {
+    min-height: calc(100svh - 96px);
+  }
+}
+@media (max-width: 1250px) {
+  .managerLink,
+  .navDivider {
+    display: none;
+  }
+  .navActions {
+    gap: 18px;
+  }
+  .navInner {
+    gap: 30px;
+  }
+  .desktopNav {
+    gap: 20px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 1000px) {
+  .desktopNav {
+    display: none;
+  }
+  .mobileMenu {
+    display: block;
+  }
+  .mobileMenu summary {
+    display: flex;
+    padding: 10px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .mobileMenu summary::-webkit-details-marker {
+    display: none;
+  }
+  .mobileMenu nav {
+    position: absolute;
+    top: calc(100% - 4px);
+    left: 5%;
+    right: 5%;
+    display: grid;
+    gap: 4px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #e6ebf1;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px #20385815;
+  }
+  .mobileMenu nav a {
+    font-weight: 650;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+  .mobileMenu nav a:hover {
+    background: #f0f6ff;
+  }
+  .hero {
+    gap: 30px;
+  }
+  .copy h1 {
+    font-size: clamp(34px, 4.4vw, 44px);
+  }
+  .documentHeader {
+    padding: 16px;
+    gap: 10px;
+  }
+  .fileIcon {
+    display: none;
+  }
+  .actions {
+    gap: 10px;
+  }
+  .primaryButton,
+  .secondaryButton {
+    padding: 0 16px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 760px) {
+  .navInner :global(.brand-copy) {
+    display: flex;
+  }
+  .navInner {
+    min-height: 76px;
+    gap: 12px;
+  }
+  .navActions {
+    gap: 12px;
+  }
+  .registerLink {
+    display: none;
+  }
+  .loginLink {
+    font-size: 13px;
+  }
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 44px 0 30px;
+    gap: 38px;
+    min-height: calc(100svh - 76px);
+  }
+  .copy {
+    padding: 0;
+  }
+  .copy h1 {
+    font-size: clamp(40px, 7.8vw, 58px);
+    margin: 20px 0;
+  }
+  .description {
+    max-width: 580px;
+    font-size: 16px;
+  }
+  .organization {
+    margin-top: 28px;
+  }
+  .pdf {
+    height: 520px;
+  }
+  .documentHeader {
+    padding: 17px;
+  }
+  .fileIcon {
+    display: grid;
+  }
+  .documentHeader h2 {
+    font-size: 14px;
+  }
+}
+@media (max-width: 380px) {
+  .navInner :global(.brand-copy strong) {
+    font-size: 13px;
+  }
+  .navInner :global(.brand-copy small) {
+    font-size: 8px;
+  }
+  .navInner :global(.brand-mark) {
+    width: 34px;
+    height: 36px;
+  }
+  .navInner {
+    gap: 6px;
+  }
+  .mobileMenu summary {
+    padding: 6px;
+  }
+  .copy h1 {
+    font-size: 37px;
+  }
+  .fileIcon {
+    display: none;
+  }
+  .windowBar {
+    grid-template-columns: 52px 1fr 24px;
+    padding: 0 12px;
+  }
+}

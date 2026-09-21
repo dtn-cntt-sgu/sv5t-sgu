@@ -116,33 +116,54 @@ export function ProfilePage({
     }
   }
   return (
-    <PortalShell portal={portal} title="Thông tin cá nhân">
+    <PortalShell portal={portal} title="Thông tin và Tài khoản">
       <ResourceState {...resource} retry={resource.reload} />
       {resource.data && (
         <div className="profile-layout">
-          <section className="profile-card">
-            <div className="profile-avatar">
-              {resource.data.full_name
-                .split(" ")
-                .slice(-2)
-                .map((v) => v[0])
-                .join("")}
-            </div>
-            <h2>{resource.data.full_name}</h2>
-            <p>{resource.data.mssv ?? "Tài khoản quản lý"}</p>
-            <span className="status-pill state-ACCEPTED">
-              Tài khoản đang hoạt động
-            </span>
-            <dl>
-              <dt>Khoa</dt>
-              <dd>{resource.data.faculties?.name ?? "Toàn trường"}</dd>
-              <dt>Ngành</dt>
-              <dd>{resource.data.majors?.name ?? "—"}</dd>
-              <dt>Lớp</dt>
-              <dd>{resource.data.class_name ?? "—"}</dd>
-            </dl>
-          </section>
-          <form className="panel workspace-form" onSubmit={save}>
+          <div className="profile-rail">
+            <section className="profile-card">
+              <div className="profile-avatar">
+                {resource.data.full_name
+                  .split(" ")
+                  .slice(-2)
+                  .map((v) => v[0])
+                  .join("")}
+              </div>
+              <h2>{resource.data.full_name}</h2>
+              <p>{resource.data.mssv ?? "Tài khoản quản lý"}</p>
+              <span className="status-pill state-ACCEPTED">
+                Tài khoản đang hoạt động
+              </span>
+              <dl>
+                <div>
+                  <dt>Khoa</dt>
+                  <dd>{resource.data.faculties?.name ?? "Toàn trường"}</dd>
+                </div>
+                <div>
+                  <dt>Ngành</dt>
+                  <dd>{resource.data.majors?.name ?? "—"}</dd>
+                </div>
+                <div>
+                  <dt>Lớp</dt>
+                  <dd>{resource.data.class_name ?? "—"}</dd>
+                </div>
+              </dl>
+            </section>
+
+            <section className="panel settings-panel compact-panel">
+              <ShieldCheck size={36} />
+              <span className="section-kicker">BẢO VỆ TÀI KHOẢN</span>
+              <h2>Mật khẩu & quyền truy cập</h2>
+              <p>
+                Yêu cầu liên kết qua email đã đăng ký để đặt lại mật khẩu của bạn.
+              </p>
+              <Link href="/forgot-password" className="button button-primary">
+                Đổi mật khẩu qua email <ArrowRight size={17} />
+              </Link>
+            </section>
+          </div>
+
+          <form className="panel workspace-form profile-main-form" onSubmit={save}>
             <span className="section-kicker">THÔNG TIN LIÊN HỆ</span>
             <h2>Luôn giữ kết nối</h2>
             <p>
@@ -201,27 +222,5 @@ export function SettingsPage({
 }: {
   portal?: "student" | "manager" | "admin";
 }) {
-  return (
-    <PortalShell portal={portal} title="Cài đặt tài khoản">
-      <section className="panel settings-panel">
-        <ShieldCheck size={36} />
-        <span className="section-kicker">BẢO VỆ TÀI KHOẢN</span>
-        <h2>Mật khẩu & quyền truy cập</h2>
-        <p>
-          Yêu cầu liên kết qua email đã đăng ký để đặt lại mật khẩu của bạn.
-        </p>
-        <Link href="/forgot-password" className="button button-primary">
-          Đổi mật khẩu qua email <ArrowRight size={17} />
-        </Link>
-        <Link
-          className="inline-link"
-          href={
-            portal === "student" ? "/dashboard/profile" : "/manager/profile"
-          }
-        >
-          Cập nhật thông tin cá nhân
-        </Link>
-      </section>
-    </PortalShell>
-  );
+  return <ProfilePage portal={portal} />;
 }

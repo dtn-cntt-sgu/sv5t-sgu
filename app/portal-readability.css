@@ -1,0 +1,588 @@
+/* Shared readable sizing for student and manager workspaces. */
+:is(.portal-student, .portal-manager) {
+  --muted: #5e6d85;
+  font-size: 16px;
+  line-height: 1.6;
+}
+:is(.portal-student, .portal-manager) .portal-sidebar {
+  overflow-y: auto;
+}
+:is(.portal-student, .portal-manager) .portal-sidebar nav a {
+  min-height: 56px;
+  font-size: 15px;
+  color: #56657e;
+}
+:is(.portal-student, .portal-manager) .portal-sidebar nav a.active {
+  color: #2855dc;
+}
+:is(.portal-student, .portal-manager) .portal-sidebar nav svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+:is(.portal-student, .portal-manager) .nav-caption {
+  font-size: 12px;
+  margin-top: 32px;
+}
+:is(.portal-student, .portal-manager) .brand-copy strong {
+  font-size: 17px;
+}
+:is(.portal-student, .portal-manager) .brand-copy small {
+  font-size: 11px;
+}
+:is(.portal-student, .portal-manager) .sidebar-inspiration {
+  margin-top: 28px;
+}
+:is(.portal-student, .portal-manager) .sidebar-inspiration strong {
+  font-size: 17px;
+  max-width: none;
+}
+:is(.portal-student, .portal-manager) .sidebar-inspiration p,
+:is(.portal-student, .portal-manager) .sidebar-inspiration a {
+  font-size: 14px;
+}
+:is(.portal-student, .portal-manager) .sidebar-bottom a,
+:is(.portal-student, .portal-manager) .sidebar-bottom button {
+  font-size: 14px;
+  min-height: 48px;
+}
+:is(.portal-student, .portal-manager) .portal-header {
+  min-height: 112px;
+  height: auto;
+  gap: 20px;
+}
+:is(.portal-student, .portal-manager) .portal-header h1 {
+  font-size: 30px;
+  line-height: 1.3;
+}
+:is(.portal-student, .portal-manager) .portal-header p {
+  font-size: 12px;
+}
+:is(.portal-student, .portal-manager) .portal-user strong {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .portal-user small {
+  font-size: 13px;
+}
+:is(.portal-student, .portal-manager) .portal-avatar {
+  width: 44px;
+  height: 44px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+:is(.portal-student, .portal-manager) .icon-button {
+  width: 44px;
+  height: 44px;
+}
+:is(.portal-student, .portal-manager) .portal-content {
+  max-width: 1680px;
+}
+:is(.portal-student, .portal-manager) .button {
+  min-height: 48px;
+  padding-inline: 20px;
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .inline-link {
+  min-height: 36px;
+  font-size: 14px;
+}
+:is(.portal-student, .portal-manager) .section-kicker {
+  font-size: 12px;
+}
+:is(.portal-student, .portal-manager) .dashboard-hero {
+  padding: 36px 40px;
+}
+:is(.portal-student, .portal-manager) .dashboard-hero h2 {
+  font-size: clamp(36px, 3vw, 50px);
+}
+:is(.portal-student, .portal-manager) .dashboard-hero p {
+  max-width: 660px;
+  font-size: 16px;
+  color: #e4ebff;
+}
+:is(.portal-student, .portal-manager) .student-strip {
+  gap: 14px;
+  margin: 26px 0;
+}
+:is(.portal-student, .portal-manager) .student-strip > a {
+  min-height: 90px;
+  padding: 16px;
+  gap: 12px;
+}
+:is(.portal-student, .portal-manager) .student-strip > a > span {
+  width: 44px;
+  height: 44px;
+}
+:is(.portal-student, .portal-manager) .student-strip small {
+  font-size: 12px;
+  color: #66758e;
+}
+:is(.portal-student, .portal-manager) .student-strip strong {
+  font-size: 15px;
+  line-height: 1.4;
+}
+:is(.portal-student, .portal-manager) .dashboard-grid {
+  gap: 24px;
+}
+:is(.portal-student, .portal-manager) .panel {
+  padding: 28px;
+}
+:is(.portal-student, .portal-manager) .panel h2 {
+  font-size: 23px;
+}
+:is(.portal-student, .portal-manager) .section-title h3,
+:is(.portal-student, .portal-manager) .feedback-list h3 {
+  font-size: 18px;
+}
+:is(.portal-student, .portal-manager) .panel p,
+:is(.portal-student, .portal-manager) .empty-state p {
+  font-size: 16px;
+}
+:is(.portal-student, .portal-manager) .empty-state h3 {
+  font-size: 20px;
+}
+:is(.portal-student, .portal-manager) .completion {
+  padding: 18px;
+}
+:is(.portal-student, .portal-manager) .completion :is(span, strong) {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .progress {
+  height: 9px;
+}
+:is(.portal-student, .portal-manager) .file-mini-list > span {
+  min-height: 56px;
+  gap: 9px;
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .file-mini-list small {
+  font-size: 13px;
+  color: var(--muted);
+}
+:is(.portal-student, .portal-manager) .status-pill {
+  font-size: 13px;
+  padding: 7px 12px;
+}
+:is(.portal-student, .portal-manager) .deadline-card {
+  padding: 22px;
+}
+:is(.portal-student, .portal-manager) .deadline-card > small {
+  font-size: 12px;
+  color: #806528;
+}
+:is(.portal-student, .portal-manager) .deadline-card strong {
+  font-size: 48px;
+  line-height: 1.3;
+}
+:is(.portal-student, .portal-manager) .deadline-card strong span {
+  font-size: 16px;
+}
+:is(.portal-student, .portal-manager) .deadline-card p {
+  font-size: 14px;
+  color: #806528;
+}
+:is(.portal-student, .portal-manager) .timeline strong {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .timeline small {
+  font-size: 14px;
+}
+:is(.portal-student, .portal-manager) .timeline > div {
+  min-height: 80px;
+  grid-template-columns: 30px 1fr;
+}
+:is(.portal-student, .portal-manager) .timeline > div:not(:last-child)::after {
+  height: 62px;
+}
+:is(.portal-student, .portal-manager) .tips-card h3 {
+  font-size: 22px;
+}
+:is(.portal-student, .portal-manager) .tips-card a {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .tips-card span {
+  font-size: 12px;
+}
+:is(.portal-student, .portal-manager) .tiny-note h3 {
+  font-size: 20px;
+}
+:is(.portal-student, .portal-manager) .tiny-note p {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager)
+  :is(
+    .notice,
+    .muted,
+    .form-error,
+    .form-message,
+    .file-feedback,
+    .upload-placeholder
+  ) {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager)
+  :is(.workspace-form, .create-controls)
+  label {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager)
+  :is(
+    .workspace-form input,
+    .workspace-form select,
+    .workspace-form textarea,
+    .create-controls select
+  ) {
+  min-height: 48px;
+  font-size: 16px;
+}
+:is(.portal-student, .portal-manager) .workspace-form fieldset small {
+  font-size: 13px;
+}
+:is(.portal-student, .portal-manager) .workspace-form legend {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .tabs button {
+  font-size: 15px;
+  min-height: 48px;
+}
+:is(.portal-student, .portal-manager) .tabs small {
+  font-size: 13px;
+}
+:is(.portal-student, .portal-manager) .evidence-heading {
+  flex-wrap: wrap;
+}
+:is(.portal-student, .portal-manager) .evidence-heading h3 {
+  font-size: 17px;
+}
+:is(.portal-student, .portal-manager) .evidence-heading small {
+  font-size: 12px;
+}
+:is(.portal-student, .portal-manager) .evidence-footer {
+  flex-wrap: wrap;
+}
+:is(.portal-student, .portal-manager) .evidence-footer small,
+:is(.portal-student, .portal-manager) .uploaded-file small,
+:is(.portal-student, .portal-manager) .feedback-list small {
+  font-size: 13px;
+}
+:is(.portal-student, .portal-manager) .uploaded-file strong {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .submit-summary :is(li, p, .checkbox) {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) .submit-summary > small {
+  font-size: 13px;
+}
+:is(.portal-student, .portal-manager) .feedback-banner strong {
+  font-size: 17px;
+}
+:is(.portal-student, .portal-manager) .feedback-banner p {
+  font-size: 15px;
+}
+:is(.portal-student, .portal-manager) dt {
+  font-size: 14px;
+}
+:is(.portal-student, .portal-manager) dd {
+  font-size: 16px;
+}
+:is(.portal-student, .portal-manager) .portal-footer {
+  font-size: 12px;
+}
+@media (min-width: 981px) {
+  :is(.portal-student, .portal-manager) {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+  :is(.portal-student, .portal-manager) .portal-sidebar {
+    width: 280px;
+  }
+  :is(.portal-student, .portal-manager) .application-layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+}
+@media (min-width: 701px) and (max-width: 980px) {
+  :is(.portal-student, .portal-manager) .sidebar-bottom a,
+  :is(.portal-student, .portal-manager) .sidebar-bottom button {
+    font-size: 0;
+  }
+}
+@media (min-width: 701px) and (max-width: 1250px) {
+  :is(.portal-student, .portal-manager) .student-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  :is(.portal-student, .portal-manager) .dashboard-grid,
+  :is(.portal-student, .portal-manager) .application-layout,
+  :is(.portal-student, .portal-manager) .profile-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :is(.portal-student, .portal-manager) .submit-summary {
+    position: static;
+  }
+  :is(.portal-student, .portal-manager) .dashboard-hero {
+    grid-template-columns: minmax(0, 1fr) 160px;
+    padding: 28px;
+  }
+  :is(.portal-student, .portal-manager) .student-hero-art {
+    transform: scale(0.75);
+  }
+  :is(.portal-student, .portal-manager) .application-picker {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+@media (max-width: 700px) {
+  :is(.portal-student, .portal-manager) .portal-sidebar {
+    width: min(300px, 90vw);
+  }
+  :is(.portal-student, .portal-manager) .portal-header {
+    min-height: 90px;
+    gap: 10px;
+  }
+  :is(.portal-student, .portal-manager) .portal-header h1 {
+    font-size: 23px;
+  }
+  :is(.portal-student, .portal-manager) .portal-header p {
+    font-size: 10px;
+    letter-spacing: 0.6px;
+  }
+  :is(.portal-student, .portal-manager) .portal-content {
+    padding: 20px 14px;
+  }
+  :is(.portal-student, .portal-manager) .dashboard-hero {
+    padding: 26px 22px 110px;
+  }
+  :is(.portal-student, .portal-manager) .dashboard-hero h2 {
+    font-size: 35px;
+  }
+  :is(.portal-student, .portal-manager) .dashboard-hero p {
+    max-width: none;
+  }
+  :is(.portal-student, .portal-manager) .student-strip {
+    gap: 10px;
+  }
+  :is(.portal-student, .portal-manager) .student-strip > a {
+    padding: 12px;
+    gap: 8px;
+  }
+  :is(.portal-student, .portal-manager) .student-strip > a > span {
+    width: 34px;
+    height: 34px;
+  }
+  :is(.portal-student, .portal-manager) .student-strip strong {
+    font-size: 14px;
+  }
+  :is(.portal-student, .portal-manager) .panel {
+    padding: 20px;
+  }
+  :is(.portal-student, .portal-manager) .panel h2 {
+    font-size: 21px;
+  }
+  :is(.portal-student, .portal-manager) .section-title {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  :is(.portal-student, .portal-manager) .file-mini-list > span {
+    flex-wrap: wrap;
+    padding-block: 12px;
+  }
+  :is(.portal-student, .portal-manager) .file-mini-list small {
+    margin-left: 26px;
+  }
+  :is(.portal-student, .portal-manager) .tabs button {
+    flex: 1 1 130px;
+  }
+}
+
+/* Manager tables, filters and review controls. */
+.portal-manager .metric-card {
+  min-height: 160px;
+  padding: 24px;
+}
+.portal-manager .metric-card span {
+  font-size: 15px;
+}
+.portal-manager .metric-card strong {
+  font-size: 40px;
+  line-height: 1.3;
+}
+.portal-manager .metric-card small {
+  font-size: 13px;
+}
+.portal-manager .metric-card > div {
+  min-width: 0;
+}
+.portal-manager .workspace-toolbar {
+  flex-wrap: wrap;
+}
+.portal-manager .workspace-toolbar p {
+  font-size: 16px;
+}
+.portal-manager .workspace-toolbar label {
+  min-width: 0;
+  max-width: 100%;
+}
+.portal-manager :is(.workspace-toolbar, .filter-grid) label {
+  font-size: 14px;
+}
+.portal-manager
+  :is(
+    .workspace-toolbar select,
+    .filter-grid input,
+    .filter-grid select,
+    .inline-form input
+  ) {
+  font-size: 16px;
+  min-height: 48px;
+  min-width: 0;
+  max-width: 100%;
+}
+.portal-manager .filter-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 20px;
+}
+.portal-manager .filter-grid label {
+  min-width: 0;
+}
+.portal-manager .manager-table-card {
+  padding: 28px;
+  min-width: 0;
+}
+.portal-manager .section-title {
+  flex-wrap: wrap;
+}
+.portal-manager .section-title h2 {
+  font-size: 23px;
+}
+.portal-manager .section-title p {
+  font-size: 15px;
+}
+.portal-manager .workspace-table {
+  min-width: 850px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.portal-manager .workspace-table th {
+  font-size: 13px;
+  padding: 16px;
+  color: #5e6d85;
+}
+.portal-manager .workspace-table td {
+  padding: 20px 16px;
+}
+.portal-manager .workspace-table td small {
+  font-size: 13px;
+  color: var(--muted);
+}
+.portal-manager .table-link {
+  font-size: 14px;
+  min-height: 44px;
+}
+.portal-manager .pagination {
+  font-size: 14px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.portal-manager .pagination > div {
+  flex-wrap: wrap;
+}
+.portal-manager .faculty-chart > div > div:first-child {
+  font-size: 15px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.portal-manager .review-layout {
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 24px;
+}
+.portal-manager .review-form {
+  top: 24px;
+  min-width: 0;
+}
+.portal-manager .workspace-form fieldset {
+  min-width: 0;
+}
+.portal-manager .workspace-form legend {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.portal-manager .workspace-form textarea {
+  line-height: 1.7;
+  resize: vertical;
+}
+.portal-manager .file-preview-panel .section-title strong {
+  font-size: 15px;
+  min-width: 0;
+}
+.portal-manager .applicant-info {
+  flex-wrap: wrap;
+}
+.portal-manager .applicant-info dl {
+  min-width: 0;
+}
+.portal-manager .back-link {
+  min-height: 44px;
+  font-size: 15px;
+}
+.portal-manager .campaign-row {
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.portal-manager .campaign-row h3 {
+  font-size: 18px;
+}
+.portal-manager .campaign-row p {
+  font-size: 15px;
+}
+.portal-manager .inline-form {
+  flex-wrap: wrap;
+}
+@media (max-width: 1400px) {
+  .portal-manager .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .portal-manager .review-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .portal-manager .review-form {
+    position: static;
+  }
+}
+@media (max-width: 1100px) {
+  .portal-manager .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .portal-manager .manager-table-card {
+    padding: 18px;
+  }
+  .portal-manager .metric-card {
+    padding: 18px;
+    min-height: 145px;
+  }
+  .portal-manager .metric-card span {
+    font-size: 14px;
+  }
+  .portal-manager .metric-card strong {
+    font-size: 34px;
+  }
+  .portal-manager .metric-card small {
+    font-size: 12px;
+  }
+  .portal-manager .filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 14px;
+    gap: 16px;
+  }
+  .portal-manager .section-title h2 {
+    font-size: 21px;
+  }
+  .portal-manager .review-layout {
+    gap: 18px;
+  }
+}
+.portal-manager .table-scroll {
+  position: relative;
+  max-width: 100%;
+}

@@ -26,3 +26,5 @@ supabase/.temp/
 # Private project notes supplied out-of-band
 /nii_notes/
 /docs
+
+/template

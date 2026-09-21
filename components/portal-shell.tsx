@@ -39,8 +39,11 @@ const studentNav = [
     href: "/dashboard/feedback",
     icon: MessageSquareText,
   },
-  { label: "Thông tin cá nhân", href: "/dashboard/profile", icon: UserRound },
-  { label: "Cài đặt tài khoản", href: "/dashboard/settings", icon: Settings },
+  {
+    label: "Thông tin và Tài khoản",
+    href: "/dashboard/profile",
+    icon: UserRound,
+  },
 ];
 const managerNav = [
   { label: "Tổng quan", href: "/manager", icon: LayoutDashboard },
@@ -48,7 +51,11 @@ const managerNav = [
   { label: "Thống kê", href: "/manager/statistics", icon: BarChart3 },
   { label: "Xuất & lưu trữ", href: "/manager/export", icon: FileSpreadsheet },
   { label: "Đợt xét duyệt", href: "/manager/campaigns", icon: Archive },
-  { label: "Tài khoản", href: "/manager/settings", icon: Settings },
+  {
+    label: "Thông tin và Tài khoản",
+    href: "/manager/profile",
+    icon: UserRound,
+  },
 ];
 const adminNav = [
   { label: "Tổng quan", href: "/admin", icon: LayoutDashboard },
@@ -212,7 +219,7 @@ export function PortalShell({
           )}
           {children}
           <footer className="portal-footer">
-            <span>SV5T · Đại học Sài Gòn</span>
+            <span><strong>Sinh viên 5 Tốt - Trường Đại học Sài Gòn</strong></span>
             <span>Nỗ lực hôm nay. Tự hào ngày mai.</span>
           </footer>
         </div>

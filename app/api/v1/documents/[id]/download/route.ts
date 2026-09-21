@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createReadUrl } from "@/lib/r2/files";
 import { apiError } from "@/lib/api/response";
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
@@ -25,7 +25,7 @@ export async function GET(
             id === "criteria"
               ? "application/pdf"
               : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          "content-disposition": `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`,
+          "content-disposition": `${id === "criteria" && new URL(request.url).searchParams.get("view") === "inline" ? "inline" : "attachment"}; filename*=UTF-8''${encodeURIComponent(filename)}`,
           "cache-control":
             id === "criteria" ? "public, max-age=3600" : "private, no-store",
         },

@@ -164,6 +164,15 @@ export function StudentApplication() {
                 <option value="COLLECTIVE">Tập thể - 2 file</option>
               </select>
             </label>
+            <a
+              className="button button-outline"
+              href="/api/v1/documents/individual-template/download"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Tải hồ sơ mẫu"
+            >
+              <Download size={16} /> Hồ sơ mẫu
+            </a>
             <button
               className="button button-primary"
               onClick={create}

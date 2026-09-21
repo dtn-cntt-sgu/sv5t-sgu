@@ -196,7 +196,7 @@ export function StudentDashboard() {
               </EmptyState>
             )}
           </aside>
-          <section className="tips-card">
+          {/* <section className="tips-card">
             <div className="tips-icon">
               <Trophy size={25} />
             </div>
@@ -215,7 +215,7 @@ export function StudentDashboard() {
               Hồ sơ nháp giúp bạn chuẩn bị từng file, rồi kiểm tra trước khi
               chính thức gửi đi.
             </p>
-          </section>
+          </section> */}
         </div>
       )}
     </PortalShell>
