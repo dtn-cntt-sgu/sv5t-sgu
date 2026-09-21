@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { CampaignAnnouncement } from "@/components/campaign-announcement";
 import { LandingNav } from "@/components/landing-nav";
+import { PdfPreview } from "@/components/pdf-preview";
 import styles from "./landing.module.css";
 
 const documentUrl = "/api/v1/documents/criteria/download";
@@ -126,28 +127,7 @@ export default function HomePage() {
                 <Download size={18} />
               </a>
             </div>
-            <object
-              className={styles.pdf}
-              data={`${documentUrl}?view=inline#toolbar=0&navpanes=0&view=FitH`}
-              type="application/pdf"
-              aria-label="Nội dung bộ tiêu chuẩn và hướng dẫn danh hiệu Sinh viên 5 Tốt cấp Thành phố"
-            >
-              <div className={styles.pdfFallback}>
-                <FileText size={36} />
-                <p>
-                  Bộ tiêu chuẩn &amp; hướng dẫn danh hiệu SV5T cấp Thành phố
-                </p>
-                <a
-                  className={styles.primaryButton}
-                  href={`${documentUrl}?view=inline`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Mở tài liệu PDF <ExternalLink size={16} />
-                </a>
-                <p>Bạn cũng có thể tải tài liệu để đọc trên thiết bị.</p>
-              </div>
-            </object>
+            <PdfPreview source={documentUrl} />
             <div className={styles.documentFooter}>
               <span>
                 <FileText size={13} /> Định dạng PDF
