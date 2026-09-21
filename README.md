@@ -12,9 +12,8 @@ Foundation đã có:
 - Luồng upload an toàn `presign --> PUT R2 --> HEAD + confirm`, private object, URL 5 phút, key cố định và hard-stop dung lượng ở app-layer.
 - API tạo/nộp hồ sơ, danh sách/chi tiết/xét duyệt theo khoa, thống kê và kiểm tra R2 usage.
 
-
 ## Chạy local
- 
+
 Yêu cầu Node.js 20.19+ và npm.
 
 ```bash
@@ -28,7 +27,6 @@ npm run dev
 ```bash
 npm run check
 ```
-
 
 ## Cấu trúc source
 
@@ -57,3 +55,10 @@ docs/                        Kiến trúc, API và kế hoạch
 - Mọi thao tác nhạy cảm phải có audit snapshot; không cascade xóa audit theo tài khoản người thực hiện.
 
 Xem [hướng dẫn thiết lập từng bước](docs/SETUP.md), [kiến trúc và quyết định kỹ thuật](docs/ARCHITECTURE.md), [hợp đồng API](docs/API.md), [kế hoạch triển khai/giao việc](docs/ROADMAP.md) và [hướng dẫn đóng góp](CONTRIBUTING.md).
+
+## Xuất ZIP và giải phóng dung lượng
+
+Tốt nhất sau mỗi đợt xét duyệt, nên xuất toàn bộ dữ liệu của đợt đó và xóa dữ liệu của nó trên R2 và Supabase (chỉ lưu thống kê). Vì dung lượng R2 giới hạn.
+Tuy nhiên, có một vấn đề là mỗi khi xuất file zip thì phải lưu file zip đó trên R2 nên sẽ tốn thêm 1 phần dung lượng
+
+--> Do vậy, mỗi lần xuất, vừa thực hiện thao tác xóa trên web và thực hiện (thủ công) cả thao tác xóa file zip đó trên R2

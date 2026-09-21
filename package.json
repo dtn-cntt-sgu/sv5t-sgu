@@ -17,6 +17,7 @@
     "seed:managers": "node --env-file=.env.local scripts/seed-managers.mjs",
     "worker:exports": "node --env-file=.env.local scripts/export-worker.mjs",
     "test:e2e": "playwright test",
+    "test:exports": "node --test tests/export-worker.test.mjs",
     "test:db": "node tests/database.test.mjs"
   },
   "dependencies": {

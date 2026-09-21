@@ -63,6 +63,7 @@ const adminNav = [
   { label: "Đợt xét duyệt", href: "/admin/campaigns", icon: Archive },
   { label: "Tài liệu công khai", href: "/admin/documents", icon: FileText },
   { label: "Nhật ký hệ thống", href: "/admin/audit", icon: ShieldCheck },
+  { label: "Các khoa ngành", href: "/admin/catalog", icon: Files },
   { label: "Cấu hình", href: "/admin/settings", icon: Settings },
 ];
 export function PortalShell({
@@ -92,8 +93,7 @@ export function PortalShell({
     (item) =>
       (item.href !== "/manager/campaigns" ||
         profile.data?.role === "SCHOOL_PRESIDENT") &&
-      (item.href !== "/manager" ||
-        profile.data?.role !== "FACULTY_SECRETARY"),
+      (item.href !== "/manager" || profile.data?.role !== "FACULTY_SECRETARY"),
   );
   async function logout() {
     setSigningOut(true);

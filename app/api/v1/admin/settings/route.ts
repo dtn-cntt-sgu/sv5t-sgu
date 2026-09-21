@@ -1,3 +1,4 @@
+import { uploadLimitsSchema } from "@/lib/domain/upload-limits";
 import { z } from "zod";
 import { requireUser } from "@/lib/auth/require-user";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -26,10 +27,27 @@ export async function PUT(request: Request) {
           .min(1024 ** 2)
           .max(10 * 1024 ** 3),
         r2_warning_percent: z.number().int().min(1).max(99),
+        file_upload_limits: uploadLimitsSchema,
       })
       .strict()
       .parse(await request.json());
     const db = createAdminClient();
+    const { data: current, error: currentError } = await db
+      .from("system_settings")
+      .select("*")
+      .single();
+    if (currentError) throw currentError;
+    if (!uploadLimitsSchema.safeParse(current.file_upload_limits).success) {
+      return Response.json(
+        {
+          error: {
+            message:
+              "Cấu hình giới hạn file chưa sẵn sàng. Kiểm tra migration 016 trên đúng dự án Supabase rồi tải lại cấu hình.",
+          },
+        },
+        { status: 503 },
+      );
+    }
     const { data: used, error: usageError } = await db.rpc(
       "storage_committed_bytes",
     );

@@ -20,6 +20,11 @@ import {
   bytesLabel,
   dateLabel,
 } from "@/lib/domain/models";
+import {
+  uploadLimitLabels,
+  uploadLimitsSchema,
+  type UploadLimits,
+} from "@/lib/domain/upload-limits";
 type Faculty = {
   id: string;
   code: string;
@@ -611,7 +616,214 @@ export function AdminSettings() {
   const settings = useResource<{
     r2_hard_limit_bytes: number;
     r2_warning_percent: number;
+    file_upload_limits?: unknown;
   }>("/admin/settings");
+  const storage = useResource<{
+    r2: { bytes: number; objects: number } | null;
+    database: { bytes: number } | null;
+    checkedAt: string;
+  }>("/admin/system/storage-usage");
+  const [pending, setPending] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const parsedLimits = uploadLimitsSchema.safeParse(
+    settings.data?.file_upload_limits,
+  );
+  const limits = parsedLimits.success ? parsedLimits.data : null;
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!limits) {
+      setError(
+        "Chưa có cấu hình giới hạn file hợp lệ. Hãy kiểm tra migration 016 và tải lại cấu hình.",
+      );
+      return;
+    }
+    const form = new FormData(event.currentTarget);
+    setPending(true);
+    setError("");
+    setMessage("");
+    try {
+      await mutation(
+        "/admin/settings",
+        {
+          r2_hard_limit_bytes: Math.round(
+            Number(form.get("limit")) * 1024 ** 3,
+          ),
+          r2_warning_percent: Number(form.get("warning")),
+          file_upload_limits: Object.fromEntries(
+            Object.keys(uploadLimitLabels).map((key) => [
+              key,
+              Math.round(Number(form.get(key)) * 1024 ** 2),
+            ]),
+          ),
+        },
+        "PUT",
+      );
+      await settings.reload();
+      setMessage(
+        "Đã lưu cấu hình. Giới hạn mới áp dụng cho các lượt tải lên tiếp theo.",
+      );
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Không thể lưu cấu hình.");
+    } finally {
+      setPending(false);
+    }
+  }
+  return (
+    <PortalShell portal="admin" title="Cấu hình">
+      {message && (
+        <p className="form-message success" role="status">
+          {message}
+        </p>
+      )}
+      {error && (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      )}
+      <section className="panel">
+        <h2>Dung lượng đang sử dụng</h2>
+        <ResourceState {...storage} retry={storage.reload} />
+        {storage.data && (
+          <>
+            <div className="admin-two-columns">
+              <article className="metric-card">
+                <div>
+                  <span>Cloudflare R2</span>
+                  <strong>
+                    {storage.data.r2
+                      ? bytesLabel(storage.data.r2.bytes)
+                      : "Chưa đọc được"}
+                  </strong>
+                  <small>
+                    {storage.data.r2
+                      ? `${storage.data.r2.objects.toLocaleString("vi-VN")} file · gồm minh chứng, tài liệu và ZIP`
+                      : "Kiểm tra kết nối và quyền đọc bucket, sau đó làm mới."}
+                  </small>
+                </div>
+                <HardDrive size={28} />
+              </article>
+              <article className="metric-card">
+                <div>
+                  <span>Supabase database</span>
+                  <strong>
+                    {storage.data.database
+                      ? bytesLabel(storage.data.database.bytes)
+                      : "Chưa đọc được"}
+                  </strong>
+                  <small>
+                    Dung lượng PostgreSQL, bao gồm bảng và chỉ mục; không gồm
+                    Supabase Storage.
+                  </small>
+                </div>
+                <Database size={28} />
+              </article>
+            </div>
+            <p>
+              Cập nhật:{" "}
+              {new Date(storage.data.checkedAt).toLocaleString("vi-VN")}. R2
+              không bao gồm phần tải multipart chưa hoàn tất.
+            </p>
+          </>
+        )}
+        <button
+          type="button"
+          className="button button-outline"
+          disabled={storage.loading}
+          onClick={() => void storage.reload()}
+        >
+          Làm mới dung lượng
+        </button>
+      </section>
+      <ResourceState {...settings} retry={settings.reload} />
+      {settings.data && (
+        <form
+          className="panel workspace-form"
+          style={{ marginTop: 20 }}
+          onSubmit={save}
+        >
+          <h2>Giới hạn tải lên theo loại file</h2>
+          <p>
+            Dung lượng tối đa cho mỗi file (MiB). File đã tải lên được giữ
+            nguyên.
+          </p>
+          {!limits && (
+            <div className="form-error" role="alert">
+              <p>
+                API chưa trả về cấu hình giới hạn file hợp lệ. Kiểm tra
+                migration 016 đã chạy thành công trên đúng dự án Supabase, sau
+                đó tải lại cấu hình. Nếu đã chạy, không chạy lại migration.
+              </p>
+              <button
+                type="button"
+                className="button button-outline"
+                disabled={settings.loading}
+                onClick={() => void settings.reload()}
+              >
+                Tải lại cấu hình
+              </button>
+            </div>
+          )}
+          <div className="admin-two-columns">
+            {limits &&
+              Object.entries(uploadLimitLabels).map(([key, label]) => (
+                <label key={key}>
+                  {label}
+                  <input
+                    name={key}
+                    type="number"
+                    min="0.01"
+                    max="1024"
+                    step="0.01"
+                    required
+                    defaultValue={limits[key as keyof UploadLimits] / 1024 ** 2}
+                  />
+                </label>
+              ))}
+          </div>
+          <h2>Dung lượng minh chứng</h2>
+          <p>
+            Ngưỡng dừng tải tính theo minh chứng đã xác nhận và đang giữ chỗ;
+            không phải giới hạn tổng bucket R2.
+          </p>
+          <label>
+            Ngưỡng dừng tải (GiB)
+            <input
+              name="limit"
+              type="number"
+              step="0.01"
+              min="0.01"
+              max="10"
+              required
+              defaultValue={settings.data.r2_hard_limit_bytes / 1024 ** 3}
+            />
+          </label>
+          <label>
+            Cảnh báo khi đạt (%)
+            <input
+              name="warning"
+              type="number"
+              min="1"
+              max="99"
+              required
+              defaultValue={settings.data.r2_warning_percent}
+            />
+          </label>
+          <button
+            className="button button-primary"
+            disabled={pending || !limits || settings.loading}
+          >
+            {pending ? "Đang lưu…" : "Lưu cấu hình"}
+          </button>
+          <Link href="/admin/security" className="inline-link">
+            Đổi mật khẩu quản trị qua mã email <ArrowRight size={16} />
+          </Link>
+        </form>
+      )}
+    </PortalShell>
+  );
+}
+export function AdminCatalog() {
   const faculties = useResource<Faculty[]>("/public/faculties");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -623,36 +835,23 @@ export function AdminSettings() {
     code: string;
     faculty_id?: string;
   } | null>(null);
-  async function save(
-    e: FormEvent<HTMLFormElement>,
-    kind: "settings" | "catalog",
-  ) {
+  async function save(e: FormEvent<HTMLFormElement>, kind: "catalog") {
     e.preventDefault();
     const form = e.currentTarget;
     const f = new FormData(form);
     setPending(true);
     setError("");
     try {
-      if (kind === "settings")
-        await mutation(
-          "/admin/settings",
-          {
-            r2_hard_limit_bytes: Math.round(Number(f.get("limit")) * 1024 ** 3),
-            r2_warning_percent: Number(f.get("warning")),
-          },
-          "PUT",
-        );
-      else
-        await mutation("/admin/catalog", {
-          ...(editing ? { id: editing.id } : {}),
-          kind: f.get("kind"),
-          code: f.get("code"),
-          name: f.get("name"),
-          ...(f.get("faculty_id") ? { faculty_id: f.get("faculty_id") } : {}),
-        });
+      await mutation("/admin/catalog", {
+        ...(editing ? { id: editing.id } : {}),
+        kind: f.get("kind"),
+        code: f.get("code"),
+        name: f.get("name"),
+        ...(f.get("faculty_id") ? { faculty_id: f.get("faculty_id") } : {}),
+      });
       await faculties.reload();
-      await settings.reload();
-      setMessage("Đã lưu cấu hình.");
+
+      setMessage("Đã lưu danh mục.");
       if (kind === "catalog") {
         form.reset();
         setEditing(null);
@@ -664,7 +863,7 @@ export function AdminSettings() {
     }
   }
   return (
-    <PortalShell portal="admin" title="Cấu hình & danh mục">
+    <PortalShell portal="admin" title="Các khoa ngành">
       {message && (
         <p className="form-message success" role="status">
           {message}
@@ -675,45 +874,8 @@ export function AdminSettings() {
           {error}
         </p>
       )}
-      <ResourceState {...settings} retry={settings.reload} />
+      <ResourceState {...faculties} retry={faculties.reload} />
       <div className="admin-two-columns">
-        {settings.data && (
-          <form
-            className="panel workspace-form"
-            onSubmit={(e) => void save(e, "settings")}
-          >
-            <h2>Dung lượng minh chứng</h2>
-            <label>
-              Ngưỡng dừng tải (GiB)
-              <input
-                name="limit"
-                type="number"
-                step="0.01"
-                min="0.01"
-                max="10"
-                required
-                defaultValue={settings.data.r2_hard_limit_bytes / 1024 ** 3}
-              />
-            </label>
-            <label>
-              Cảnh báo khi đạt (%)
-              <input
-                name="warning"
-                type="number"
-                min="1"
-                max="99"
-                required
-                defaultValue={settings.data.r2_warning_percent}
-              />
-            </label>
-            <button className="button button-primary" disabled={pending}>
-              Lưu ngưỡng dung lượng
-            </button>
-            <Link href="/admin/security" className="inline-link">
-              Đổi mật khẩu quản trị qua mã email <ArrowRight size={16} />
-            </Link>
-          </form>
-        )}
         <form
           key={editing?.id ?? "new"}
           className="panel workspace-form"
@@ -771,37 +933,37 @@ export function AdminSettings() {
             </button>
           )}
         </form>
-      </div>
-      <section className="panel" style={{ marginTop: 20 }}>
-        <h2>Danh mục khoa & ngành</h2>
-        <p>
-          Danh sách ban đầu là dữ liệu mẫu; cập nhật danh mục chính thức trước
-          khi mở đợt nhận hồ sơ.
-        </p>
-        {faculties.data?.map((f) => (
-          <div key={f.id} className="catalog-row">
-            <button
-              className="inline-link"
-              onClick={() => setEditing({ ...f, kind: "faculties" })}
-            >
-              {f.code} · {f.name} — Sửa
-            </button>
-            <div>
-              {f.majors.map((m) => (
-                <button
-                  className="catalog-chip"
-                  key={m.id}
-                  onClick={() =>
-                    setEditing({ ...m, kind: "majors", faculty_id: f.id })
-                  }
-                >
-                  {m.name} ↗
-                </button>
-              ))}
+        <section className="panel">
+          <h2>Danh mục khoa & ngành</h2>
+          <p>
+            Danh sách ban đầu là dữ liệu mẫu; cập nhật danh mục chính thức trước
+            khi mở đợt nhận hồ sơ.
+          </p>
+          {faculties.data?.map((f) => (
+            <div key={f.id} className="catalog-row">
+              <button
+                className="inline-link"
+                onClick={() => setEditing({ ...f, kind: "faculties" })}
+              >
+                {f.code} · {f.name} — Sửa
+              </button>
+              <div>
+                {f.majors.map((m) => (
+                  <button
+                    className="catalog-chip"
+                    key={m.id}
+                    onClick={() =>
+                      setEditing({ ...m, kind: "majors", faculty_id: f.id })
+                    }
+                  >
+                    {m.name} ↗
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </section>
+          ))}
+        </section>
+      </div>
     </PortalShell>
   );
 }

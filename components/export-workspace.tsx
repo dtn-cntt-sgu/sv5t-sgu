@@ -8,11 +8,16 @@ import { mutation } from "@/lib/client/api";
 import { type Campaign, type Profile, dateLabel } from "@/lib/domain/models";
 type Job = {
   id: string;
+  campaign_id: string;
   status: string;
   record_count: number;
   created_at: string;
   error_message: string | null;
   cleanup_status: string;
+  storage_backend: "LOCAL" | "R2";
+  archive_bytes: number | null;
+  started_at: string | null;
+  cleanup_error: string | null;
 };
 export function ExportWorkspace() {
   const campaigns = useResource<Campaign[]>("/campaigns");
@@ -28,6 +33,16 @@ export function ExportWorkspace() {
   const jobs = useResource<Job[]>(
     privileged && selected ? `/export/jobs?campaignId=${selected}` : null,
   );
+  const readyJob = jobs.data?.find(
+    (j) =>
+      j.campaign_id === selected &&
+      j.status === "READY" &&
+      j.cleanup_status === "NONE",
+  );
+  const cleanupJob = jobs.data?.find(
+    (j) => j.campaign_id === selected && j.cleanup_status !== "NONE",
+  );
+  const [confirmedExportId, setConfirmedExportId] = useState("");
   const reload = jobs.reload;
   useEffect(() => {
     const timer = setInterval(() => void reload(), 15000);
@@ -55,6 +70,7 @@ export function ExportWorkspace() {
         { purpose: "PURGE_CAMPAIGN", campaignId: selected },
       );
       setChallenge(result.challengeId);
+      setConfirmedExportId(readyJob?.id ?? "");
       setMessage(result.message);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Không thể gửi mã.");
@@ -71,9 +87,11 @@ export function ExportWorkspace() {
       await mutation("/security/confirm", {
         challengeId: challenge,
         code: f.get("code"),
+        exportId: confirmedExportId,
+        backupConfirmed: f.get("backupConfirmed") === "on",
       });
       setMessage(
-        "Đã lưu số liệu và xóa hồ sơ trong CSDL. Hệ thống đang dọn minh chứng; bản xuất vẫn được giữ lại.",
+        "Đã xác nhận sao lưu và đưa yêu cầu giải phóng vào hàng đợi. Hồ sơ chỉ được xóa khỏi database sau khi dọn R2 hoàn tất.",
       );
       setChallenge("");
       await jobs.reload();
@@ -91,11 +109,15 @@ export function ExportWorkspace() {
           Báo cáo đúng phạm vi khoa hoặc toàn trường theo tài khoản của bạn.
         </p>
         <select
+          disabled={pending}
           aria-label="Chọn đợt xét"
           value={selected ?? ""}
           onChange={(e) => {
             setCampaignId(e.target.value);
             setChallenge("");
+            setConfirmedExportId("");
+            setMessage("");
+            setError("");
           }}
         >
           <option value="" disabled>
@@ -145,9 +167,10 @@ export function ExportWorkspace() {
                   <h2>Lưu trữ toàn bộ đợt xét</h2>
                 </div>
                 <p>
-                  Bản ZIP gồm Excel, toàn bộ minh chứng và dữ liệu hồ sơ. Đợt
-                  phải đóng và hết hạn; hồ sơ sẽ được khóa để bảo đảm bản xuất
-                  nhất quán.
+                  Bản ZIP gồm Excel, toàn bộ minh chứng và dữ liệu hồ sơ, được
+                  lưu trên R2 để có thể tải lại ngay cả khi chương trình xuất đã
+                  tắt. Đợt phải đóng và hết hạn; hồ sơ sẽ được khóa để bảo đảm
+                  bản xuất nhất quán.
                 </p>
                 <button
                   className="button button-outline"
@@ -155,6 +178,7 @@ export function ExportWorkspace() {
                     pending ||
                     campaign?.is_active ||
                     campaign?.is_archived ||
+                    !!cleanupJob ||
                     jobs.data?.some((j) => j.status === "PROCESSING")
                   }
                   onClick={create}
@@ -170,22 +194,32 @@ export function ExportWorkspace() {
                           ? "File zip chứa toàn bộ dữ liệu đã sẵn sàng"
                           : j.status === "FAILED"
                             ? "Xuất thất bại"
-                            : "Đang chờ / xử lý"}
+                            : j.started_at
+                              ? "Đang tạo bản ZIP"
+                              : "Đang chờ chương trình xuất xử lý"}
                       </h3>
                       <p>
-                        {dateLabel(j.created_at)} · {j.record_count} hồ sơ
+                        {dateLabel(j.created_at)}
+                        {j.status === "READY"
+                          ? ` · ${j.record_count} hồ sơ · ${j.storage_backend === "LOCAL" ? "Lưu trên máy riêng" : "Lưu trên R2"}`
+                          : ""}
                       </p>
                       {j.error_message && (
                         <p className="form-error">{j.error_message}</p>
+                      )}
+                      {j.cleanup_error && (
+                        <p className="form-error">{j.cleanup_error}</p>
                       )}
                       {j.cleanup_status !== "NONE" && (
                         <p>
                           Dọn minh chứng:{" "}
                           {j.cleanup_status === "DONE"
-                            ? "Hoàn tất"
+                            ? "Đã xóa minh chứng gốc trên R2 và lưu thống kê"
                             : j.cleanup_status === "FAILED"
                               ? "Đang chờ thử lại"
-                              : "Đang xử lý"}
+                              : j.cleanup_status === "PENDING"
+                                ? "Đang chờ worker"
+                                : "Đang dọn R2; dữ liệu hồ sơ vẫn được giữ"}
                         </p>
                       )}
                     </div>
@@ -207,19 +241,36 @@ export function ExportWorkspace() {
               <ShieldCheck size={28} />
               <h2>Hoàn tất & giải phóng dung lượng</h2>
               <p>
-                Tải và kiểm tra bản ZIP trước khi xóa. Thống kê theo khoa và bản
-                lưu trữ vẫn được giữ; hồ sơ đang xét và minh chứng gốc sẽ bị
-                xóa.
+                Tải ZIP về nơi lưu trữ an toàn và kiểm tra đủ hồ sơ, minh chứng
+                trước khi xác nhận. Hệ thống giữ thống kê và bản ZIP; minh chứng
+                gốc cùng dữ liệu hồ sơ của đợt sẽ được xóa sau khi dọn R2 thành
+                công.
               </p>
               <div className="danger-zone">
-                <p>Thao tác này không thể hoàn tác từ giao diện.</p>
+                <p>Thao tác xóa theo đợt trên database chỉ có thể thực hiện sau khi xuất file và xác thực email.</p>
+                {cleanupJob ? (
+                  <p role="status">
+                    {cleanupJob.cleanup_status === "DONE"
+                      ? "Đã giải phóng minh chứng gốc. Bản ZIP được giữ tại nơi lưu trữ đã ghi trên bản xuất."
+                      : "Yêu cầu giải phóng đã được ghi nhận. Worker đang chờ xử lý hoặc đang dọn R2."}
+                  </p>
+                ) : (
+                  !readyJob && (
+                    <p>
+                      Cần bản xuất sẵn sàng của đợt đang chọn trước khi giải
+                      phóng dung lượng.
+                    </p>
+                  )
+                )}
                 {!challenge ? (
                   <button
                     className="button button-outline"
                     disabled={
                       pending ||
                       campaign?.is_archived ||
-                      !jobs.data?.some((j) => j.status === "READY")
+                      !readyJob ||
+                      jobs.loading ||
+                      !!cleanupJob
                     }
                     onClick={requestOtp}
                   >
@@ -239,7 +290,7 @@ export function ExportWorkspace() {
                       />
                     </label>
                     <label className="checkbox">
-                      <input type="checkbox" required />
+                      <input name="backupConfirmed" type="checkbox" required />
                       Tôi đã tải, kiểm tra bản lưu trữ và xác nhận xóa hồ sơ của
                       đợt {campaign?.name}.
                     </label>

@@ -365,6 +365,7 @@ function FileUpload({
   const [error, setError] = useState("");
   const input = useRef<HTMLInputElement>(null);
   const xhr = useRef<XMLHttpRequest | null>(null);
+  const limits = useResource<Record<string, number>>("/public/upload-limits");
   const image = category.endsWith("IMG");
   const editable =
     !disabled &&
@@ -405,8 +406,10 @@ function FileUpload({
       setError("Vui lòng chọn đúng định dạng file.");
       return;
     }
-    if (!chosen.size || chosen.size > (image ? 8 : 15) * 1024 ** 2) {
-      setError(`File phải có dung lượng tối đa ${image ? 8 : 15} MB.`);
+    if (limits.data && (!chosen.size || chosen.size > limits.data[category])) {
+      setError(
+        `File phải có dung lượng tối đa ${bytesLabel(limits.data[category])}.`,
+      );
       return;
     }
     onBusy(true);
@@ -566,7 +569,10 @@ function FileUpload({
       ) : (
         <div className="evidence-footer">
           <small>
-            {image ? "JPG, PNG, WEBP -  tối đa 8 MB" : "DOCX -  tối đa 15 MB"}
+            {image ? "JPG, PNG, WEBP" : "DOCX"}
+            {limits.data
+              ? ` — tối đa ${bytesLabel(limits.data[category])}`
+              : " — giới hạn được kiểm tra khi tải lên"}
           </small>
           {editable && (
             <>

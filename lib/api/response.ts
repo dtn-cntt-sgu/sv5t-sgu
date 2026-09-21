@@ -66,6 +66,10 @@ export function apiError(
       ? String(error.message)
       : "";
   const messages: Record<string, string> = {
+    BACKUP_CONFIRMATION_REQUIRED:
+      "Vui lòng xác nhận đã tải và kiểm tra bản sao lưu trước khi xóa.",
+    EXPORT_OR_CLEANUP_IN_PROGRESS:
+      "Đợt đang xuất hoặc dọn dữ liệu. Vui lòng chờ hoàn tất.",
     APPLICATION_NOT_FOUND: "Không tìm thấy hồ sơ của bạn.",
     PROFILE_INCOMPLETE:
       "Vui lòng bổ sung mã số sinh viên và khoa trước khi tải file.",

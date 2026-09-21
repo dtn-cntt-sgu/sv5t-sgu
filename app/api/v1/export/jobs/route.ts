@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     const { data, error } = await createAdminClient()
       .from("campaign_exports")
       .select(
-        "id,status,record_count,error_message,created_at,completed_at,cleanup_status",
+        "id,campaign_id,status,record_count,error_message,created_at,completed_at,cleanup_status,storage_backend,archive_bytes,started_at,cleanup_error",
       )
       .eq("campaign_id", id)
       .order("created_at", { ascending: false });

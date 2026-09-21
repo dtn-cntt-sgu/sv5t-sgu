@@ -116,7 +116,8 @@ export function DocumentsLibrary() {
               tập thể sẽ được bổ sung khi ban tổ chức công bố.
             </li>
             <li>
-              Mỗi file DOCX tối đa 15 MB; ảnh JPG, PNG hoặc WEBP tối đa 8 MB.
+              Giới hạn dung lượng từng loại file được hiển thị tại mục tải minh
+              chứng trong hồ sơ.
             </li>
             <li>
               Dùng máy tính để tải file. Kiểm tra kỹ thông tin và gửi hồ sơ

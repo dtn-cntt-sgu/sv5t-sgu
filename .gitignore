@@ -28,3 +28,7 @@ supabase/.temp/
 /docs
 
 /template
+# Private export archives on worker disk
+/var/exports/
+
+/tests

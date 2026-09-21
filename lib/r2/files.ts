@@ -38,24 +38,24 @@ export function validateUpload(
   category: FileCategory,
   mimeType: string,
   size: number,
+  limit: number,
 ) {
-  const env = getServerEnv();
   const normalizedMime = mimeType.toLowerCase();
   const isDocxMime =
     category.endsWith("DOC") &&
-    (allowedMime[category].some((value) => value.toLowerCase() === normalizedMime) ||
+    (allowedMime[category].some(
+      (value) => value.toLowerCase() === normalizedMime,
+    ) ||
       normalizedMime.includes("docx") ||
       normalizedMime.includes("word"));
   const isImageMime =
     category.endsWith("IMG") &&
-    allowedMime[category].some((value) => value.toLowerCase() === normalizedMime);
+    allowedMime[category].some(
+      (value) => value.toLowerCase() === normalizedMime,
+    );
 
-  if (!(isDocxMime || isImageMime))
-    throw new Error("UNSUPPORTED_FILE_TYPE");
+  if (!(isDocxMime || isImageMime)) throw new Error("UNSUPPORTED_FILE_TYPE");
 
-  const limit = category.endsWith("DOC")
-    ? env.MAX_DOCX_BYTES
-    : env.MAX_IMAGE_BYTES;
   if (size < 1 || size > limit) throw new Error("FILE_TOO_LARGE");
 }
 

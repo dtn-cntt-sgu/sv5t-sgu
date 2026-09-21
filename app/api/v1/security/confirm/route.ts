@@ -13,6 +13,8 @@ export async function POST(request: Request) {
         challengeId: z.uuid(),
         code: z.string().regex(/^\d{6}$/),
         password: z.string().min(14).max(72).optional(),
+        exportId: z.uuid().optional(),
+        backupConfirmed: z.boolean().optional(),
       })
       .parse(await request.json());
     const db = createAdminClient();
@@ -30,6 +32,11 @@ export async function POST(request: Request) {
         { error: { message: "Thiếu mật khẩu mới hoặc không có quyền." } },
         { status: 422 },
       );
+    if (
+      challenge.purpose === "PURGE_CAMPAIGN" &&
+      (!input.exportId || input.backupConfirmed !== true)
+    )
+      throw new Error("BACKUP_CONFIRMATION_REQUIRED");
     const email =
       challenge.purpose === "PURGE_CAMPAIGN"
         ? process.env.SCHOOL_PRESIDENT_EMAIL
@@ -68,6 +75,8 @@ export async function POST(request: Request) {
     if (challenge.purpose === "PURGE_CAMPAIGN") {
       const { error: purgeError } = await db.rpc("purge_verified_campaign", {
         target_campaign_id: challenge.resource_id,
+        target_export_id: input.exportId,
+        backup_confirmed: input.backupConfirmed,
         actor_id: actor.id,
         challenge_id: input.challengeId,
       });

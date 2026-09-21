@@ -1,3 +1,4 @@
+import { uploadLimitsSchema } from "@/lib/domain/upload-limits";
 import { requireDesktopUpload } from "@/lib/auth/desktop-upload";
 import { apiError, created } from "@/lib/api/response";
 import { requireUser } from "@/lib/auth/require-user";
@@ -34,10 +35,20 @@ export async function POST(request: Request, { params }: Context) {
       fileName: input.fileName,
       fileSizeBytes: input.fileSizeBytes,
     });
-    validateUpload(input.fileType, input.mimeType, input.fileSizeBytes);
 
     stage = "load_application";
     const admin = createAdminClient();
+    const { data: settings, error: settingsError } = await admin
+      .from("system_settings")
+      .select("file_upload_limits")
+      .single();
+    if (settingsError) throw settingsError;
+    validateUpload(
+      input.fileType,
+      input.mimeType,
+      input.fileSizeBytes,
+      uploadLimitsSchema.parse(settings.file_upload_limits)[input.fileType],
+    );
     const { data: application, error } = await admin
       .from("applications")
       .select("id, campaign_id, user_id, type, status")
