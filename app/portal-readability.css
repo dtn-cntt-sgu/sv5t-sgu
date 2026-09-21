@@ -491,6 +491,8 @@
   border-top: 1px solid #e4e8ef;
   background: #fff;
   text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.015em;
 }
 .site-footer-logos {
   display: flex;
@@ -515,9 +517,10 @@
   display: grid;
   gap: 3px;
   font-size: 17px;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 .site-footer-details span {
+  color: #52617a;
   font-weight: 500;
 }
 @media (max-width: 700px) {

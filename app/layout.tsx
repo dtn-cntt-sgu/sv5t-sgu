@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import logo from "@/assets/logo/LOGO_SV5T.png";
 import { SiteFooter } from "@/components/site-footer";
+import { SiteConsoleMessage } from "@/components/site-console-message";
 import "./globals.css";
 import "./portal-readability.css";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
+        <SiteConsoleMessage />
         {children}
         <SiteFooter />
       </body>
