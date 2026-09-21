@@ -96,7 +96,7 @@ export function RegisterForm() {
     <main className="register-page">
       <header className="register-header">
         <Brand />
-        <Link href="/login">
+        <Link className="register-login-link" href="/login">
           Đã có tài khoản? <strong>Đăng nhập</strong>
         </Link>
       </header>
@@ -109,9 +109,8 @@ export function RegisterForm() {
             <UserRoundPlus size={14} /> Tạo tài khoản
           </span>
           <h1>
-            Bắt đầu hành trình
-            <br />
-            Sinh viên 5 Tốt.
+            <span>Bắt đầu hành trình</span>
+            <span>Sinh viên 5 Tốt.</span>
           </h1>
           <p>
             Thông tin chính xác giúp Liên chi Hội khoa xác minh hồ sơ nhanh hơn.

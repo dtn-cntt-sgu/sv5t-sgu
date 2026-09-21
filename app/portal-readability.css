@@ -481,6 +481,213 @@
   background: #dedfeb;
   box-shadow: 0 0 0 1px #c6c8d8;
 }
+
+/* Guest authentication readability */
+.auth-page,
+.register-page {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.auth-page .brand-copy strong,
+.register-page .brand-copy strong {
+  font-size: 17px;
+}
+.auth-page .brand-copy small,
+.register-page .brand-copy small {
+  font-size: 11px;
+}
+.auth-panel {
+  padding: 48px 7vw;
+}
+.auth-form-wrap {
+  width: min(500px, 100%);
+}
+.auth-heading {
+  margin-bottom: 38px;
+}
+.auth-heading h1 {
+  margin: 17px 0 9px;
+  font-size: 44px;
+  line-height: 1.15;
+}
+.auth-heading p {
+  font-size: 16px;
+  line-height: 1.7;
+}
+.auth-form > label {
+  margin-bottom: 22px;
+  gap: 10px;
+}
+.auth-form > label > span,
+.register-form label > span {
+  font-size: 14px;
+}
+.input-wrap {
+  height: 56px;
+  padding-inline: 15px;
+  border-radius: 12px;
+}
+.input-wrap input {
+  font-size: 16px;
+}
+.form-row {
+  margin: 0 0 28px;
+  font-size: 14px;
+}
+.auth-form .button-full {
+  min-height: 54px;
+  font-size: 16px;
+}
+.auth-switch {
+  margin-top: 28px;
+  font-size: 14px;
+}
+.back-link,
+.security-note {
+  font-size: 14px;
+}
+.register-header {
+  min-height: 96px;
+  height: auto;
+  padding-block: 20px;
+}
+.register-header > .register-login-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #61708a;
+  font-size: 16px;
+  font-weight: 600;
+}
+.register-header > .register-login-link strong {
+  padding: 10px 17px;
+  color: #fff;
+  border-radius: 10px;
+  background: #2855dc;
+  box-shadow: 0 5px 14px rgba(40, 85, 220, 0.2);
+  font-size: 15px;
+  font-weight: 750;
+}
+.register-header > .register-login-link strong:hover {
+  background: #2146b9;
+}
+.register-layout {
+  width: min(1280px, calc(100% - 64px));
+  margin-top: 46px;
+  grid-template-columns: 390px 1fr;
+  gap: 84px;
+}
+.register-intro h1 {
+  font-size: 54px;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+}
+.register-intro h1 span {
+  display: block;
+  white-space: nowrap;
+}
+.register-intro > p {
+  font-size: 17px;
+  line-height: 1.7;
+}
+.register-intro ol {
+  gap: 28px;
+}
+.register-intro li > span {
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+}
+.register-intro li strong {
+  font-size: 15px;
+}
+.register-intro li small {
+  font-size: 14px;
+}
+.register-form {
+  padding: 48px 52px;
+}
+.form-title > span {
+  font-size: 12px;
+}
+.form-title h2 {
+  margin: 10px 0 7px;
+  font-size: 37px;
+}
+.form-title p {
+  margin-bottom: 34px;
+  font-size: 15px;
+}
+.register-form label > span {
+  font-size: 15px;
+}
+.form-grid {
+  gap: 23px 20px;
+}
+.form-grid input,
+.form-grid select {
+  height: 54px;
+  font-size: 16px;
+}
+.consent {
+  margin: 30px 0 22px;
+  font-size: 15px;
+}
+.register-submit {
+  min-height: 54px;
+  font-size: 16px;
+}
+.setup-hint {
+  font-size: 13px;
+}
+@media (max-width: 700px) {
+  .auth-panel {
+    padding: 28px 22px;
+  }
+  .auth-heading h1 {
+    font-size: 36px;
+  }
+  .auth-heading p,
+  .auth-form > label > span,
+  .form-row,
+  .auth-switch {
+    font-size: 15px;
+  }
+  .register-header {
+    padding: 16px 20px;
+  }
+  .register-header > .register-login-link {
+    gap: 7px;
+    font-size: 14px;
+  }
+  .register-header > .register-login-link strong {
+    padding: 9px 13px;
+    font-size: 14px;
+  }
+  .register-layout {
+    width: calc(100% - 32px);
+    margin-top: 24px;
+    gap: 28px;
+  }
+  .register-intro h1 {
+    font-size: 39px;
+  }
+  .register-intro h1 span {
+    white-space: normal;
+  }
+  .register-intro > p {
+    font-size: 15px;
+  }
+  .register-form {
+    padding: 30px 22px;
+  }
+  .form-title h2 {
+    font-size: 29px;
+  }
+  .form-grid {
+    gap: 18px;
+  }
+}
 .export-section-heading {
   display: flex;
   align-items: center;
