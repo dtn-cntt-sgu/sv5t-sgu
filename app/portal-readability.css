@@ -393,6 +393,208 @@
   }
 }
 
+/* Admin workspace readability */
+.portal-admin {
+  --muted: #5e6d85;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.portal-admin .portal-sidebar {
+  overflow-y: auto;
+}
+.portal-admin .portal-sidebar nav a {
+  min-height: 56px;
+  font-size: 15px;
+  color: #56657e;
+}
+.portal-admin .portal-sidebar nav a.active {
+  color: #555775;
+}
+.portal-admin .portal-sidebar nav svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.portal-admin .nav-caption {
+  margin-top: 32px;
+  font-size: 12px;
+}
+.portal-admin .brand-copy strong {
+  font-size: 17px;
+}
+.portal-admin .brand-copy small {
+  font-size: 11px;
+}
+.portal-admin .sidebar-inspiration strong {
+  font-size: 17px;
+  max-width: none;
+}
+.portal-admin .sidebar-inspiration p,
+.portal-admin .sidebar-inspiration a,
+.portal-admin .sidebar-bottom a,
+.portal-admin .sidebar-bottom button {
+  font-size: 14px;
+}
+.portal-admin .sidebar-bottom a,
+.portal-admin .sidebar-bottom button {
+  min-height: 48px;
+}
+.portal-admin .portal-header {
+  min-height: 112px;
+  height: auto;
+  gap: 20px;
+}
+.portal-admin .portal-header h1 {
+  font-size: 30px;
+  line-height: 1.3;
+}
+.portal-admin .portal-header p {
+  font-size: 12px;
+}
+.portal-admin .portal-user strong {
+  font-size: 15px;
+}
+.portal-admin .portal-user small {
+  font-size: 13px;
+}
+.portal-admin .portal-avatar,
+.portal-admin .icon-button {
+  width: 44px;
+  height: 44px;
+}
+.portal-admin .portal-avatar {
+  font-size: 14px;
+}
+.portal-admin .portal-content {
+  max-width: 1680px;
+}
+.portal-admin .button {
+  min-height: 48px;
+  padding-inline: 20px;
+  font-size: 15px;
+}
+.portal-role-admin .portal-header h1 {
+  color: #444662;
+}
+.portal-role-admin .portal-header .portal-avatar {
+  color: #555775;
+  background: #dedfeb;
+  box-shadow: 0 0 0 1px #c6c8d8;
+}
+.portal-admin .inline-link {
+  min-height: 36px;
+  font-size: 14px;
+}
+.portal-admin .panel {
+  padding: 28px;
+}
+.portal-admin .panel h2,
+.portal-admin .workspace-form > h2 {
+  font-size: 23px;
+}
+.portal-admin .panel p,
+.portal-admin .notice,
+.portal-admin .muted,
+.portal-admin .form-error,
+.portal-admin .form-message {
+  font-size: 15px;
+}
+.portal-admin .metric-card span {
+  font-size: 14px;
+}
+.portal-admin .metric-card strong {
+  font-size: 34px;
+}
+.portal-admin .metric-card small,
+.portal-admin .admin-status small,
+.portal-admin .service-card .card-title-row p {
+  font-size: 13px;
+}
+.portal-admin .admin-status,
+.portal-admin .service-card li > span,
+.portal-admin .service-card li > strong {
+  font-size: 14px;
+}
+.portal-admin .quota-top,
+.portal-admin .quota-value small,
+.portal-admin .quota-card > small {
+  font-size: 13px;
+}
+.portal-admin .quota-value strong {
+  font-size: 30px;
+}
+.portal-admin .workspace-toolbar p,
+.portal-admin .workspace-toolbar label,
+.portal-admin .filter-grid label,
+.portal-admin .workspace-form label {
+  font-size: 15px;
+}
+.portal-admin .workspace-form input,
+.portal-admin .workspace-form select,
+.portal-admin .workspace-form textarea,
+.portal-admin .workspace-toolbar input,
+.portal-admin .filter-grid input,
+.portal-admin .filter-grid select {
+  min-height: 48px;
+  font-size: 16px;
+}
+.portal-admin .workspace-table {
+  font-size: 15px;
+}
+.portal-admin .workspace-table th {
+  font-size: 12px;
+}
+.portal-admin .workspace-table td {
+  padding: 20px 14px;
+}
+.portal-admin .workspace-table td small {
+  font-size: 13px;
+}
+.portal-admin .pagination {
+  font-size: 14px;
+}
+.portal-admin .audit-entry summary {
+  font-size: 15px;
+}
+.portal-admin .audit-entry pre {
+  font-size: 13px;
+}
+.portal-role-faculty .portal-header {
+  color: #173b63;
+  background: #dceeff;
+  border-bottom-color: #c6ddf3;
+}
+.portal-role-faculty .portal-header p,
+.portal-role-faculty .portal-user small {
+  color: #537393;
+}
+.portal-role-president .portal-header {
+  color: #fff;
+  background: #183f78;
+  border-bottom-color: #123463;
+}
+.portal-role-president .portal-header p,
+.portal-role-president .portal-user small {
+  color: #c8d9f2;
+}
+.portal-role-president .portal-header .icon-button {
+  color: #173b70;
+  border-color: #b8cce8;
+  background: #f4f8ff;
+}
+.portal-role-president .portal-header .portal-avatar {
+  border-color: #d5e2f5;
+}
+.portal-role-admin .portal-header {
+  color: #34364f;
+  background: #e7e7f0;
+  border-bottom-color: #d1d2df;
+}
+.portal-role-admin .portal-header p,
+.portal-role-admin .portal-user small {
+  color: #70728b;
+}
+
 /* Manager tables, filters and review controls. */
 .portal-manager .metric-card {
   min-height: 160px;

@@ -111,8 +111,16 @@ export function PortalShell({
       .slice(-2)
       .map((s) => s[0])
       .join("") ?? "…";
+  const roleTheme =
+    profile.data?.role === "FACULTY_SECRETARY"
+      ? "portal-role-faculty"
+      : profile.data?.role === "SCHOOL_PRESIDENT"
+        ? "portal-role-president"
+        : profile.data?.role === "SUPER_ADMIN"
+          ? "portal-role-admin"
+          : "";
   return (
-    <main className={`portal portal-${portal}`}>
+    <main className={`portal portal-${portal} ${roleTheme}`}>
       <a href="#portal-content" className="skip-link">
         Đến nội dung chính
       </a>
