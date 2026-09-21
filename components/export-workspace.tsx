@@ -122,24 +122,28 @@ export function ExportWorkspace() {
       {selected && (
         <div className="admin-two-columns">
           <section className="panel">
-            <Download size={28} />
-            <h2>Danh sách hồ sơ Excel</h2>
+            <div className="export-section-heading">
+              <Download size={28} />
+              <h2>Danh sách hồ sơ Excel</h2>
+              <a
+                className="button button-primary export-heading-action"
+                href={`/api/v1/export/excel?campaignId=${selected}`}
+              >
+                <Download size={17} />
+                Tải Excel
+              </a>
+            </div>
             <p>
               Tải danh sách sinh viên, thông tin liên hệ và trạng thái xét
               duyệt. Bản Excel này không bao gồm file minh chứng.
             </p>
-            <a
-              className="button button-primary"
-              href={`/api/v1/export/excel?campaignId=${selected}`}
-            >
-              <Download size={17} />
-              Tải Excel
-            </a>
             {privileged && (
               <>
                 <hr />
-                <Archive size={28} />
-                <h2>Lưu trữ toàn bộ đợt xét</h2>
+                <div className="export-section-heading">
+                  <Archive size={28} />
+                  <h2>Lưu trữ toàn bộ đợt xét</h2>
+                </div>
                 <p>
                   Bản ZIP gồm Excel, toàn bộ minh chứng và dữ liệu hồ sơ. Đợt
                   phải đóng và hết hạn; hồ sơ sẽ được khóa để bảo đảm bản xuất

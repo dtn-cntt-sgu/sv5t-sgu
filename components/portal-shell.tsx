@@ -90,8 +90,10 @@ export function PortalShell({
         : adminNav
   ).filter(
     (item) =>
-      item.href !== "/manager/campaigns" ||
-      profile.data?.role === "SCHOOL_PRESIDENT",
+      (item.href !== "/manager/campaigns" ||
+        profile.data?.role === "SCHOOL_PRESIDENT") &&
+      (item.href !== "/manager" ||
+        profile.data?.role !== "FACULTY_SECRETARY"),
   );
   async function logout() {
     setSigningOut(true);

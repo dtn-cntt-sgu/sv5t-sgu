@@ -481,6 +481,30 @@
   background: #dedfeb;
   box-shadow: 0 0 0 1px #c6c8d8;
 }
+.export-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #2a7392;
+}
+.export-section-heading .export-heading-action {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.export-section-heading svg {
+  flex: 0 0 auto;
+}
+.export-section-heading h2 {
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .export-section-heading {
+    flex-wrap: wrap;
+  }
+  .export-section-heading .export-heading-action {
+    margin-left: auto;
+  }
+}
 
 /* Public document library readability */
 .documents-page {
