@@ -230,10 +230,6 @@ export function PortalShell({
             </p>
           )}
           {children}
-          <footer className="portal-footer">
-            <span><strong>Sinh viên 5 Tốt - Trường Đại học Sài Gòn</strong></span>
-            <span>Nỗ lực hôm nay. Tự hào ngày mai.</span>
-          </footer>
         </div>
       </section>
     </main>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import logo from "@/assets/logo/LOGO_SV5T.png";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 import "./portal-readability.css";
 
@@ -21,7 +22,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="vi">
-      <body>{children}</body>
+      <body>
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

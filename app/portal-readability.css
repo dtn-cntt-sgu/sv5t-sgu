@@ -482,6 +482,65 @@
   box-shadow: 0 0 0 1px #c6c8d8;
 }
 
+.site-footer {
+  width: 100%;
+  padding: 38px max(5vw, 28px) 42px;
+  display: grid;
+  gap: 24px;
+  color: #1f2937;
+  border-top: 1px solid #e4e8ef;
+  background: #fff;
+  text-align: center;
+}
+.site-footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+}
+.site-footer-logo {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+}
+.site-footer-details {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+.site-footer-details p {
+  margin: 0;
+  display: grid;
+  gap: 3px;
+  font-size: 17px;
+  line-height: 1.45;
+}
+.site-footer-details span {
+  font-weight: 500;
+}
+@media (max-width: 700px) {
+  .site-footer {
+    padding: 30px 20px 34px;
+    gap: 22px;
+  }
+  .site-footer-logos {
+    gap: 10px;
+  }
+  .site-footer-logo {
+    width: 58px;
+    height: 58px;
+  }
+  .site-footer-details {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .site-footer-details p {
+    font-size: 14px;
+  }
+}
+
 /* Guest authentication readability */
 .auth-page,
 .register-page {
