@@ -20,6 +20,7 @@ a { color: inherit; text-decoration: none; }
 button { color: inherit; }
 
 .brand { display: inline-flex; align-items: center; gap: 11px; min-width: max-content; }
+.brand-logo { width: 42px; height: 42px; display: block; object-fit: contain; }
 .brand-mark { width: 42px; height: 42px; display: grid; place-items: center; position: relative; color: #fff; border-radius: 13px; background: linear-gradient(145deg, #168461, #0a4f3a); box-shadow: inset 0 1px rgba(255,255,255,.3), 0 8px 18px rgba(11,92,67,.22); font-family: Georgia, serif; font-size: 22px; font-weight: 800; font-style: italic; }
 .brand-mark i { position: absolute; right: 5px; top: 3px; color: var(--lime); font-size: 9px; font-style: normal; }
 .brand-copy { display: flex; flex-direction: column; line-height: 1.15; }

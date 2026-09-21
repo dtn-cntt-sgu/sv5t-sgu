@@ -163,12 +163,14 @@ export function PortalShell({
             );
           })}
         </nav>
-        <div className="sidebar-inspiration">
-          <span>✦</span>
-          <strong>Mỗi ngày một chút tốt hơn.</strong>
-          <p>Hành trình của bạn bắt đầu từ những điều nhỏ nhất.</p>
-          <Link href="/documents">Khám phá tiêu chí ↗</Link>
-        </div>
+        {portal === "student" && (
+          <div className="sidebar-inspiration">
+            <span>✦</span>
+            <strong>Mỗi ngày một chút tốt hơn.</strong>
+            <p>Hành trình của bạn bắt đầu từ những điều nhỏ nhất.</p>
+            <Link href="/documents">Khám phá tiêu chí ↗</Link>
+          </div>
+        )}
         <div className="sidebar-bottom">
           <Link href="/documents">
             <HelpCircle size={18} /> Tài liệu & hướng dẫn

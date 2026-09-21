@@ -57,7 +57,7 @@ export default function HomePage() {
             <Link className={styles.primaryButton} href="/register">
               Bắt đầu đăng ký <ArrowRight size={18} />
             </Link>
-            <a className={styles.secondaryButton} href="#tai-lieu">
+            <a className={styles.secondaryButton} href="/documents">
               Tìm hiểu tiêu chuẩn <ArrowRight size={17} />
             </a>
           </div>
