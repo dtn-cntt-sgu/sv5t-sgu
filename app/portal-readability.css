@@ -481,6 +481,129 @@
   background: #dedfeb;
   box-shadow: 0 0 0 1px #c6c8d8;
 }
+
+/* Public document library readability */
+.documents-page {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.documents-page > header {
+  min-height: 96px;
+  height: auto;
+  padding: 20px max(4vw, 30px);
+}
+.documents-page > header > a {
+  gap: 8px;
+  font-size: 14px;
+}
+.documents-hero,
+.document-list {
+  width: min(1040px, calc(100% - 64px));
+}
+.documents-hero {
+  padding: 76px 0 42px;
+}
+.documents-hero h1 {
+  margin: 14px 0 12px;
+  font-size: 54px;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+.documents-hero p {
+  max-width: 680px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.document-list {
+  gap: 14px;
+}
+.document-list article {
+  min-height: 116px;
+  padding: 22px 24px;
+  grid-template-columns: 56px 1fr auto;
+  gap: 18px;
+  border-radius: 16px;
+}
+.document-list article > i {
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+}
+.document-list article > div > span {
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+.document-list h2 {
+  margin: 5px 0 7px;
+  font-size: 20px;
+  line-height: 1.35;
+}
+.document-list p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.document-list small {
+  font-size: 12px;
+}
+.document-list .button {
+  min-height: 46px;
+  padding-inline: 17px;
+  font-size: 14px;
+}
+.documents-page .panel {
+  padding: 26px 28px;
+}
+.documents-page .panel h2 {
+  font-size: 21px;
+}
+.documents-page .guide-list {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.9;
+}
+@media (max-width: 700px) {
+  .documents-page > header {
+    min-height: 78px;
+    padding: 16px 20px;
+  }
+  .documents-hero,
+  .document-list {
+    width: calc(100% - 32px);
+  }
+  .documents-hero {
+    padding: 48px 0 28px;
+  }
+  .documents-hero h1 {
+    font-size: 39px;
+    letter-spacing: -1px;
+  }
+  .documents-hero p {
+    font-size: 15px;
+  }
+  .document-list article {
+    min-height: 0;
+    padding: 18px;
+    grid-template-columns: 46px 1fr;
+    gap: 13px;
+  }
+  .document-list article > i {
+    width: 44px;
+    height: 44px;
+  }
+  .document-list h2 {
+    font-size: 18px;
+  }
+  .document-list p,
+  .documents-page .guide-list {
+    font-size: 14px;
+  }
+  .document-list article .button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
 .portal-admin .inline-link {
   min-height: 36px;
   font-size: 14px;
