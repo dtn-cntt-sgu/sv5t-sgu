@@ -27,7 +27,7 @@ export function DocumentsLibrary() {
       ? [
           {
             id: "individual-template",
-            title: "Mẫu kê khai thành tích cá nhân · Khoa CNTT",
+            title: "Mẫu kê khai thành tích cá nhân - Khoa CNTT",
             description:
               "Biểu mẫu dành cho sinh viên. Đọc và thay các nội dung ví dụ trước khi nộp.",
             category: "TEMPLATE",
@@ -48,7 +48,7 @@ export function DocumentsLibrary() {
         </Link>
       </header>
       <section className="documents-hero">
-        <span className="section-kicker">CHUẨN BỊ TỐT · TỰ TIN HƠN</span>
+        <span className="section-kicker">CHUẨN BỊ TỐT - TỰ TIN HƠN</span>
         <h1>Góc tài liệu của bạn.</h1>
         <p>
           Tìm hiểu tiêu chí, tải đúng biểu mẫu và sẵn sàng cho hành trình Sinh

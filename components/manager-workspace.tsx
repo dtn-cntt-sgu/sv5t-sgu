@@ -117,7 +117,7 @@ export function ManagerWorkspace({
             {campaigns.data?.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
-                {c.is_archived ? " · Đã lưu trữ" : ""}
+                {c.is_archived ? " - Đã lưu trữ" : ""}
               </option>
             ))}
           </select>
@@ -371,7 +371,7 @@ export function ManagerWorkspace({
                   )}
                   <div className="pagination">
                     <span>
-                      {applications.data.total} hồ sơ · Trang {page}
+                      {applications.data.total} hồ sơ - Trang {page}
                     </span>
                     <div>
                       <button

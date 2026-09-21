@@ -29,7 +29,12 @@ export async function PUT(request: Request) {
         r2_warning_percent: z.number().int().min(1).max(99),
         file_upload_limits: uploadLimitsSchema,
       })
+      .partial()
       .strict()
+      .refine(
+        (value) => Object.keys(value).length > 0,
+        "Không có cấu hình cần lưu",
+      )
       .parse(await request.json());
     const db = createAdminClient();
     const { data: current, error: currentError } = await db
@@ -37,7 +42,10 @@ export async function PUT(request: Request) {
       .select("*")
       .single();
     if (currentError) throw currentError;
-    if (!uploadLimitsSchema.safeParse(current.file_upload_limits).success) {
+    if (
+      input.file_upload_limits &&
+      !uploadLimitsSchema.safeParse(current.file_upload_limits).success
+    ) {
       return Response.json(
         {
           error: {
@@ -52,7 +60,10 @@ export async function PUT(request: Request) {
       "storage_committed_bytes",
     );
     if (usageError) throw usageError;
-    if (input.r2_hard_limit_bytes < Number(used))
+    if (
+      input.r2_hard_limit_bytes !== undefined &&
+      input.r2_hard_limit_bytes < Number(used)
+    )
       throw new Error("STORAGE_HARD_LIMIT_REACHED");
     const { data, error } = await db
       .from("system_settings")

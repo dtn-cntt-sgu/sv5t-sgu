@@ -33,16 +33,24 @@ export async function GET() {
         return { bytes, objects };
       })(),
       (async () => {
-        const { data, error } = await createAdminClient().rpc(
-          "database_size_bytes",
-        );
+        const { data, error } = await createAdminClient()
+          .rpc("database_size_bytes")
+          .abortSignal(AbortSignal.timeout(20000));
         if (error) throw error;
-        return { bytes: Number(data) };
+        if (data === null || !Number.isFinite(Number(data)))
+          throw new Error("Invalid database size");
+        return { bytes: Number(data), referenceBytes: 500 * 1024 ** 2 };
       })(),
     ]);
     return ok({
       r2: results[0].status === "fulfilled" ? results[0].value : null,
       database: results[1].status === "fulfilled" ? results[1].value : null,
+      databaseError:
+        results[1].status === "rejected"
+          ? ["PGRST202", "42883", "42501"].includes(results[1].reason?.code)
+            ? "Chưa có hàm đọc dung lượng hoặc quyền gọi. Chạy migration 017 rồi làm mới."
+            : "Không thể đọc dung lượng database. Kiểm tra kết nối Supabase rồi thử lại."
+          : null,
       checkedAt: new Date().toISOString(),
     });
   } catch (error) {

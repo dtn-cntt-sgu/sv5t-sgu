@@ -31,7 +31,7 @@ export function FeedbackPage() {
     <PortalShell
       portal="student"
       title="Phản hồi xét duyệt"
-      subtitle="LẮNG NGHE GÓP Ý · HOÀN THIỆN HỒ SƠ"
+      subtitle="LẮNG NGHE GÓP Ý - HOÀN THIỆN HỒ SƠ"
     >
       <ResourceState {...resource} retry={resource.reload} />
       {!resource.loading && !resource.error && (
@@ -74,7 +74,7 @@ export function FeedbackPage() {
                       className="inline-link"
                       href={`/application?id=${entry.application.id}`}
                     >
-                      Xem hồ sơ · {statusLabels[entry.application.status]}{" "}
+                      Xem hồ sơ - {statusLabels[entry.application.status]}{" "}
                       <ArrowRight size={15} />
                     </Link>
                   </div>

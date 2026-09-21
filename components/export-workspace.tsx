@@ -201,7 +201,7 @@ export function ExportWorkspace() {
                       <p>
                         {dateLabel(j.created_at)}
                         {j.status === "READY"
-                          ? ` · ${j.record_count} hồ sơ · ${j.storage_backend === "LOCAL" ? "Lưu trên máy riêng" : "Lưu trên R2"}`
+                          ? ` - ${j.record_count} hồ sơ - ${j.storage_backend === "LOCAL" ? "Lưu trên máy riêng" : "Lưu trên R2"}`
                           : ""}
                       </p>
                       {j.error_message && (

@@ -1,4 +1,5 @@
 "use client";
+import styles from "./admin-settings.module.css";
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import {
@@ -23,7 +24,6 @@ import {
 import {
   uploadLimitLabels,
   uploadLimitsSchema,
-  type UploadLimits,
 } from "@/lib/domain/upload-limits";
 type Faculty = {
   id: string;
@@ -66,7 +66,7 @@ export function AdminOverview() {
               {
                 label: "Minh chứng đã xác nhận",
                 value: bytesLabel(storage.data.r2.committedBytes),
-                sub: `${bytesLabel(storage.data.r2.reservedBytes)} đang giữ chỗ · ngưỡng ${bytesLabel(storage.data.r2.hardLimitBytes)}`,
+                sub: `${bytesLabel(storage.data.r2.reservedBytes)} đang giữ chỗ-ngưỡng ${bytesLabel(storage.data.r2.hardLimitBytes)}`,
                 icon: HardDrive,
               },
               {
@@ -209,7 +209,7 @@ export function CampaignManagement({
               required
               minLength={3}
               maxLength={150}
-              placeholder="Sinh viên 5 Tốt · Năm học 2026–2027"
+              placeholder="Sinh viên 5 Tốt-Năm học 2026–2027"
             />
           </label>
           <label>
@@ -612,6 +612,60 @@ export function UserManagement() {
     </PortalShell>
   );
 }
+function StorageMeter({
+  label,
+  bytes,
+  capacity,
+  caption,
+  warning = 75,
+}: {
+  label: string;
+  bytes?: number;
+  capacity?: number;
+  caption: string;
+  warning?: number;
+}) {
+  const percent =
+    bytes !== undefined && capacity && capacity > 0
+      ? (bytes / capacity) * 100
+      : null;
+  const percentLabel =
+    percent === null
+      ? "Chưa có số liệu"
+      : percent > 0 && percent < 0.01
+        ? "< 0,01%"
+        : `${percent.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}%`;
+  return (
+    <div className={styles.meterBlock}>
+      <div className={styles.meterCaption}>
+        <span>{caption}</span>
+        <strong>{percentLabel}</strong>
+      </div>
+      <div
+        className={styles.meter}
+        role="progressbar"
+        aria-label={label}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={percent === null ? undefined : Math.min(percent, 100)}
+        aria-valuetext={percentLabel}
+      >
+        {percent !== null && (
+          <span
+            className={
+              percent >= 100
+                ? styles.danger
+                : percent >= warning
+                  ? styles.warning
+                  : styles.fill
+            }
+            style={{ width: `${Math.min(percent, 100)}%` }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
 export function AdminSettings() {
   const settings = useResource<{
     r2_hard_limit_bytes: number;
@@ -620,7 +674,8 @@ export function AdminSettings() {
   }>("/admin/settings");
   const storage = useResource<{
     r2: { bytes: number; objects: number } | null;
-    database: { bytes: number } | null;
+    database: { bytes: number; referenceBytes?: number } | null;
+    databaseError?: string | null;
     checkedAt: string;
   }>("/admin/system/storage-usage");
   const [pending, setPending] = useState(false);
@@ -630,9 +685,12 @@ export function AdminSettings() {
     settings.data?.file_upload_limits,
   );
   const limits = parsedLimits.success ? parsedLimits.data : null;
-  async function save(event: FormEvent<HTMLFormElement>) {
+  async function save(
+    event: FormEvent<HTMLFormElement>,
+    kind: "files" | "storage",
+  ) {
     event.preventDefault();
-    if (!limits) {
+    if (kind === "files" && !limits) {
       setError(
         "Chưa có cấu hình giới hạn file hợp lệ. Hãy kiểm tra migration 016 và tải lại cấu hình.",
       );
@@ -645,18 +703,21 @@ export function AdminSettings() {
     try {
       await mutation(
         "/admin/settings",
-        {
-          r2_hard_limit_bytes: Math.round(
-            Number(form.get("limit")) * 1024 ** 3,
-          ),
-          r2_warning_percent: Number(form.get("warning")),
-          file_upload_limits: Object.fromEntries(
-            Object.keys(uploadLimitLabels).map((key) => [
-              key,
-              Math.round(Number(form.get(key)) * 1024 ** 2),
-            ]),
-          ),
-        },
+        kind === "storage"
+          ? {
+              r2_hard_limit_bytes: Math.round(
+                Number(form.get("limit")) * 1024 ** 3,
+              ),
+              r2_warning_percent: Number(form.get("warning")),
+            }
+          : {
+              file_upload_limits: Object.fromEntries(
+                Object.keys(uploadLimitLabels).map((key) => [
+                  key,
+                  Math.round(Number(form.get(key)) * 1024 ** 2),
+                ]),
+              ),
+            },
         "PUT",
       );
       await settings.reload();
@@ -686,8 +747,8 @@ export function AdminSettings() {
         <ResourceState {...storage} retry={storage.reload} />
         {storage.data && (
           <>
-            <div className="admin-two-columns">
-              <article className="metric-card">
+            <div className={styles.equalColumns}>
+              <article className={styles.storageCard}>
                 <div>
                   <span>Cloudflare R2</span>
                   <strong>
@@ -697,13 +758,20 @@ export function AdminSettings() {
                   </strong>
                   <small>
                     {storage.data.r2
-                      ? `${storage.data.r2.objects.toLocaleString("vi-VN")} file · gồm minh chứng, tài liệu và ZIP`
+                      ? `${storage.data.r2.objects.toLocaleString("vi-VN")} file -gồm minh chứng, tài liệu và ZIP`
                       : "Kiểm tra kết nối và quyền đọc bucket, sau đó làm mới."}
                   </small>
                 </div>
-                <HardDrive size={28} />
+                <HardDrive className={styles.storageIcon} size={28} />
+                <StorageMeter
+                  label="Dung lượng R2"
+                  bytes={storage.data.r2?.bytes}
+                  capacity={settings.data?.r2_hard_limit_bytes}
+                  warning={settings.data?.r2_warning_percent}
+                  caption={`So với ngưỡng cấu hình ${settings.data ? bytesLabel(settings.data.r2_hard_limit_bytes) : "…"}`}
+                />
               </article>
-              <article className="metric-card">
+              <article className={styles.storageCard}>
                 <div>
                   <span>Supabase database</span>
                   <strong>
@@ -716,7 +784,18 @@ export function AdminSettings() {
                     Supabase Storage.
                   </small>
                 </div>
-                <Database size={28} />
+                <Database className={styles.storageIcon} size={28} />
+                {storage.data.databaseError && (
+                  <p role="alert">{storage.data.databaseError}</p>
+                )}
+                <StorageMeter
+                  label="Dung lượng Supabase"
+                  bytes={storage.data.database?.bytes}
+                  capacity={
+                    storage.data.database?.referenceBytes ?? 500 * 1024 ** 2
+                  }
+                  caption="So với mốc tham chiếu 500 MB (không tự nhận diện gói)"
+                />
               </article>
             </div>
             <p>
@@ -740,11 +819,11 @@ export function AdminSettings() {
         <form
           className="panel workspace-form"
           style={{ marginTop: 20 }}
-          onSubmit={save}
+          onSubmit={(e) => void save(e, "files")}
         >
           <h2>Giới hạn tải lên theo loại file</h2>
           <p>
-            Dung lượng tối đa cho mỗi file (MiB). File đã tải lên được giữ
+            Dung lượng tối đa cho mỗi file (MB). File đã tải lên được giữ
             nguyên.
           </p>
           {!limits && (
@@ -764,23 +843,53 @@ export function AdminSettings() {
               </button>
             </div>
           )}
-          <div className="admin-two-columns">
+          <div className={styles.equalColumns}>
             {limits &&
-              Object.entries(uploadLimitLabels).map(([key, label]) => (
-                <label key={key}>
-                  {label}
-                  <input
-                    name={key}
-                    type="number"
-                    min="0.01"
-                    max="1024"
-                    step="0.01"
-                    required
-                    defaultValue={limits[key as keyof UploadLimits] / 1024 ** 2}
-                  />
-                </label>
+              (
+                [
+                  {
+                    title: "Cá nhân",
+                    keys: ["DECLARATION_DOC", "EVIDENCE_DOC", "PORTRAIT_IMG"],
+                  },
+                  {
+                    title: "Tập thể",
+                    keys: ["COLLECTIVE_DOC", "COLLECTIVE_IMG"],
+                  },
+                ] as const
+              ).map((group) => (
+                <div className={styles.fileGroup} key={group.title}>
+                  <h3>{group.title}</h3>
+                  {group.keys.map((key) => (
+                    <label key={key}>
+                      {uploadLimitLabels[key]}
+                      <input
+                        name={key}
+                        type="number"
+                        min="0.01"
+                        max="1024"
+                        step="0.01"
+                        required
+                        defaultValue={limits[key] / 1024 ** 2}
+                      />
+                    </label>
+                  ))}
+                </div>
               ))}
           </div>
+          <button
+            className="button button-primary"
+            disabled={pending || !limits || settings.loading}
+          >
+            {pending ? "Đang lưu…" : "Lưu giới hạn file"}
+          </button>
+        </form>
+      )}
+      {settings.data && (
+        <form
+          className="panel workspace-form"
+          style={{ marginTop: 20 }}
+          onSubmit={(e) => void save(e, "storage")}
+        >
           <h2>Dung lượng minh chứng</h2>
           <p>
             Ngưỡng dừng tải tính theo minh chứng đã xác nhận và đang giữ chỗ;
@@ -811,9 +920,9 @@ export function AdminSettings() {
           </label>
           <button
             className="button button-primary"
-            disabled={pending || !limits || settings.loading}
+            disabled={pending || settings.loading}
           >
-            {pending ? "Đang lưu…" : "Lưu cấu hình"}
+            {pending ? "Đang lưu…" : "Lưu ngưỡng dung lượng"}
           </button>
           <Link href="/admin/security" className="inline-link">
             Đổi mật khẩu quản trị qua mã email <ArrowRight size={16} />
@@ -875,7 +984,7 @@ export function AdminCatalog() {
         </p>
       )}
       <ResourceState {...faculties} retry={faculties.reload} />
-      <div className="admin-two-columns">
+      <div className="admin-two-columns admin-catalog-layout">
         <form
           key={editing?.id ?? "new"}
           className="panel workspace-form"
@@ -945,7 +1054,7 @@ export function AdminCatalog() {
                 className="inline-link"
                 onClick={() => setEditing({ ...f, kind: "faculties" })}
               >
-                {f.code} · {f.name} — Sửa
+                {f.code} - {f.name} — Sửa
               </button>
               <div>
                 {f.majors.map((m) => (
@@ -987,7 +1096,7 @@ export function AuditPage() {
         {r.data?.items.map((item) => (
           <details key={item.id} className="audit-entry">
             <summary>
-              {dateLabel(item.created_at)} · {item.action}
+              {dateLabel(item.created_at)} -{item.action}
             </summary>
             <pre>{JSON.stringify(item.metadata, null, 2)}</pre>
           </details>

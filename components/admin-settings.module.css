@@ -1,0 +1,102 @@
+.equalColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+.fileGroup {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.fileGroup h3 {
+  margin: 0;
+}
+.fileGroup label {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.fileGroup input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.storageCard {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: 24px;
+  height: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  border: 1px solid #dce4f4;
+  border-radius: 16px;
+  padding: 24px;
+  background: #fff;
+}
+.storageCard > div:first-child {
+  display: grid;
+  gap: 14px;
+}
+.storageCard > div:first-child > span {
+  padding-right: 40px;
+  font-weight: 600;
+}
+.storageCard > div:first-child > strong {
+  font-size: 32px;
+  line-height: 1.2;
+}
+.storageCard small {
+  line-height: 1.6;
+}
+.storageIcon {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+}
+.meterBlock {
+  display: grid;
+  gap: 12px;
+}
+.meterCaption {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 13px;
+}
+.meterCaption strong {
+  flex-shrink: 0;
+}
+.meter {
+  height: 20px;
+  overflow: hidden;
+  border-radius: 7px;
+  border: 1px solid #dce4f4;
+  background: #edf1f8;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 6px;
+}
+.fill {
+  background: linear-gradient(90deg, #2778ed, #28b8b2);
+}
+.warning {
+  background: #d99215;
+}
+.danger {
+  background: #d64b4b;
+}
+@media (max-width: 760px) {
+  .equalColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .meter > span {
+    transition: none;
+  }
+}

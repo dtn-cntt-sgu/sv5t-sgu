@@ -198,7 +198,7 @@ export function PortalShell({
             <Menu size={22} />
           </button>
           <div>
-            <p>{subtitle ?? "HỘI SINH VIÊN · TRƯỜNG ĐẠI HỌC SÀI GÒN"}</p>
+            <p>{subtitle ?? "HỘI SINH VIÊN - TRƯỜNG ĐẠI HỌC SÀI GÒN"}</p>
             <h1>{title}</h1>
           </div>
           <div className="portal-user">

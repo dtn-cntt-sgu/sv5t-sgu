@@ -30,8 +30,8 @@ export function CampaignAnnouncement({
       {data
         ? data.name
         : loading
-          ? "Cổng Sinh viên 5 Tốt · SGU"
-          : "Cổng Sinh viên 5 Tốt · Đại học Sài Gòn"}
+          ? "Cổng Sinh viên 5 Tốt - SGU"
+          : "Cổng Sinh viên 5 Tốt - Đại học Sài Gòn"}
     </div>
   );
 }

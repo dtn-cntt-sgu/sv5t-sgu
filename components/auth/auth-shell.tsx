@@ -17,9 +17,17 @@ export function AuthShell({
             <span /> Không gian số của sinh viên SGU
           </span>
           <h2>
-            {portal === "student"
-              ? "Một hành trình tốt, bắt đầu từ hôm nay."
-              : "Xét duyệt chính xác. Phản hồi minh bạch."}
+            {portal === "student" ? (
+              <>
+                <span>"Một hành trình tốt,</span>
+                <span>bắt đầu từ hôm nay."</span>
+              </>
+            ) : (
+              <>
+                <span>Xét duyệt chính xác.</span>
+                <span>Phản hồi minh bạch.</span>
+              </>
+            )}
           </h2>
           <p>
             {portal === "student"
@@ -48,7 +56,7 @@ export function AuthShell({
           <LoginForm portal={portal} />
         </div>
         <small className="security-note">
-          Kết nối được mã hóa · Không chia sẻ thông tin đăng nhập
+          Kết nối được mã hóa - Không chia sẻ thông tin đăng nhập
         </small>
       </section>
     </main>
