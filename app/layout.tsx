@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import logo from "@/assets/logo/LOGO_SV5T.png";
 import "./globals.css";
 import "./portal-readability.css";
 
@@ -8,6 +9,11 @@ export const metadata: Metadata = {
     template: "%s | SV5T SGU",
   },
   description: "Cổng đăng ký, xét duyệt và quản lý danh hiệu Sinh viên 5 Tốt.",
+  icons: {
+    icon: logo.src,
+    shortcut: logo.src,
+    apple: logo.src,
+  },
 };
 
 export default function RootLayout({
