@@ -483,13 +483,16 @@
 }
 
 .site-footer {
-  width: 100%;
+  width: calc(100% - 16px);
+  margin: 8px;
   padding: 38px max(5vw, 28px) 42px;
   display: grid;
   gap: 24px;
   color: #1f2937;
-  border-top: 1px solid #e4e8ef;
+  border: 1px solid #e1e8e3;
+  border-radius: 14px;
   background: #fff;
+  box-shadow: 0 4px 18px rgba(25, 54, 45, .035);
   text-align: center;
   font-family: Georgia, "Times New Roman", serif;
   letter-spacing: 0.015em;
@@ -549,6 +552,30 @@
 .register-page {
   font-size: 16px;
   line-height: 1.6;
+}
+.auth-page {
+  min-height: calc(100vh - 16px);
+  margin: 8px;
+  gap: 8px;
+  background: #eef2f0;
+}
+.register-page {
+  min-height: calc(100vh - 16px);
+  margin: 8px;
+  padding: 0;
+  background: #eef2f0;
+}
+.auth-aside,
+.auth-panel {
+  border: 1px solid #e1e8e3;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(25, 54, 45, 0.035);
+}
+.auth-aside {
+  overflow: hidden;
+}
+.auth-panel {
+  min-height: calc(100vh - 16px);
 }
 .auth-page .brand-copy strong,
 .register-page .brand-copy strong {
@@ -612,6 +639,10 @@
   min-height: 96px;
   height: auto;
   padding-block: 20px;
+  margin: 0;
+  border: 1px solid #e1e8e3;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(25, 54, 45, 0.035);
 }
 .register-header > .register-login-link {
   display: inline-flex;
@@ -635,9 +666,22 @@
 }
 .register-layout {
   width: min(1280px, calc(100% - 64px));
-  margin-top: 46px;
+  margin-top: 8px;
+  margin-bottom: 0;
   grid-template-columns: 390px 1fr;
   gap: 84px;
+}
+.recovery-page {
+  min-height: calc(100vh - 16px);
+  margin: 8px;
+  gap: 8px;
+  border-radius: 14px;
+  background: #eef2f0;
+}
+.recovery-page > header {
+  border: 1px solid #e1e8e3;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(25, 54, 45, 0.035);
 }
 .register-intro h1 {
   font-size: 54px;
