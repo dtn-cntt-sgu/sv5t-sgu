@@ -11,7 +11,7 @@ import {
   DeleteObjectsCommand,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-import archiver from "archiver";
+import { ZipArchive } from "archiver";
 import ExcelJS from "exceljs";
 const required = [
   "NEXT_PUBLIC_SUPABASE_URL",
@@ -46,7 +46,7 @@ async function check(query) {
 async function exportJob(job) {
   const archiveKey = `exports/${job.campaign_id}/${job.id}/archive.zip`;
   const manifestKey = `exports/${job.campaign_id}/${job.id}/manifest.json`;
-  const zip = archiver("zip", { zlib: { level: 1 } });
+  const zip = new ZipArchive({ zlib: { level: 1 } });
   const body = new PassThrough();
   zip.pipe(body);
   zip.on("error", (e) => body.destroy(e));
@@ -261,7 +261,13 @@ async function cleanupJob(job) {
 }
 async function tick() {
   const job = await check(db.rpc("claim_export", { worker_id: workerId }));
-  if (job?.id) await exportJob(job);
+  if (job?.id) {
+    console.log(`Export ${job.id}: processing`);
+    await exportJob(job);
+  } else {
+    console.log("No export waiting for this worker.");
+  }
+  if (process.argv.includes("--exports-only")) return;
   const cleanup = await check(
     db
       .from("campaign_exports")
@@ -271,6 +277,7 @@ async function tick() {
   );
   if (cleanup?.[0]) await cleanupJob(cleanup[0]);
 }
+console.log("Export worker started; checking the queue.");
 do {
   await tick();
   if (process.argv.includes("--once")) break;

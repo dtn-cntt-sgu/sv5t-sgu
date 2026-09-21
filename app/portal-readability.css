@@ -443,6 +443,9 @@
   min-height: 112px;
   height: auto;
   gap: 20px;
+  border-color: #c4c8d3;
+  background: #d7d9e2;
+  box-shadow: 0 6px 20px rgba(54, 61, 86, 0.1);
 }
 .portal-admin .portal-header h1 {
   font-size: 30px;

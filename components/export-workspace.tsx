@@ -159,7 +159,7 @@ export function ExportWorkspace() {
                   }
                   onClick={create}
                 >
-                  Tạo bản xuất đầy đủ
+                  Tạo bản xuất file đầy đủ
                 </button>
                 <ResourceState error={jobs.error} retry={jobs.reload} />
                 {jobs.data?.map((j) => (
@@ -167,7 +167,7 @@ export function ExportWorkspace() {
                     <div>
                       <h3>
                         {j.status === "READY"
-                          ? "Bản xuất đã sẵn sàng"
+                          ? "File zip chứa toàn bộ dữ liệu đã sẵn sàng"
                           : j.status === "FAILED"
                             ? "Xuất thất bại"
                             : "Đang chờ / xử lý"}
