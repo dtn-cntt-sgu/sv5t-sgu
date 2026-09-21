@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import Link from "next/link";
+import { z } from "zod";
 import {
   ArrowLeft,
   ArrowRight,
@@ -18,14 +25,29 @@ type Faculty = {
   majors: Array<{ id: string; code: string; name: string }>;
 };
 
-const fallback: Faculty[] = [
-  { id: "", code: "CNTT", name: "Khoa Công nghệ Thông tin", majors: [] },
-  { id: "", code: "QTKD", name: "Khoa Quản trị Kinh doanh", majors: [] },
-  { id: "", code: "SP", name: "Khoa Sư phạm", majors: [] },
-];
+const facultySchema = z
+  .array(
+    z.object({
+      id: z.string().min(1),
+      code: z.string(),
+      name: z.string().min(1),
+      majors: z.array(
+        z.object({
+          id: z.string().min(1),
+          code: z.string(),
+          name: z.string().min(1),
+        }),
+      ),
+    }),
+  )
+  .min(1);
 
 export function RegisterForm() {
-  const [faculties, setFaculties] = useState<Faculty[]>(fallback);
+  const [faculties, setFaculties] = useState<Faculty[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState("");
+  const [attempt, setAttempt] = useState(0);
+  const [majorId, setMajorId] = useState("");
   const [facultyId, setFacultyId] = useState("");
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<{
@@ -37,15 +59,56 @@ export function RegisterForm() {
     [faculties, facultyId],
   );
 
+  const retryCatalog = useCallback(() => setAttempt((value) => value + 1), []);
   useEffect(() => {
-    fetch("/api/v1/public/faculties")
-      .then((response) => (response.ok ? response.json() : Promise.reject()))
-      .then((result) => setFaculties(result.data))
-      .catch(() => undefined);
-  }, []);
+    const controller = new AbortController();
+    async function load() {
+      setCatalogLoading(true);
+      setCatalogError("");
+      try {
+        const response = await fetch("/api/v1/public/faculties", {
+          signal: AbortSignal.any([
+            controller.signal,
+            AbortSignal.timeout(15000),
+          ]),
+          cache: "no-store",
+        });
+        if (!response.ok) throw new Error("catalog unavailable");
+        const result = await response.json();
+        const data = facultySchema.parse(result.data);
+        if (!controller.signal.aborted) {
+          setFaculties(data);
+          setFacultyId("");
+          setMajorId("");
+        }
+      } catch {
+        if (!controller.signal.aborted) {
+          setFaculties([]);
+          setCatalogError(
+            "Chưa tải được danh sách khoa/ngành. Vui lòng thử lại.",
+          );
+        }
+      } finally {
+        if (!controller.signal.aborted) setCatalogLoading(false);
+      }
+    }
+    void load();
+    return () => controller.abort();
+  }, [attempt]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (
+      catalogLoading ||
+      !faculties.some((f) => f.id === facultyId) ||
+      !majors.some((m) => m.id === majorId)
+    ) {
+      setMessage({
+        type: "error",
+        text: "Vui lòng chọn khoa và ngành hợp lệ trước khi đăng ký.",
+      });
+      return;
+    }
     setPending(true);
     setMessage(undefined);
     const formElement = event.currentTarget;
@@ -81,6 +144,7 @@ export function RegisterForm() {
       });
       formElement.reset();
       setFacultyId("");
+      setMajorId("");
     } catch (error) {
       setMessage({
         type: "error",
@@ -191,12 +255,18 @@ export function RegisterForm() {
                 name="facultyId"
                 required
                 value={facultyId}
-                onChange={(event) => setFacultyId(event.target.value)}
+                disabled={catalogLoading || !faculties.length}
+                onChange={(event) => {
+                  setFacultyId(event.target.value);
+                  setMajorId("");
+                }}
               >
-                <option value="">Chọn khoa</option>
+                <option value="">
+                  {catalogLoading ? "Đang tải danh sách khoa…" : "Chọn khoa"}
+                </option>
                 {faculties.map((faculty) => (
                   <option
-                    key={faculty.code}
+                    key={faculty.id}
                     value={faculty.id}
                     disabled={!faculty.id}
                   >
@@ -208,8 +278,9 @@ export function RegisterForm() {
             <label>
               <span>Ngành *</span>
               <select
-                key={facultyId}
                 name="majorId"
+                value={majorId}
+                onChange={(event) => setMajorId(event.target.value)}
                 required
                 disabled={!majors.length}
               >
@@ -272,7 +343,7 @@ export function RegisterForm() {
           )}
           <button
             className="button button-primary register-submit"
-            disabled={pending || !faculties.some((faculty) => faculty.id)}
+            disabled={pending || catalogLoading || !facultyId || !majorId}
           >
             {pending ? (
               <>
@@ -284,10 +355,24 @@ export function RegisterForm() {
               </>
             )}
           </button>
-          {!faculties.some((faculty) => faculty.id) && (
-            <small className="setup-hint">
-              Danh sách khoa chưa tải được. Vui lòng tải lại trang sau ít phút.
-            </small>
+          {catalogError && (
+            <div className="form-message error" role="alert">
+              <p>{catalogError}</p>
+              <button
+                type="button"
+                className="button button-outline"
+                onClick={retryCatalog}
+                disabled={catalogLoading}
+              >
+                Thử tải lại danh sách
+              </button>
+            </div>
+          )}
+          {facultyId && !majors.length && (
+            <p role="status">
+              Khoa này chưa có ngành để đăng ký. Vui lòng liên hệ quản trị viên
+              cập nhật danh mục.
+            </p>
           )}
         </form>
       </section>

@@ -325,14 +325,14 @@
   color: var(--accent);
   background: #f0f6ff;
 }
-:global(.pdf-preview) {
+.documentSection :global(.pdf-preview) {
   display: block;
   width: 100%;
   height: clamp(280px, calc(100svh - 440px), 680px);
   overflow: auto;
   background: #fff;
 }
-:global(.pdf-pages) {
+.documentSection :global(.pdf-pages) {
   min-height: 100%;
   padding: 16px;
   display: grid;
@@ -340,13 +340,13 @@
   gap: 16px;
   background: #fff;
 }
-:global(.pdf-page) {
+.documentSection :global(.pdf-page) {
   display: block;
   max-width: 100%;
   height: auto;
   background: #fff;
 }
-:global(.pdf-status) {
+.documentSection :global(.pdf-status) {
   margin: 0;
   padding: 40px 24px;
   color: #697785;
@@ -518,7 +518,7 @@
   .organization {
     margin-top: 28px;
   }
-  :global(.pdf-preview) {
+  .documentSection :global(.pdf-preview) {
     height: 520px;
   }
   .documentHeader {
