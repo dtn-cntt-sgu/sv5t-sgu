@@ -36,7 +36,7 @@ export function SiteFooter() {
         <a href="mailto:hoisinhvien@sgu.edu.vn">Email: hoisinhvien@sgu.edu.vn</a>
       </div>
       <div className="site-footer-copyright">
-        <span>Copyright © 2026</span>
+        <span>Copyright © 2026 by</span>
         <strong>BCH Đoàn - Hội Khoa Công nghệ thông tin</strong>
       </div>
     </footer>

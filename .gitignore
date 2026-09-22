@@ -32,3 +32,5 @@ supabase/.temp/
 /var/exports/
 
 /tests
+
+/secret
