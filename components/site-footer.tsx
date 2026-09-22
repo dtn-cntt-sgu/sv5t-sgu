@@ -14,27 +14,30 @@ const logos = [
 export function SiteFooter() {
   return (
     <footer className="site-footer">
-      <div className="site-footer-logos" aria-label="Các đơn vị đồng hành">
-        {logos.map((logo) => (
-          <Image
-            key={logo.alt}
-            className="site-footer-logo"
-            src={logo.src}
-            alt={logo.alt}
-            width={76}
-            height={76}
-          />
-        ))}
+      <div className="site-footer-brand">
+        <div className="site-footer-logos" aria-label="Các đơn vị đồng hành">
+          {logos.map((logo) => (
+            <Image
+              key={logo.alt}
+              className="site-footer-logo"
+              src={logo.src}
+              alt={logo.alt}
+              width={58}
+              height={58}
+            />
+          ))}
+        </div>
+        <strong>Sinh viên 5 Tốt</strong>
+        <span>Cổng thông tin xét duyệt danh hiệu</span>
       </div>
-      <div className="site-footer-details">
-        <p>
-          <span>Cơ quan chủ quản:</span>
-          Hội sinh viên Trường Đại học Sài Gòn
-        </p>
-        <p>
-          <span>Copyright © 2026 by</span>
-          BCH Đoàn-Hội khoa Công nghệ thông tin
-        </p>
+      <div className="site-footer-authority">
+        <span>Cơ quan chủ quản</span>
+        <strong>Hội Sinh viên Trường Đại học Sài Gòn</strong>
+        <a href="mailto:hoisinhvien@sgu.edu.vn">Email: hoisinhvien@sgu.edu.vn</a>
+      </div>
+      <div className="site-footer-copyright">
+        <span>Copyright © 2026</span>
+        <strong>BCH Đoàn - Hội Khoa Công nghệ thông tin</strong>
       </div>
     </footer>
   );

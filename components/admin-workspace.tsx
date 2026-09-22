@@ -9,6 +9,11 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
+  CalendarDays,
+  FileText,
+  Settings,
+  GraduationCap,
+  ShieldCheck,
   Database,
   HardDrive,
   UsersRound,
@@ -49,6 +54,7 @@ type Storage = {
 export function AdminOverview() {
   const storage = useResource<Storage>("/admin/system/storage-health");
   const users = useResource<{ total: number }>("/admin/users");
+  const campaigns = useResource<Campaign[]>("/campaigns");
   return (
     <PortalShell portal="admin" title="Tổng quan hệ thống">
       <ResourceState {...storage} retry={storage.reload} />
@@ -71,7 +77,7 @@ export function AdminOverview() {
               {
                 label: "Minh chứng đã xác nhận",
                 value: bytesLabel(storage.data.r2.committedBytes),
-                sub: `${bytesLabel(storage.data.r2.reservedBytes)} đang lưu trữ - ngưỡng ${bytesLabel(storage.data.r2.hardLimitBytes)}`,
+                sub: `${bytesLabel(storage.data.r2.reservedBytes)} đang giữ chỗ · ngưỡng ${bytesLabel(storage.data.r2.hardLimitBytes)}`,
                 icon: HardDrive,
               },
               {
@@ -95,25 +101,110 @@ export function AdminOverview() {
           </div>
         </>
       )}
-      <div className="dashboard-grid">
-        <section className="panel">
-          <h2>Vận hành đợt xét duyệt</h2>
-          <p>
-            Tạo lịch nhận hồ sơ, cập nhật danh mục và theo dõi hoạt động hệ
-            thống.
-          </p>
-          <Link className="button button-primary" href="/admin/campaigns">
-            Quản lý đợt xét <ArrowRight size={17} />
+      <div className="admin-overview-heading">
+        <h2>Không gian làm việc</h2>
+        <span>Các tác vụ quản trị thường dùng</span>
+      </div>
+      <div className="admin-shortcuts">
+        {[
+          {
+            href: "/admin/users",
+            title: "Tài khoản & quyền truy cập",
+            description:
+              "Cấp tài khoản, cập nhật thông tin và quản lý email đăng nhập.",
+            icon: UsersRound,
+          },
+          {
+            href: "/admin/campaigns",
+            title: "Đợt xét duyệt",
+            description:
+              "Thiết lập lịch nhận hồ sơ và quản lý các đợt xét trong năm học.",
+            icon: CalendarDays,
+          },
+          {
+            href: "/admin/documents",
+            title: "Thư viện tài liệu",
+            description:
+              "Xuất bản hướng dẫn, tiêu chuẩn và biểu mẫu cho sinh viên.",
+            icon: FileText,
+          },
+          {
+            href: "/admin/catalog",
+            title: "Khoa & ngành đào tạo",
+            description:
+              "Cập nhật danh mục đơn vị và ngành học trong hệ thống.",
+            icon: GraduationCap,
+          },
+        ].map(({ href, title, description, icon: Icon }) => (
+          <Link className="admin-shortcut" href={href} key={href}>
+            <span className="admin-shortcut-icon">
+              <Icon size={22} />
+            </span>
+            <div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </div>
+            <ArrowRight size={18} />
           </Link>
-        </section>
+        ))}
+      </div>
+      <div className="admin-overview-bottom">
         <section className="panel">
-          <h2>Quản trị tài khoản</h2>
-          <p>
-            Cấp tài khoản cán bộ khoa, cập nhật thông tin và khóa quyền truy cập
-            khi cần.
-          </p>
-          <Link className="inline-link" href="/admin/users">
-            Quản lý tài khoản <ArrowRight size={17} />
+          <div className="admin-card-heading">
+            <div>
+              <span className="admin-eyebrow">LỊCH TIẾP NHẬN</span>
+              <h2>Đợt xét duyệt gần đây</h2>
+            </div>
+            <Link className="inline-link" href="/admin/campaigns">
+              Xem tất cả <ArrowRight size={16} />
+            </Link>
+          </div>
+          <ResourceState {...campaigns} retry={campaigns.reload} />
+          {campaigns.data?.slice(0, 3).map((c) => (
+            <div className="admin-campaign-item" key={c.id}>
+              <span className="admin-shortcut-icon">
+                <CalendarDays size={20} />
+              </span>
+              <div>
+                <strong>{c.name}</strong>
+                <small>
+                  {formatCampaignDate(c.start_date)} →{" "}
+                  {formatCampaignDate(c.end_date)}
+                </small>
+              </div>
+              <span
+                className={`status-pill ${c.is_active ? "state-ACCEPTED" : ""}`}
+              >
+                {c.is_archived
+                  ? "Đã lưu trữ"
+                  : c.is_active
+                    ? "Đã bật nhận hồ sơ"
+                    : "Đang đóng"}
+              </span>
+            </div>
+          ))}
+          {campaigns.data?.length === 0 && (
+            <p>
+              Chưa có đợt xét duyệt.{" "}
+              <Link href="/admin/campaigns" className="inline-link">
+                Tạo đợt xét đầu tiên
+              </Link>
+            </p>
+          )}
+        </section>
+        <section className="panel admin-control-card">
+          <ShieldCheck size={28} />
+          <h2>Thiết lập & bảo mật</h2>
+          <p>Kiểm soát giới hạn lưu trữ và bảo vệ quyền truy cập quản trị.</p>
+          <Link href="/admin/settings">
+            <Settings size={18} />
+            Cấu hình hệ thống
+            <ArrowRight size={16} />
+          </Link>
+          <Link href="/admin/security">
+            <ShieldCheck size={18} />
+            Bảo mật tài khoản
+            <ArrowRight size={16} />
           </Link>
         </section>
       </div>
@@ -433,9 +524,11 @@ export function UserManagement() {
                     <td>
                       <strong>{u.full_name}</strong>
                       <small>{u.email}</small>
-                      <small>
+                      <span
+                        className={`account-status ${u.is_active ? "is-active" : "is-locked"}`}
+                      >
                         {u.is_active ? "Đang hoạt động" : "Đã khóa"}
-                      </small>
+                      </span>
                     </td>
                     <td>{roleLabels[u.role]}</td>
                     <td>

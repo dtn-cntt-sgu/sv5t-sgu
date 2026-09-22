@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   Bell,
+  ChevronRight,
+  History,
   HelpCircle,
   LogOut,
   Menu,
@@ -62,10 +64,24 @@ const adminNav = [
   { label: "Quản lý tài khoản", href: "/admin/users", icon: UserCog },
   { label: "Đợt xét duyệt", href: "/admin/campaigns", icon: Archive },
   { label: "Tài liệu công khai", href: "/admin/documents", icon: FileText },
-  { label: "Nhật ký hệ thống", href: "/admin/audit", icon: ShieldCheck },
+  { label: "Nhật ký hệ thống", href: "/admin/audit", icon: History },
   { label: "Các khoa ngành", href: "/admin/catalog", icon: Files },
   { label: "Cấu hình", href: "/admin/settings", icon: Settings },
+  { label: "Bảo mật", href: "/admin/security", icon: ShieldCheck },
 ];
+const adminDescriptions: Record<string, string> = {
+  "/admin": "Theo dõi hệ thống và truy cập nhanh các công việc quản trị.",
+  "/admin/users":
+    "Quản lý thông tin, quyền truy cập và tài khoản trong hệ thống.",
+  "/admin/campaigns": "Thiết lập thời gian và điều phối các đợt nhận hồ sơ.",
+  "/admin/documents":
+    "Cập nhật tài liệu hướng dẫn và biểu mẫu dành cho sinh viên.",
+  "/admin/catalog": "Tổ chức danh mục khoa, ngành và đơn vị đào tạo.",
+  "/admin/settings": "Theo dõi dung lượng và thiết lập giới hạn tải lên.",
+  "/admin/audit":
+    "Tra cứu lịch sử thao tác để theo dõi các thay đổi trong hệ thống.",
+  "/admin/security": "Quản lý mật khẩu và xác thực tài khoản quản trị.",
+};
 export function PortalShell({
   portal,
   title,
@@ -138,10 +154,14 @@ export function PortalShell({
           </button>
         </div>
         <span className="nav-caption">
-          {portal === "student" ? "GÓC CỦA BẠN" : "KHÔNG GIAN LÀM VIỆC"}
+          {portal === "student"
+            ? "GÓC CỦA BẠN"
+            : portal === "admin"
+              ? "QUẢN LÝ"
+              : "KHÔNG GIAN LÀM VIỆC"}
         </span>
         <nav aria-label="Điều hướng tài khoản">
-          {items.map(({ label, href, icon: Icon }) => {
+          {items.map(({ label, href, icon: Icon }, index) => {
             const active =
               pathname === href ||
               (href !== "/manager" &&
@@ -149,24 +169,29 @@ export function PortalShell({
                 href !== "/dashboard" &&
                 pathname.startsWith(`${href}/`));
             return (
-              <Link
-                onClick={() => setOpen(false)}
-                aria-current={active ? "page" : undefined}
-                className={active ? "active" : ""}
-                href={href}
-                key={href}
-              >
-                <Icon size={19} />
-                <span>{label}</span>
-                {active && <i />}
-              </Link>
+              <Fragment key={href}>
+                {portal === "admin" && index === 4 && (
+                  <span className="admin-nav-group">HỆ THỐNG</span>
+                )}
+                <Link
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={active ? "active" : ""}
+                  href={href}
+                  key={href}
+                >
+                  <Icon size={19} />
+                  <span>{label}</span>
+                  {active && <i />}
+                </Link>
+              </Fragment>
             );
           })}
         </nav>
         {portal === "student" && (
           <div className="sidebar-inspiration">
             <span>✦</span>
-            <strong>Mỗi ngày một chút tốt hơn.</strong>
+            <strong>Mỗi ngày <br/> một chút tốt hơn.</strong>
             <p>Hành trình của bạn bắt đầu từ những điều nhỏ nhất.</p>
             <Link href="/documents">Khám phá tiêu chí ↗</Link>
           </div>
@@ -175,7 +200,11 @@ export function PortalShell({
           <Link href="/documents">
             <HelpCircle size={18} /> Tài liệu & hướng dẫn
           </Link>
-          <button className="logout-button" disabled={signingOut} onClick={logout}>
+          <button
+            className="logout-button"
+            disabled={signingOut}
+            onClick={logout}
+          >
             <LogOut size={18} /> {signingOut ? "Đang đăng xuất…" : "Đăng xuất"}
           </button>
         </div>
@@ -197,9 +226,17 @@ export function PortalShell({
           >
             <Menu size={22} />
           </button>
-          <div>
-            <p>{subtitle ?? "HỘI SINH VIÊN - TRƯỜNG ĐẠI HỌC SÀI GÒN"}</p>
-            <h1>{title}</h1>
+          <div className="portal-heading">
+            {portal === "admin" ? (
+              <nav className="admin-breadcrumb" aria-label="Đường dẫn">
+                <Link href="/admin">Quản trị</Link>
+                <ChevronRight size={14} />
+                <span>{title}</span>
+              </nav>
+            ) : (
+              <p>{subtitle ?? "HỘI SINH VIÊN - TRƯỜNG ĐẠI HỌC SÀI GÒN"}</p>
+            )}
+            {portal !== "admin" && <h1>{title}</h1>}
           </div>
           <div className="portal-user">
             {portal === "student" && (
@@ -228,6 +265,20 @@ export function PortalShell({
                 Đăng nhập lại
               </Link>
             </p>
+          )}
+          {portal === "admin" && (
+            <div className="admin-page-heading">
+              <div>
+                <span className="admin-eyebrow">SINH VIÊN 5 TỐT · SGU</span>
+                <h1>{title}</h1>
+                <p>{subtitle ?? adminDescriptions[pathname]}</p>
+              </div>
+              <Link href="/admin/security" className="admin-security-link">
+                <ShieldCheck size={17} />
+                Bảo mật tài khoản
+                <ChevronRight size={15} />
+              </Link>
+            </div>
           )}
           {children}
         </div>

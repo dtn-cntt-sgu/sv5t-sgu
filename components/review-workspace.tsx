@@ -37,6 +37,24 @@ export function ReviewWorkspace({ id }: { id: string }) {
     setError("");
     setMessage("");
     let stage = "finalize";
+    const decisions = a.application_files.map((f) => ({
+      fileId: f.id,
+      action: form.get(`action-${f.id}`),
+      note: String(form.get(`note-${f.id}`) ?? "").trim(),
+    }));
+    const missingReviewNote = decisions.some(
+      (decision) =>
+        (decision.action === "REJECT" ||
+          decision.action === "REQUEST_RESUBMISSION") &&
+        decision.note.length < 5,
+    );
+    if (missingReviewNote) {
+      setError(
+        "Vui lòng nhập lý do khi từ chối hoặc yêu cầu gửi lại",
+      );
+      setPending(false);
+      return;
+    }
     console.info("[REVIEW] save start", {
       applicationId: id,
       status: a.status,
@@ -46,11 +64,7 @@ export function ReviewWorkspace({ id }: { id: string }) {
       const result = await mutation<Application>(
         `/manager/applications/${id}/finalize`,
         {
-          decisions: a.application_files.map((f) => ({
-            fileId: f.id,
-            action: form.get(`action-${f.id}`),
-            note: String(form.get(`note-${f.id}`) ?? ""),
-          })),
+          decisions,
         },
       );
       console.info("[REVIEW] API success", {
@@ -162,7 +176,7 @@ export function ReviewWorkspace({ id }: { id: string }) {
             <form className="panel workspace-form review-form" onSubmit={save}>
               <h2>Kết quả xét duyệt</h2>
               <p className="notice warning">
-                Vui lòng tải về file minh chứng cũ vì file mới sẽ ghi đè file
+                LCHT vui lòng tải về file minh chứng cũ. Vì khi yêu cầu sinh viên nộp file mới, sẽ ghi đè file
                 cũ, không xem được file cũ.
               </p>
               {a.application_files.map((f) => (
@@ -200,7 +214,12 @@ export function ReviewWorkspace({ id }: { id: string }) {
                       rows={3}
                     />
                   </label>
-                  <small>Hiện tại: {statusLabels[f.review_status]}</small>
+                  <small className="review-current-status">
+                    Hiện tại:
+                    <span className={`status-pill state-${f.review_status}`}>
+                      {statusLabels[f.review_status]}
+                    </span>
+                  </small>
                 </fieldset>
               ))}
               {canReview ? (

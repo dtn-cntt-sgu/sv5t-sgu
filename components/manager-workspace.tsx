@@ -353,10 +353,10 @@ export function ManagerWorkspace({
                             <td>{dateLabel(a.updated_at)}</td>
                             <td>
                               <Link
-                                className="table-link"
+                                className="table-link review-link"
                                 href={`/manager/applications/${a.id}`}
                               >
-                                Chi tiết <ArrowRight size={15} />
+                                Xem xét <ArrowRight size={15} />
                               </Link>
                             </td>
                           </tr>

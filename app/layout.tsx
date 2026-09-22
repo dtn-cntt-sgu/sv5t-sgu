@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteConsoleMessage } from "@/components/site-console-message";
 import "./globals.css";
 import "./portal-readability.css";
+import "./admin-ui.css";
 
 export const metadata: Metadata = {
   title: {

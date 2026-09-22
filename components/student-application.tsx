@@ -408,7 +408,7 @@ function FileUpload({
     }
     if (limits.data && (!chosen.size || chosen.size > limits.data[category])) {
       setError(
-        `File phải có dung lượng tối đa ${bytesLabel(limits.data[category])}.`,
+        `Dung lượng tối đa cho file này là ${bytesLabel(limits.data[category])}.`,
       );
       return;
     }
