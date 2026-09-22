@@ -57,7 +57,8 @@ export function FeedbackPage() {
                   <div>
                     <small>
                       {dateLabel(entry.created_at)} ·{" "}
-                      {entry.reviewer_snapshot.full_name ?? "Liên chi Hội"}
+                      {entry.reviewer_snapshot.full_name ?? "Liên chi Hội"} · Đợt{" "}
+                      {entry.application.campaigns?.name ?? entry.application.campaign_id}
                     </small>
                     <h3>{fileLabels[entry.file.file_type]}</h3>
                     <span

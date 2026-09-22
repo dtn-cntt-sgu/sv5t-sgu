@@ -50,8 +50,11 @@ const studentNav = [
 const managerNav = [
   { label: "Tổng quan", href: "/manager", icon: LayoutDashboard },
   { label: "Danh sách hồ sơ", href: "/manager/applications", icon: Files },
-  { label: "Thống kê", href: "/manager/statistics", icon: BarChart3 },
-  { label: "Xuất & lưu trữ", href: "/manager/export", icon: FileSpreadsheet },
+  {
+    label: "Thống kê và Lưu trữ",
+    href: "/manager/statistics",
+    icon: BarChart3,
+  },
   { label: "Đợt xét duyệt", href: "/manager/campaigns", icon: Archive },
   {
     label: "Thông tin và Tài khoản",
@@ -69,19 +72,6 @@ const adminNav = [
   { label: "Cấu hình", href: "/admin/settings", icon: Settings },
   { label: "Bảo mật", href: "/admin/security", icon: ShieldCheck },
 ];
-const adminDescriptions: Record<string, string> = {
-  "/admin": "Theo dõi hệ thống và truy cập nhanh các công việc quản trị.",
-  "/admin/users":
-    "Quản lý thông tin, quyền truy cập và tài khoản trong hệ thống.",
-  "/admin/campaigns": "Thiết lập thời gian và điều phối các đợt nhận hồ sơ.",
-  "/admin/documents":
-    "Cập nhật tài liệu hướng dẫn và biểu mẫu dành cho sinh viên.",
-  "/admin/catalog": "Tổ chức danh mục khoa, ngành và đơn vị đào tạo.",
-  "/admin/settings": "Theo dõi dung lượng và thiết lập giới hạn tải lên.",
-  "/admin/audit":
-    "Tra cứu lịch sử thao tác để theo dõi các thay đổi trong hệ thống.",
-  "/admin/security": "Quản lý mật khẩu và xác thực tài khoản quản trị.",
-};
 export function PortalShell({
   portal,
   title,
@@ -265,20 +255,6 @@ export function PortalShell({
                 Đăng nhập lại
               </Link>
             </p>
-          )}
-          {portal === "admin" && (
-            <div className="admin-page-heading">
-              <div>
-                {/* <span className="admin-eyebrow">SINH VIÊN 5 TỐT · SGU</span> */}
-                <h1>{title}</h1>
-                <p>{subtitle ?? adminDescriptions[pathname]}</p>
-              </div>
-              <Link href="/admin/security" className="admin-security-link">
-                <ShieldCheck size={17} />
-                Bảo mật tài khoản
-                <ChevronRight size={15} />
-              </Link>
-            </div>
           )}
           {children}
         </div>

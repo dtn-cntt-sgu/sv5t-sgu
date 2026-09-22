@@ -1209,6 +1209,29 @@
 .portal-manager .section-title {
   flex-wrap: wrap;
 }
+.portal-manager .manager-campaign-select {
+  flex: 0 0 auto;
+  min-width: 220px;
+  margin-left: auto;
+}
+.portal-manager .manager-campaign-select select {
+  width: 220px;
+  min-width: 220px;
+  min-height: 54px;
+  padding: 0 38px 0 14px;
+  color: #1d4f70;
+  border: 1px solid #cdddea;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(35, 91, 125, 0.08);
+  font-weight: 650;
+  cursor: pointer;
+}
+.portal-manager .manager-campaign-select select:hover,
+.portal-manager .manager-campaign-select select:focus {
+  border-color: #5b8fbe;
+  box-shadow: 0 0 0 3px rgba(45, 101, 160, 0.12);
+}
 .portal-manager .section-title h2 {
   font-size: 23px;
 }
@@ -1360,6 +1383,18 @@
 .portal-manager .table-scroll {
   position: relative;
   max-width: 100%;
+  max-height: min(calc(100dvh - 330px), 620px);
+  overflow: auto;
+}
+.portal-manager .table-scroll th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.portal-manager .application-list-summary {
+  margin: 16px 0 0;
+  color: #7c91a4;
+  font-size: 14px;
 }
 
 /* Campaign toggle: prevent the general text-input height from stretching it. */

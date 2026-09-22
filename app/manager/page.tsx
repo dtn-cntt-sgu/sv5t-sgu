@@ -1,4 +1,4 @@
 import { ManagerWorkspace } from "@/components/manager-workspace";
 export default function Page() {
-  return <ManagerWorkspace />;
+  return <ManagerWorkspace view="applications" />;
 }

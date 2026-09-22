@@ -20,8 +20,8 @@ const querySchema = z.object({
   from: z.iso.datetime({ offset: true }).optional(),
   to: z.iso.datetime({ offset: true }).optional(),
   search: z.string().trim().max(100).optional(),
-  page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(50).default(20),
+  page: z.coerce.number().int().min(1).optional(),
+  pageSize: z.coerce.number().int().min(1).max(50).optional(),
 });
 
 export async function GET(request: Request) {
@@ -67,13 +67,12 @@ export async function GET(request: Request) {
       if (!userIds.length)
         return ok({
           items: [],
-          page: input.page,
-          pageSize: input.pageSize,
+          page: input.page ?? 1,
+          pageSize: input.pageSize ?? data.length,
           total: 0,
         });
     }
 
-    const from = (input.page - 1) * input.pageSize;
     let applications = admin
       .from("applications")
       .select(
@@ -82,8 +81,12 @@ export async function GET(request: Request) {
       )
       .eq("campaign_id", input.campaignId)
       .neq("status", "DRAFT")
-      .order("updated_at", { ascending: false })
-      .range(from, from + input.pageSize - 1);
+      .order("updated_at", { ascending: false });
+    if (input.page) {
+      const pageSize = input.pageSize ?? 20;
+      const from = (input.page - 1) * pageSize;
+      applications = applications.range(from, from + pageSize - 1);
+    }
     if (input.from) applications = applications.gte("submitted_at", input.from);
     if (input.to) applications = applications.lte("submitted_at", input.to);
     if (input.status) applications = applications.eq("status", input.status);
@@ -92,8 +95,8 @@ export async function GET(request: Request) {
     if (error) throw error;
     return ok({
       items: data,
-      page: input.page,
-      pageSize: input.pageSize,
+      page: input.page ?? 1,
+      pageSize: input.pageSize ?? (data?.length ?? 0),
       total: count ?? 0,
     });
   } catch (error) {

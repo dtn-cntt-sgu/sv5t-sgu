@@ -365,12 +365,11 @@ export function CampaignManagement({
   );
 }
 export function UserManagement() {
-  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [roleFilterOpen, setRoleFilterOpen] = useState(false);
   const users = useResource<{ items: Profile[]; total: number }>(
-    `/admin/users?page=${page}&search=${encodeURIComponent(search)}${roleFilter ? `&role=${encodeURIComponent(roleFilter)}` : ""}`,
+    `/admin/users?search=${encodeURIComponent(search)}${roleFilter ? `&role=${encodeURIComponent(roleFilter)}` : ""}`,
   );
   const faculties = useResource<Faculty[]>("/public/faculties");
   const [emailEnabled, setEmailEnabled] = useState(false);
@@ -490,7 +489,6 @@ export function UserManagement() {
           onSubmit={(e) => {
             e.preventDefault();
             setSearch(String(new FormData(e.currentTarget).get("search")));
-            setPage(1);
           }}
           className="inline-form"
         >
@@ -541,7 +539,6 @@ export function UserManagement() {
                               role="menuitem"
                               onClick={() => {
                                 setRoleFilter("");
-                                setPage(1);
                                 setRoleFilterOpen(false);
                               }}
                             >
@@ -555,7 +552,6 @@ export function UserManagement() {
                                 role="menuitem"
                                 onClick={() => {
                                   setRoleFilter(value);
-                                  setPage(1);
                                   setRoleFilterOpen(false);
                                 }}
                               >
@@ -604,29 +600,11 @@ export function UserManagement() {
               </tbody>
             </table>
           </div>
-          <div className="pagination">
-            <span>{users.data?.total ?? 0} tài khoản</span>
-            <div>
-              <button
-                className="button button-outline"
-                disabled={page === 1}
-                onClick={() => setPage((v) => v - 1)}
-              >
-                Trước
-              </button>
-              <button
-                className="button button-outline"
-                disabled={page * 30 >= (users.data?.total ?? 0)}
-                onClick={() => setPage((v) => v + 1)}
-              >
-                Sau
-              </button>
-            </div>
-          </div>
+          <p className="account-list-summary">{users.data?.total ?? 0} tài khoản</p>
         </section>
         <form
           key={selected?.id ?? "new"}
-          className="panel workspace-form"
+          className="panel workspace-form admin-account-form"
           onSubmit={save}
         >
           <h2>{selected ? "Chỉnh sửa tài khoản" : "Cấp tài khoản mới"}</h2>

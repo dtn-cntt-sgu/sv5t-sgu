@@ -34,7 +34,7 @@ type Faculty = {
   majors: { id: string; name: string }[];
 };
 export function ManagerWorkspace({
-  view = "overview",
+  view = "applications",
 }: {
   view?: "overview" | "applications" | "statistics";
 }) {
@@ -43,7 +43,6 @@ export function ManagerWorkspace({
   const faculties = useResource<Faculty[]>("/public/faculties");
   const [campaignId, setCampaignId] = useState("");
   const [filters, setFilters] = useState("");
-  const [page, setPage] = useState(1);
   const selected =
     campaignId ||
     campaigns.data?.find((c) => c.is_active)?.id ||
@@ -54,10 +53,9 @@ export function ManagerWorkspace({
   const applications = useResource<{
     items: Application[];
     total: number;
-    pageSize: number;
   }>(
     selected
-      ? `/manager/applications?campaignId=${selected}&page=${page}${filters}`
+      ? `/manager/applications?campaignId=${selected}${filters}`
       : null,
   );
   function filter(event: FormEvent<HTMLFormElement>) {
@@ -75,7 +73,6 @@ export function ManagerWorkspace({
         );
     }
     setFilters(`&${params}`);
-    setPage(1);
   }
   const scope =
     profile.data?.role === "FACULTY_SECRETARY"
@@ -97,32 +94,33 @@ export function ManagerWorkspace({
       }
       subtitle={scope ?? "KHÔNG GIAN XÉT DUYỆT"}
     >
-      <div className="workspace-toolbar">
-        <div>
-          <span className="section-kicker">ĐỢT XÉT DUYỆT</span>
-          <p>Theo dõi tiến độ và đồng hành cùng sinh viên.</p>
-        </div>
-        <label>
-          <span className="sr-only">Chọn đợt xét</span>
-          <select
-            value={selected ?? ""}
-            onChange={(e) => {
-              setCampaignId(e.target.value);
-              setPage(1);
-            }}
-          >
-            <option value="" disabled>
-              Chọn đợt
-            </option>
-            {campaigns.data?.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-                {c.is_archived ? " - Đã lưu trữ" : ""}
+      {view !== "applications" && (
+        <div className="workspace-toolbar">
+          <div>
+            <span className="section-kicker">ĐỢT XÉT DUYỆT</span>
+            <p>Theo dõi tiến độ và đồng hành cùng sinh viên.</p>
+          </div>
+          <label>
+            <span className="sr-only">Chọn đợt xét</span>
+            <select
+              value={selected ?? ""}
+              onChange={(e) => {
+                setCampaignId(e.target.value);
+              }}
+            >
+              <option value="" disabled>
+                Chọn đợt
               </option>
-            ))}
-          </select>
-        </label>
-      </div>
+              {campaigns.data?.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                  {c.is_archived ? " - Đã lưu trữ" : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
       <ResourceState
         loading={campaigns.loading}
         error={campaigns.error}
@@ -142,65 +140,72 @@ export function ManagerWorkspace({
           />
           {summary.data && (
             <>
-              <div className="metric-grid">
-                {[
-                  {
-                    label: "Tổng hồ sơ đã nộp",
-                    value: summary.data.totalSubmitted,
-                    icon: Files,
-                    tone: "blue",
-                  },
-                  {
-                    label: "Chờ xét duyệt",
-                    value: summary.data.pending,
-                    icon: Clock3,
-                    tone: "amber",
-                  },
-                  {
-                    label: "Đạt danh hiệu",
-                    value: summary.data.approved,
-                    icon: CheckCircle2,
-                    tone: "green",
-                  },
-                  {
-                    label: "Không đạt",
-                    value: summary.data.rejected,
-                    icon: XCircle,
-                    tone: "red",
-                  },
-                ].map(({ label, value, icon: Icon, tone }) => (
-                  <article className={`metric-card metric-${tone}`} key={label}>
-                    <div>
-                      <span>{label}</span>
-                      <strong>{value.toLocaleString("vi-VN")}</strong>
-                      <small>
-                        {summary.data!.totalSubmitted
-                          ? (
-                              (value / summary.data!.totalSubmitted) *
-                              100
-                            ).toFixed(1)
-                          : 0}
-                        % tổng hồ sơ
-                      </small>
-                    </div>
-                    <i>
-                      <Icon size={22} />
-                    </i>
-                  </article>
-                ))}
-              </div>
-              <p className="muted">
-                Có {summary.data.resubmitRequired} hồ sơ đang chờ sinh viên bổ
-                sung minh chứng.
-              </p>
+              {view !== "applications" && (
+                <div className="metric-grid">
+                  {[
+                    {
+                      label: "Tổng hồ sơ đã nộp",
+                      value: summary.data.totalSubmitted,
+                      icon: Files,
+                      tone: "blue",
+                    },
+                    {
+                      label: "Chờ xét duyệt",
+                      value: summary.data.pending,
+                      icon: Clock3,
+                      tone: "amber",
+                    },
+                    {
+                      label: "Đạt danh hiệu",
+                      value: summary.data.approved,
+                      icon: CheckCircle2,
+                      tone: "green",
+                    },
+                    {
+                      label: "Không đạt",
+                      value: summary.data.rejected,
+                      icon: XCircle,
+                      tone: "red",
+                    },
+                  ].map(({ label, value, icon: Icon, tone }) => (
+                    <article className={`metric-card metric-${tone}`} key={label}>
+                      <div>
+                        <span>{label}</span>
+                        <strong>{value.toLocaleString("vi-VN")}</strong>
+                        <small>
+                          {summary.data!.totalSubmitted
+                            ? (
+                                (value / summary.data!.totalSubmitted) *
+                                100
+                              ).toFixed(1)
+                            : 0}
+                          % tổng hồ sơ
+                        </small>
+                      </div>
+                      <i>
+                        <Icon size={22} />
+                      </i>
+                    </article>
+                  ))}
+                </div>
+              )}
+              {view !== "applications" && (
+                <p className="muted">
+                  Có {summary.data.resubmitRequired} hồ sơ sinh viên chờ bổ
+                  sung minh chứng.
+                </p>
+              )}
             </>
           )}
           {view === "statistics" && summary.data && (
             <section className="panel">
               <div className="section-title">
                 <h2>Tiến độ theo khoa</h2>
-                <Link className="inline-link" href="/manager/export">
-                  Xuất báo cáo <Download size={16} />
+                <Link
+                  className="button button-primary"
+                  href={`/api/v1/export/excel?campaignId=${selected}`}
+                >
+                  Xuất Excel báo cáo <Download size={16} />
                 </Link>
               </div>
               <div className="faculty-chart">
@@ -236,10 +241,31 @@ export function ManagerWorkspace({
                       : "Tra cứu hồ sơ"}
                   </h2>
                   <p>
-                    Tìm kiếm, lọc và xem chi tiết hồ sơ trong phạm vi phụ trách.
+                    Có {summary.data?.resubmitRequired ?? 0} hồ sơ sinh viên chờ bổ
+                    sung minh chứng.
                   </p>
                 </div>
-                {view === "overview" && (
+                {view === "applications" ? (
+                  <label className="manager-campaign-select">
+                    <span className="sr-only">Chọn đợt xét</span>
+                    <select
+                      value={selected ?? ""}
+                      onChange={(e) => {
+                        setCampaignId(e.target.value);
+                      }}
+                    >
+                      <option value="" disabled>
+                        Chọn đợt
+                      </option>
+                      {campaigns.data?.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name}
+                          {c.is_archived ? " - Đã lưu trữ" : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ) : (
                   <Link href="/manager/applications" className="inline-link">
                     Tất cả hồ sơ <ArrowRight size={16} />
                   </Link>
@@ -305,7 +331,6 @@ export function ManagerWorkspace({
                   className="button button-outline"
                   onClick={() => {
                     setFilters("");
-                    setPage(1);
                   }}
                 >
                   Đặt lại
@@ -369,30 +394,9 @@ export function ManagerWorkspace({
                       <p>Thử thay đổi bộ lọc hoặc chọn đợt xét khác.</p>
                     </EmptyState>
                   )}
-                  <div className="pagination">
-                    <span>
-                      {applications.data.total} hồ sơ - Trang {page}
-                    </span>
-                    <div>
-                      <button
-                        className="button button-outline"
-                        disabled={page === 1}
-                        onClick={() => setPage((p) => p - 1)}
-                      >
-                        Trước
-                      </button>
-                      <button
-                        className="button button-outline"
-                        disabled={
-                          page * applications.data.pageSize >=
-                          applications.data.total
-                        }
-                        onClick={() => setPage((p) => p + 1)}
-                      >
-                        Sau
-                      </button>
-                    </div>
-                  </div>
+                  <p className="application-list-summary">
+                    {applications.data.total} hồ sơ
+                  </p>
                 </>
               )}
             </section>

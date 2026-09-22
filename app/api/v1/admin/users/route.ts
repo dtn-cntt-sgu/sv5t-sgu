@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     await requireUser(["SUPER_ADMIN"]);
     const input = z
       .object({
-        page: z.coerce.number().int().min(1).default(1),
+        page: z.coerce.number().int().min(1).optional(),
         search: z.string().max(100).default(""),
         role: z
           .enum([
@@ -23,8 +23,8 @@ export async function GET(request: Request) {
     let query = createAdminClient()
       .from("users")
       .select("*,faculties(name,code),majors(name)", { count: "exact" })
-      .order("created_at", { ascending: false })
-      .range((input.page - 1) * 30, input.page * 30 - 1);
+      .order("created_at", { ascending: false });
+    if (input.page) query = query.range((input.page - 1) * 30, input.page * 30 - 1);
     if (input.role) query = query.eq("role", input.role);
     if (input.search)
       query = query.ilike(
