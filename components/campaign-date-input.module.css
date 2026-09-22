@@ -1,0 +1,34 @@
+.field {
+  display: block;
+  position: relative;
+  min-width: 0;
+}
+.field > input {
+  width: 100%;
+  padding-right: 52px !important;
+  box-sizing: border-box;
+}
+.calendar {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.calendar > input {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  opacity: 0;
+  cursor: pointer;
+  padding: 0 !important;
+}
+.calendar:focus-within {
+  outline: 2px solid #2851e8;
+  border-radius: 6px;
+}

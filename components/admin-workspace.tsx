@@ -1,4 +1,9 @@
 "use client";
+import { CampaignDateInput } from "./campaign-date-input";
+import {
+  formatCampaignDate,
+  parseCampaignDate,
+} from "@/lib/domain/campaign-date";
 import styles from "./admin-settings.module.css";
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
@@ -66,7 +71,7 @@ export function AdminOverview() {
               {
                 label: "Minh chứng đã xác nhận",
                 value: bytesLabel(storage.data.r2.committedBytes),
-                sub: `${bytesLabel(storage.data.r2.reservedBytes)} đang giữ chỗ-ngưỡng ${bytesLabel(storage.data.r2.hardLimitBytes)}`,
+                sub: `${bytesLabel(storage.data.r2.reservedBytes)} đang lưu trữ - ngưỡng ${bytesLabel(storage.data.r2.hardLimitBytes)}`,
                 icon: HardDrive,
               },
               {
@@ -137,8 +142,8 @@ export function CampaignManagement({
         {
           name: f.get("name"),
           academic_year: f.get("academic_year"),
-          start_date: new Date(`${f.get("start_date")}:00+07:00`).toISOString(),
-          end_date: new Date(`${f.get("end_date")}:00+07:00`).toISOString(),
+          start_date: parseCampaignDate(String(f.get("start_date"))),
+          end_date: parseCampaignDate(String(f.get("end_date"))),
           is_active: f.get("is_active") === "on",
         },
         editing ? "PUT" : "POST",
@@ -153,8 +158,6 @@ export function CampaignManagement({
       setPending(false);
     }
   }
-  const local = (v?: string) =>
-    v ? new Date(Date.parse(v) + 7 * 3600000).toISOString().slice(0, 16) : "";
   return (
     <PortalShell portal={portal} title="Quản lý đợt xét duyệt">
       <ResourceState {...resource} retry={resource.reload} />
@@ -167,7 +170,8 @@ export function CampaignManagement({
               <div>
                 <h3>{c.name}</h3>
                 <p>
-                  {dateLabel(c.start_date)} → {dateLabel(c.end_date)}
+                  {formatCampaignDate(c.start_date)} →{" "}
+                  {formatCampaignDate(c.end_date)}
                 </p>
                 <span
                   className={`status-pill ${c.is_active ? "state-ACCEPTED" : ""}`}
@@ -224,29 +228,19 @@ export function CampaignManagement({
           </label>
           <label>
             Mở nhận hồ sơ (giờ Việt Nam)
-            <input
-              type="datetime-local"
-              name="start_date"
-              defaultValue={local(editing?.start_date)}
-              required
-            />
+            <CampaignDateInput name="start_date" value={editing?.start_date} />
           </label>
           <label>
             Đóng nhận hồ sơ (giờ Việt Nam)
-            <input
-              type="datetime-local"
-              name="end_date"
-              defaultValue={local(editing?.end_date)}
-              required
-            />
+            <CampaignDateInput name="end_date" value={editing?.end_date} />
           </label>
-          <label className="checkbox">
+          <label className="checkbox campaign-active-checkbox">
             <input
               name="is_active"
               type="checkbox"
               defaultChecked={editing?.is_active ?? false}
             />
-            Bật nhận hồ sơ trong khoảng thời gian trên
+            <span>Bật nhận hồ sơ trong khoảng thời gian trên</span>
           </label>
           {error && (
             <p className="form-error" role="alert">
@@ -283,6 +277,8 @@ export function UserManagement() {
     `/admin/users?page=${page}&search=${encodeURIComponent(search)}`,
   );
   const faculties = useResource<Faculty[]>("/public/faculties");
+  const [emailEnabled, setEmailEnabled] = useState(false);
+  const [emailDraft, setEmailDraft] = useState("");
   const [selected, setSelected] = useState<Profile | null>(null);
   const [role, setRole] = useState("FACULTY_SECRETARY");
   const [faculty, setFaculty] = useState("");
@@ -332,10 +328,42 @@ export function UserManagement() {
           : "Đã tạo tài khoản. Bàn giao mật khẩu qua kênh riêng.",
       );
       setSelected(null);
+      setEmailEnabled(false);
+      setEmailDraft("");
       form.reset();
       setFaculty("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Không thể lưu.");
+    } finally {
+      setPending(false);
+    }
+  }
+  async function saveEmail() {
+    if (!selected || !emailEnabled || pending) return;
+    const input = document.getElementById(
+      "account-email",
+    ) as HTMLInputElement | null;
+    if (!input?.reportValidity()) return;
+    setPending(true);
+    setError("");
+    setMessage("");
+    try {
+      const result = await mutation<{ email: string }>(
+        `/admin/users/${selected.id}/email`,
+        { email: emailDraft.trim(), emailChangeEnabled: true },
+        "PUT",
+      );
+      setSelected((current) =>
+        current?.id === selected.id
+          ? { ...current, email: result.email }
+          : current,
+      );
+      setEmailDraft(result.email);
+      setEmailEnabled(false);
+      await users.reload();
+      setMessage("Đã đổi email. Tài khoản sử dụng email mới để đăng nhập.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Không thể đổi email.");
     } finally {
       setPending(false);
     }
@@ -348,6 +376,8 @@ export function UserManagement() {
       await users.reload();
       setDeleteId("");
       setSelected(null);
+      setEmailEnabled(false);
+      setEmailDraft("");
       setMessage("Đã xóa tài khoản.");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Không thể xóa.");
@@ -411,8 +441,11 @@ export function UserManagement() {
                     <td>
                       <button
                         className="button button-outline"
+                        disabled={pending}
                         onClick={() => {
                           setSelected(u);
+                          setEmailEnabled(false);
+                          setEmailDraft(u.email);
                           setRole(u.role);
                           setFaculty(u.faculty_id ?? "");
                           setDeleteId("");
@@ -462,6 +495,57 @@ export function UserManagement() {
               defaultValue={selected?.full_name}
             />
           </label>
+          {selected && (
+            <section className={styles.emailEdit}>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={emailEnabled}
+                aria-controls="account-email"
+                className={styles.emailToggle}
+                disabled={pending}
+                onClick={() => {
+                  setEmailEnabled((value) => !value);
+                  setEmailDraft(selected.email);
+                }}
+              >
+                <span className={styles.switchTrack} aria-hidden="true">
+                  <span />
+                </span>
+                Cho phép sửa email
+              </button>
+              <label htmlFor="account-email">Email đăng nhập</label>
+              <input
+                id="account-email"
+                type="email"
+                maxLength={254}
+                value={emailDraft}
+                required
+                autoComplete="off"
+                disabled={!emailEnabled || pending}
+                onChange={(event) => setEmailDraft(event.target.value)}
+                aria-describedby="email-change-hint"
+              />
+              <small id="email-change-hint">
+                Bật công tắc để chỉnh sửa. Email mới sẽ thay email đăng nhập của
+                tài khoản.
+              </small>
+              {emailEnabled && (
+                <button
+                  type="button"
+                  className="button button-outline"
+                  disabled={
+                    pending ||
+                    emailDraft.trim().toLowerCase() ===
+                      selected.email.toLowerCase()
+                  }
+                  onClick={() => void saveEmail()}
+                >
+                  Lưu email mới
+                </button>
+              )}
+            </section>
+          )}
           {!selected && (
             <>
               <label>
@@ -571,8 +655,11 @@ export function UserManagement() {
               <button
                 className="button button-outline"
                 type="button"
+                disabled={pending}
                 onClick={() => {
                   setSelected(null);
+                  setEmailEnabled(false);
+                  setEmailDraft("");
                   setRole("FACULTY_SECRETARY");
                   setFaculty("");
                 }}

@@ -1297,3 +1297,44 @@
   position: relative;
   max-width: 100%;
 }
+
+/* Campaign toggle: prevent the general text-input height from stretching it. */
+:is(.portal-manager, .portal-admin) .workspace-form .campaign-active-checkbox {
+  align-items: center;
+  gap: 10px !important;
+}
+:is(.portal-manager, .portal-admin) .workspace-form .campaign-active-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  flex: 0 0 18px;
+  margin: 3px;
+  padding: 0;
+}
+:is(.portal-manager, .portal-admin) .campaign-active-checkbox span {
+  line-height: 1.5;
+}
+
+/* Shared logout action across student, manager and admin portals. */
+.portal .sidebar-bottom .logout-button {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 0 12px;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.portal .sidebar-bottom .logout-button:hover:not(:disabled),
+.portal .sidebar-bottom .logout-button:focus-visible {
+  background: #b91c1c;
+  color: #fff;
+}
+.portal .sidebar-bottom .logout-button:focus-visible {
+  outline: 2px solid #991b1b;
+  outline-offset: 2px;
+}
+.portal .sidebar-bottom .logout-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+@media (prefers-reduced-motion: reduce) {
+  .portal .sidebar-bottom .logout-button { transition: none; }
+}

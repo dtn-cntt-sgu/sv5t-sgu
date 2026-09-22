@@ -175,7 +175,7 @@ export function PortalShell({
           <Link href="/documents">
             <HelpCircle size={18} /> Tài liệu & hướng dẫn
           </Link>
-          <button disabled={signingOut} onClick={logout}>
+          <button className="logout-button" disabled={signingOut} onClick={logout}>
             <LogOut size={18} /> {signingOut ? "Đang đăng xuất…" : "Đăng xuất"}
           </button>
         </div>
