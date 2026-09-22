@@ -62,3 +62,7 @@ Tốt nhất sau mỗi đợt xét duyệt, nên xuất toàn bộ dữ liệu c
 Tuy nhiên, có một vấn đề là mỗi khi xuất file zip thì phải lưu file zip đó trên R2 nên sẽ tốn thêm 1 phần dung lượng
 
 --> Do vậy, mỗi lần xuất, vừa thực hiện thao tác xóa trên web và thực hiện (thủ công) cả thao tác xóa file zip đó trên R2
+
+### Bản xem tài liệu trên điện thoại
+
+Landing hiển thị 18 trang ảnh tĩnh sinh từ PDF, không phụ thuộc PDF.js hay JavaScript để đọc tài liệu. Khi thay `assets/Bộ tiêu chuẩn & Hướng dẫn danh hiệu sv5t cấp TP.pdf`, chạy `node scripts/generate-criteria-preview.mjs` trên máy có Poppler (`pdfinfo`, `pdftoppm`), rồi đưa `components/criteria-preview.json` và `public/criteria-preview/` vào cùng lần deploy. Vercel phục vụ các ảnh đã tạo, không cần cài Poppler khi build.

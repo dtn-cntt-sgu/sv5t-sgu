@@ -8,7 +8,7 @@ import {
   type FormEvent,
 } from "react";
 import Link from "next/link";
-import { z } from "zod";
+import { isFacultyCatalog, type Faculty } from "@/lib/domain/faculty-catalog";
 import {
   ArrowLeft,
   ArrowRight,
@@ -18,33 +18,15 @@ import {
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 
-type Faculty = {
-  id: string;
-  code: string;
-  name: string;
-  majors: Array<{ id: string; code: string; name: string }>;
-};
-
-const facultySchema = z
-  .array(
-    z.object({
-      id: z.string().min(1),
-      code: z.string(),
-      name: z.string().min(1),
-      majors: z.array(
-        z.object({
-          id: z.string().min(1),
-          code: z.string(),
-          name: z.string().min(1),
-        }),
-      ),
-    }),
-  )
-  .min(1);
-
-export function RegisterForm() {
-  const [faculties, setFaculties] = useState<Faculty[]>([]);
-  const [catalogLoading, setCatalogLoading] = useState(true);
+export function RegisterForm({
+  initialFaculties = [],
+}: {
+  initialFaculties?: Faculty[];
+}) {
+  const [faculties, setFaculties] = useState<Faculty[]>(initialFaculties);
+  const [catalogLoading, setCatalogLoading] = useState(
+    initialFaculties.length === 0,
+  );
   const [catalogError, setCatalogError] = useState("");
   const [attempt, setAttempt] = useState(0);
   const [majorId, setMajorId] = useState("");
@@ -61,40 +43,54 @@ export function RegisterForm() {
 
   const retryCatalog = useCallback(() => setAttempt((value) => value + 1), []);
   useEffect(() => {
+    if (attempt === 0 && initialFaculties.length) return;
+    let active = true;
     const controller = new AbortController();
+    const timer = setTimeout(() => {
+      controller.abort();
+      if (active) {
+        setCatalogLoading(false);
+        setCatalogError(
+          "Kết nối chậm. Vui lòng thử tải lại danh sách khoa/ngành.",
+        );
+      }
+    }, 15000);
     async function load() {
       setCatalogLoading(true);
       setCatalogError("");
       try {
         const response = await fetch("/api/v1/public/faculties", {
-          signal: AbortSignal.any([
-            controller.signal,
-            AbortSignal.timeout(15000),
-          ]),
+          signal: controller.signal,
           cache: "no-store",
         });
         if (!response.ok) throw new Error("catalog unavailable");
         const result = await response.json();
-        const data = facultySchema.parse(result.data);
-        if (!controller.signal.aborted) {
+        if (!isFacultyCatalog(result.data)) throw new Error("Invalid catalog");
+        const data = result.data;
+        if (active && !controller.signal.aborted) {
           setFaculties(data);
           setFacultyId("");
           setMajorId("");
         }
       } catch {
-        if (!controller.signal.aborted) {
+        if (active && !controller.signal.aborted) {
           setFaculties([]);
           setCatalogError(
             "Chưa tải được danh sách khoa/ngành. Vui lòng thử lại.",
           );
         }
       } finally {
-        if (!controller.signal.aborted) setCatalogLoading(false);
+        clearTimeout(timer);
+        if (active && !controller.signal.aborted) setCatalogLoading(false);
       }
     }
     void load();
-    return () => controller.abort();
-  }, [attempt]);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [attempt, initialFaculties.length]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
