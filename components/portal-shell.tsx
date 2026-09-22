@@ -269,7 +269,7 @@ export function PortalShell({
           {portal === "admin" && (
             <div className="admin-page-heading">
               <div>
-                <span className="admin-eyebrow">SINH VIÊN 5 TỐT · SGU</span>
+                {/* <span className="admin-eyebrow">SINH VIÊN 5 TỐT · SGU</span> */}
                 <h1>{title}</h1>
                 <p>{subtitle ?? adminDescriptions[pathname]}</p>
               </div>

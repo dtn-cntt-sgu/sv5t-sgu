@@ -538,6 +538,35 @@
   color: #536078;
   gap: 8px;
 }
+.portal.portal-admin .admin-password-field {
+  display: block;
+  position: relative;
+}
+.portal.portal-admin .admin-password-field input {
+  width: 100%;
+  padding-right: 44px;
+}
+.portal.portal-admin .admin-password-toggle {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  color: #7a8498;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+.portal.portal-admin .admin-password-toggle:hover,
+.portal.portal-admin .admin-password-toggle:focus-visible {
+  color: #5146cf;
+  background: #eeecff;
+  outline: none;
+}
 .portal.portal-admin
   :is(.workspace-form, .workspace-toolbar, .inline-form)
   :is(input:not([type="checkbox"]), select, textarea) {
@@ -617,6 +646,7 @@
 }
 .portal.portal-admin .workspace-table th {
   padding: 13px 16px;
+  position: relative;
   background: #f8f9fc;
   color: #8992a4;
   font-size: 11px;
@@ -624,6 +654,65 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--line);
+}
+.portal.portal-admin .role-filter-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.portal.portal-admin .role-filter {
+  position: relative;
+}
+.portal.portal-admin .role-filter-trigger {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  color: #5146cf;
+  border: 1px solid #d9d5ff;
+  border-radius: 6px;
+  background: #eeecff;
+  cursor: pointer;
+}
+.portal.portal-admin .role-filter-trigger:hover,
+.portal.portal-admin .role-filter-trigger:focus-visible,
+.portal.portal-admin .role-filter-trigger.is-active {
+  color: #fff;
+  border-color: #5146cf;
+  background: #5146cf;
+  outline: none;
+}
+.portal.portal-admin .role-filter-menu {
+  min-width: 190px;
+  padding: 6px;
+  display: grid;
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
+  z-index: 30;
+  border: 1px solid #e0e3ec;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(38, 45, 72, .15);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.portal.portal-admin .role-filter-menu button {
+  padding: 9px 10px;
+  color: #59667c;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.portal.portal-admin .role-filter-menu button:hover,
+.portal.portal-admin .role-filter-menu button.selected {
+  color: #5146cf;
+  background: #f0efff;
 }
 .portal.portal-admin .workspace-table td {
   padding: 16px;

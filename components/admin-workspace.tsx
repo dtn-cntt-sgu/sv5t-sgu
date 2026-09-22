@@ -17,6 +17,9 @@ import {
   Database,
   HardDrive,
   UsersRound,
+  Filter,
+  Eye,
+  EyeOff,
   Plus,
   Save,
 } from "lucide-react";
@@ -364,14 +367,17 @@ export function CampaignManagement({
 export function UserManagement() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState("");
+  const [roleFilterOpen, setRoleFilterOpen] = useState(false);
   const users = useResource<{ items: Profile[]; total: number }>(
-    `/admin/users?page=${page}&search=${encodeURIComponent(search)}`,
+    `/admin/users?page=${page}&search=${encodeURIComponent(search)}${roleFilter ? `&role=${encodeURIComponent(roleFilter)}` : ""}`,
   );
   const faculties = useResource<Faculty[]>("/public/faculties");
   const [emailEnabled, setEmailEnabled] = useState(false);
   const [emailDraft, setEmailDraft] = useState("");
   const [selected, setSelected] = useState<Profile | null>(null);
   const [role, setRole] = useState("FACULTY_SECRETARY");
+  const [showInitialPassword, setShowInitialPassword] = useState(false);
   const [faculty, setFaculty] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -514,7 +520,53 @@ export function UserManagement() {
               <thead>
                 <tr>
                   <th>Tài khoản</th>
-                  <th>Vai trò</th>
+                  <th>
+                    <span className="role-filter-heading">
+                      Vai trò
+                      <span className="role-filter">
+                        <button
+                          type="button"
+                          className={`role-filter-trigger ${roleFilter ? "is-active" : ""}`}
+                          aria-label="Lọc theo vai trò"
+                          aria-expanded={roleFilterOpen}
+                          onClick={() => setRoleFilterOpen((open) => !open)}
+                        >
+                          <Filter size={14} />
+                        </button>
+                        {roleFilterOpen && (
+                          <div className="role-filter-menu" role="menu">
+                            <button
+                              type="button"
+                              className={!roleFilter ? "selected" : ""}
+                              role="menuitem"
+                              onClick={() => {
+                                setRoleFilter("");
+                                setPage(1);
+                                setRoleFilterOpen(false);
+                              }}
+                            >
+                              Toàn bộ
+                            </button>
+                            {Object.entries(roleLabels).map(([value, label]) => (
+                              <button
+                                key={value}
+                                type="button"
+                                className={roleFilter === value ? "selected" : ""}
+                                role="menuitem"
+                                onClick={() => {
+                                  setRoleFilter(value);
+                                  setPage(1);
+                                  setRoleFilterOpen(false);
+                                }}
+                              >
+                                {label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </span>
+                    </span>
+                  </th>
                   <th>Thao tác</th>
                 </tr>
               </thead>
@@ -647,14 +699,33 @@ export function UserManagement() {
               </label>
               <label>
                 Mật khẩu ban đầu
-                <input
-                  type="password"
-                  name="password"
-                  minLength={14}
-                  maxLength={72}
-                  autoComplete="new-password"
-                  required
-                />
+                <span className="admin-password-field">
+                  <input
+                    type={showInitialPassword ? "text" : "password"}
+                    name="password"
+                    minLength={14}
+                    maxLength={72}
+                    autoComplete="new-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="admin-password-toggle"
+                    aria-label={
+                      showInitialPassword
+                        ? "Ẩn mật khẩu ban đầu"
+                        : "Hiện mật khẩu ban đầu"
+                    }
+                    title={
+                      showInitialPassword
+                        ? "Ẩn mật khẩu"
+                        : "Hiện mật khẩu"
+                    }
+                    onClick={() => setShowInitialPassword((value) => !value)}
+                  >
+                    {showInitialPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </span>
               </label>
               <label>
                 Vai trò
