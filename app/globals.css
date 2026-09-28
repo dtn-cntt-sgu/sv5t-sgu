@@ -142,12 +142,12 @@ button { color: inherit; }
 .auth-aside .brand-copy small { color: rgba(255,255,255,.56); }
 .auth-aside-copy { max-width: 470px; margin: auto 0; position: relative; z-index: 2; }
 .eyebrow.light { color: var(--lime); }
-.auth-aside h2 { margin: 22px 0 17px; font-family: Georgia, serif; font-size: clamp(40px, 4vw, 60px); font-weight: 500; letter-spacing: -2px; line-height: 1.02; }
+.auth-aside h2 { margin: 22px 0 17px; font-family: var(--font-lora), Georgia, serif; font-size: clamp(40px, 4vw, 60px); font-weight: 500; letter-spacing: -.6px; line-height: 1.08; }
 .auth-aside-copy > p { max-width: 420px; color: rgba(255,255,255,.67); font-size: 14px; line-height: 1.7; }
 .auth-benefits { margin-top: 32px; display: grid; gap: 13px; color: rgba(255,255,255,.78); font-size: 12px; }
 .auth-benefits span { display: flex; align-items: center; gap: 10px; }
 .auth-benefits svg { color: var(--lime); }
-.auth-quote { margin: 0; position: relative; z-index: 2; color: rgba(255,255,255,.45); font-family: Georgia, serif; font-size: 12px; font-style: italic; }
+.auth-quote { margin: 0; position: relative; z-index: 2; color: rgba(255,255,255,.45); font-family: var(--font-lora), Georgia, serif; font-size: 12px; font-style: italic; }
 .auth-panel { padding: 39px 6vw; display: flex; flex-direction: column; background: #fbfcfa; }
 .back-link { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; color: #697772; font-size: 12px; font-weight: 650; }
 .auth-form-wrap { width: min(410px, 100%); margin: auto; }
@@ -184,7 +184,7 @@ button { color: inherit; }
 .register-layout { width: min(1180px, calc(100% - 48px)); margin: 48px auto 80px; display: grid; grid-template-columns: 340px 1fr; gap: 70px; }
 .register-intro { padding-top: 8px; }
 .register-intro .portal-badge { margin-top: 55px; }
-.register-intro h1 { margin: 18px 0 15px; font-family: Georgia, serif; font-size: 43px; font-weight: 500; letter-spacing: -1.7px; line-height: 1.03; }
+.register-intro h1 { margin: 18px 0 15px; font-family: var(--font-lora), Georgia, serif; font-size: 43px; font-weight: 500; letter-spacing: -.6px; line-height: 1.08; }
 .register-intro > p { color: var(--muted); font-size: 13px; line-height: 1.7; }
 .register-intro ol { margin: 45px 0 0; padding: 0; display: grid; gap: 24px; list-style: none; }
 .register-intro li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; opacity: .46; }
