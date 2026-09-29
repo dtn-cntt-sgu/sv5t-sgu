@@ -135,7 +135,7 @@ export function RegisterForm({
       setMessage({
         type: "success",
         text: result.data.emailConfirmationRequired
-          ? "Đăng ký thành công. Hãy kiểm tra email để xác nhận tài khoản."
+          ? "Đăng ký thành công. Hãy kiểm tra email để xác nhận tài khoản (vui lòng kiểm tra cả Thư rác/Spam,...)."
           : "Đăng ký thành công. Bạn có thể đăng nhập ngay.",
       });
       formElement.reset();
