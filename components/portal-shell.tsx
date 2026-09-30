@@ -23,6 +23,7 @@ import {
   UserCog,
   ShieldCheck,
 } from "lucide-react";
+import { ParticipationBanner } from "@/components/participation-banner";
 import { Brand } from "@/components/brand";
 import { useResource } from "@/lib/client/use-resource";
 import { api } from "@/lib/client/api";
@@ -228,6 +229,7 @@ export function PortalShell({
             )}
             {portal !== "admin" && <h1>{title}</h1>}
           </div>
+          <ParticipationBanner profile={profile.data} />
           <div className="portal-user">
             {portal === "student" && (
               <Link

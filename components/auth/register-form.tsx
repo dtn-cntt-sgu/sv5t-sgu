@@ -122,7 +122,6 @@ export function RegisterForm({
           mssv: form.get("mssv"),
           fullName: form.get("fullName"),
           email: form.get("email"),
-          phone: form.get("phone"),
           password: form.get("password"),
           facultyId: form.get("facultyId"),
           majorId: form.get("majorId"),
@@ -236,16 +235,6 @@ export function RegisterForm({
               />
             </label>
             <label>
-              <span>Số điện thoại *</span>
-              <input
-                name="phone"
-                type="tel"
-                required
-                pattern="\+?[0-9]{9,15}"
-                placeholder="09xxxxxxxx"
-              />
-            </label>
-            <label>
               <span>Khoa *</span>
               <select
                 name="facultyId"
@@ -298,7 +287,6 @@ export function RegisterForm({
                 placeholder="VD: DCT1241"
               />
             </label>
-            <span />
             <label>
               <span>Mật khẩu *</span>
               <input

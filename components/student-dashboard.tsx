@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import {
   ArrowRight,
+  Pause,
+  Play,
   CalendarClock,
   Check,
   Circle,
@@ -26,6 +28,7 @@ import {
 } from "@/lib/domain/models";
 import { individualFiles, collectiveFiles } from "@/lib/validation/application";
 import { ResourceState, EmptyState } from "./resource-state";
+import styles from "./student-dashboard.module.css";
 const qualities = [
   { label: "Đạo đức tốt", icon: Heart, color: "coral" },
   { label: "Học tập tốt", icon: GraduationCap, color: "blue" },
@@ -34,6 +37,7 @@ const qualities = [
   { label: "Hội nhập tốt", icon: Globe2, color: "amber" },
 ];
 export function StudentDashboard() {
+  const [ledPaused, setLedPaused] = useState(false);
   const profile = useResource<Profile>("/users/me");
   const campaigns = useResource<Campaign | null>("/public/campaigns/active");
   const applications = useResource<Application[]>("/applications");
@@ -53,6 +57,38 @@ export function StudentDashboard() {
       title={`Xin chào${profile.data ? `, ${profile.data.full_name.split(" ").at(-1)}` : " bạn"}!`}
       subtitle="HÔM NAY LÀ MỘT NGÀY ĐỂ TIẾN XA HƠN ✦"
     >
+      {profile.data?.role === "STUDENT" && profile.data.is_active && (
+        <section className={styles.ledBanner} aria-label="Tự hào Sinh viên SGU">
+          <span className="sr-only">Tự hào Sinh viên SGU</span>
+          <div className={styles.ledViewport} aria-hidden="true">
+            <div
+              className={styles.ledTrack}
+              style={{ animationPlayState: ledPaused ? "paused" : "running" }}
+            >
+              {[0, 1].map((group) => (
+                <div className={styles.ledGroup} key={group}>
+                  {[0, 1].map((copy) => (
+                    <span className={styles.ledMessage} key={copy}>
+                      <span className={styles.ledStar}>✦</span>
+                      <span className={styles.ledText}>Tự hào Sinh viên SGU</span>
+                      <span className={styles.ledSpark}>✧</span>
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+          <button
+            type="button"
+            className={styles.ledControl}
+            onClick={() => setLedPaused((paused) => !paused)}
+            aria-label={ledPaused ? "Tiếp tục chạy chữ" : "Tạm dừng chạy chữ"}
+            title={ledPaused ? "Tiếp tục chạy chữ" : "Tạm dừng chạy chữ"}
+          >
+            {ledPaused ? <Play size={15} /> : <Pause size={15} />}
+          </button>
+        </section>
+      )}
       <section className="dashboard-hero">
         <div>
           <span className="section-kicker">

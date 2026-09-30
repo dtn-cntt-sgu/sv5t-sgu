@@ -11,10 +11,6 @@ const schema = z.object({
     .transform((value) => value.toUpperCase()),
   fullName: z.string().trim().min(2).max(100),
   email: z.email().transform((value) => value.toLowerCase()),
-  phone: z
-    .string()
-    .trim()
-    .regex(/^\+?[0-9]{9,15}$/),
   password: z.string().min(10).max(72),
   facultyId: z.uuid(),
   majorId: z.uuid(),
@@ -39,7 +35,6 @@ export async function POST(request: Request) {
         data: {
           mssv: input.mssv,
           full_name: input.fullName,
-          phone: input.phone,
           faculty_id: input.facultyId,
           major_id: input.majorId,
           class_name: input.className,

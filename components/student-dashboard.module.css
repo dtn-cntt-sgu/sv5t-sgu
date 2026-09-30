@@ -1,0 +1,168 @@
+.ledBanner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-bottom: 20px;
+  padding: 8px 14px 8px 0;
+  overflow: hidden;
+  border: 1px solid #5077df;
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse at 50% 0, #5681ed66, transparent 70%),
+    radial-gradient(circle, #b9d0ff20 1px, transparent 1.5px),
+    linear-gradient(110deg, #193b91, #2854c5 55%, #193b91);
+  background-size:
+    auto,
+    6px 6px,
+    auto;
+  box-shadow:
+    inset 0 1px 0 #ffffff30,
+    0 8px 22px #2447a31a;
+}
+
+.ledBanner::before {
+  content: "";
+  position: absolute;
+  inset: 0 12% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ffe58a, transparent);
+}
+
+.ledViewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  container-type: inline-size;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+}
+
+.ledTrack {
+  display: flex;
+  width: max-content;
+  animation: ledScroll 26s linear infinite;
+  will-change: transform;
+}
+
+.ledGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-shrink: 0;
+  min-width: 100cqw;
+}
+
+.ledMessage {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 36px;
+  white-space: nowrap;
+}
+
+.ledText {
+  color: #ffe58a;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  text-shadow:
+    0 0 6px #ffd65c66,
+    0 0 20px #ffc34344;
+}
+
+.ledStar {
+  color: #ffe58a;
+  font-size: 25px;
+  text-shadow: 0 0 12px #ffcc5588;
+}
+
+.ledSpark {
+  color: #c6dcff;
+  font-size: 25px;
+}
+
+.ledControl {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid #ffffff40;
+  border-radius: 50%;
+  color: #ffe58a;
+  background: #ffffff0d;
+  cursor: pointer;
+}
+
+.ledControl:hover {
+  background: #ffffff24;
+}
+
+.ledControl:focus-visible {
+  outline: 2px solid #ffe58a;
+  outline-offset: 3px;
+}
+
+@keyframes ledScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 480px) {
+  .ledBanner {
+    margin-bottom: 16px;
+    padding-right: 10px;
+    border-radius: 14px;
+  }
+  .ledTrack {
+    animation-duration: 22s;
+  }
+  .ledMessage {
+    gap: 16px;
+    padding: 8px 24px;
+  }
+  .ledText {
+    font-size: 22px;
+    letter-spacing: 0.4px;
+  }
+  .ledStar,
+  .ledSpark {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ledTrack {
+    width: 100%;
+    animation: none;
+    will-change: auto;
+  }
+  .ledGroup {
+    min-width: 0;
+    width: 100%;
+  }
+  .ledGroup + .ledGroup,
+  .ledMessage + .ledMessage,
+  .ledControl {
+    display: none;
+  }
+  .ledMessage {
+    gap: 10px;
+    padding-inline: 12px;
+    white-space: normal;
+    text-align: center;
+  }
+}

@@ -903,7 +903,6 @@ body:has(.portal-admin) {
 .portal.portal-admin {
   flex: 1 0 auto;
 }
-body:has(.portal-admin) .site-footer {
 /* Matching admin sign-in, with existing authentication flow preserved. */
 .auth-page-admin {
   background: #f8f9fc;

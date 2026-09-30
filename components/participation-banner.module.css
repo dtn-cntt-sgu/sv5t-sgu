@@ -1,0 +1,130 @@
+.banner {
+  min-width: 0;
+  margin-inline: auto;
+  padding: 10px 14px;
+  border: 1px solid #ffffffa6;
+  border-radius: 14px;
+  background: #ffffffb3;
+  color: #193e68;
+}
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.counter > svg {
+  flex-shrink: 0;
+  color: #3158cc;
+}
+.total {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.total strong {
+  color: #244ac4;
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+.total span {
+  font-size: 12px;
+  font-weight: 650;
+}
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: 10px;
+}
+.caption i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.live {
+  background: #16815d;
+}
+.offline {
+  background: #8593a3;
+}
+.register {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 13px;
+  background: #2c52d5;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.register:hover:not(:disabled) {
+  background: #2143b9;
+}
+.register:focus-visible,
+.error button:focus-visible {
+  outline: 3px solid #6488ef;
+  outline-offset: 3px;
+}
+.register:disabled {
+  background: #e4ebf8;
+  color: #506386;
+  cursor: default;
+}
+.error {
+  max-width: 440px;
+  margin-top: 6px;
+  color: #9b3333;
+  font-size: 11px;
+}
+.error button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+@media (min-width: 1201px) and (max-width: 1500px) {
+  .content {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .banner {
+    padding: 8px 12px;
+  }
+}
+@media (max-width: 1200px) {
+  .banner {
+    order: 5;
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .content {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .register {
+    width: 100%;
+  }
+  .total strong {
+    font-size: 36px;
+  }
+}

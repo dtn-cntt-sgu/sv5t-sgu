@@ -829,3 +829,12 @@ input:disabled { background:#f4f6fa; color:#738099; }
 .campaign-row { padding:20px 0; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:15px; }.campaign-row h3 { font-size:14px; }.campaign-row p { font-size:11px; }.inline-form { display:flex; gap:10px; }.inline-form input { border:1px solid var(--line); padding:10px; border-radius:9px; min-width:0; }.catalog-row { padding:20px 0; border-top:1px solid var(--line); }.catalog-row > div { margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; }.catalog-chip { padding:8px 12px; border:1px solid var(--line); background:#f6f8fc; border-radius:8px; font-size:11px; }.audit-entry { border-top:1px solid var(--line); padding:17px 0; }.audit-entry summary { cursor:pointer; font-size:12px; }.audit-entry pre { max-height:350px; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; font-size:11px; background:#f5f7fc; padding:15px; }.danger-zone { padding:16px; background:#fff4f2; border:1px solid #f1d4ce; border-radius:12px; }.danger-zone p { color:#9c5148; }.button-danger { background:#ae433d; color:white; border:0; }
 .workspace-form .checkbox { flex-direction:row; align-items:flex-start; font-weight:400; line-height:1.7; }.workspace-form .checkbox input { width:17px; min-height:17px; margin-top:3px; }
 @media(max-width:1100px) { .admin-two-columns { grid-template-columns:1fr; } }
+
+/* Shared participation controls in every account portal. */
+.portal-header { height: auto; gap: 18px; }
+.portal-heading { min-width: 0; }
+.portal-user { flex-shrink: 0; }
+@media (max-width: 1200px) {
+  .portal-header { flex-wrap: wrap; }
+  .portal-heading { flex: 1; }
+}
