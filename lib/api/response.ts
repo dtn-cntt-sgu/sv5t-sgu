@@ -66,6 +66,8 @@ export function apiError(
       ? String(error.message)
       : "";
   const messages: Record<string, string> = {
+    NOTIFICATION_NOT_FOUND: "Thông báo không tồn tại. Vui lòng tải lại danh sách.",
+    NOTIFICATION_REQUEST_CONFLICT: "Nội dung gửi đã thay đổi. Vui lòng tải lại trang trước khi gửi lại.",
     BACKUP_CONFIRMATION_REQUIRED:
       "Vui lòng xác nhận đã tải và kiểm tra bản sao lưu trước khi xóa.",
     EXPORT_OR_CLEANUP_IN_PROGRESS:

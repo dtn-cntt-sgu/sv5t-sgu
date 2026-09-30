@@ -62,3 +62,16 @@ Tốt nhất sau mỗi đợt xét duyệt, nên xuất toàn bộ dữ liệu c
 Tuy nhiên, có một vấn đề là mỗi khi xuất file zip thì phải lưu file zip đó trên R2 nên sẽ tốn thêm 1 phần dung lượng
 
 --> Do vậy, mỗi lần xuất, vừa thực hiện thao tác xóa trên web và thực hiện (thủ công) cả thao tác xóa file zip đó trên R2
+
+## Thông báo từ Chủ tịch đến sinh viên
+
+Chạy `supabase/migrations/202609300020_student_notifications.sql` trong Supabase SQL Editor sau các migration hiện có (bao gồm `202609300019`). Migration tạo bảng thông báo, trạng thái đọc riêng, RPC có kiểm tra quyền và cấu hình Realtime.
+
+- Chủ tịch (`SCHOOL_PRESIDENT`): vào **Thông báo sinh viên** (`/manager/notifications`). Bên trái soạn tiêu đề/nội dung và xem trước; bên phải xem lịch sử đã gửi, mới nhất trước. Chỉ tài khoản Chủ tịch đang hoạt động có quyền gửi.
+- Nội dung chỉ là văn bản, hỗ trợ tiêu đề đoạn, in đậm, in nghiêng, danh sách và xuống dòng. Không xử lý HTML, ảnh hay tệp đính kèm. Giới hạn tiêu đề 160 ký tự, nội dung 10.000 ký tự.
+- Sinh viên: vào **Thông báo** (`/dashboard/notifications`) hoặc nhấn chuông trên header. Chuông hiển thị số chưa đọc và rung liên tục khi còn thông báo chưa đọc; chế độ giảm chuyển động của thiết bị sẽ tắt hiệu ứng rung.
+- Mở một thông báo mới đánh dấu thông báo đó đã đọc. Trạng thái được lưu theo tài khoản, đồng bộ giữa các tab/thiết bị bằng Realtime; tự cập nhật lại mỗi 30 giây và khi quay lại tab/kết nối mạng.
+- Mọi sinh viên đang hoạt động sau khi đăng nhập đều xem được lịch sử thông báo, kể cả tài khoản tạo sau ngày gửi. Không gửi email/push ngoài ứng dụng.
+- Gửi lại cùng một yêu cầu không tạo bản sao. Thao tác gửi được ghi audit trong cùng transaction.
+
+Kiểm thử database cục bộ: `node --test scripts/tests/notifications.test.mjs`.

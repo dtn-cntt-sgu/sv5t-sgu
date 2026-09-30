@@ -18,11 +18,14 @@ import {
   Settings,
   Files,
   BarChart3,
-  FileSpreadsheet,
   Archive,
   UserCog,
   ShieldCheck,
 } from "lucide-react";
+import {
+  NotificationProvider,
+  NotificationBell,
+} from "@/components/notifications/notification-context";
 import { ParticipationBanner } from "@/components/participation-banner";
 import { Brand } from "@/components/brand";
 import { useResource } from "@/lib/client/use-resource";
@@ -37,6 +40,7 @@ export type PortalNavItem = {
 const studentNav = [
   { label: "Tổng quan", href: "/dashboard", icon: LayoutDashboard },
   { label: "Hồ sơ của tôi", href: "/application", icon: FileText },
+  { label: "Thông báo", href: "/dashboard/notifications", icon: Bell },
   {
     label: "Phản hồi xét duyệt",
     href: "/dashboard/feedback",
@@ -57,6 +61,7 @@ const managerNav = [
     icon: BarChart3,
   },
   { label: "Đợt xét duyệt", href: "/manager/campaigns", icon: Archive },
+  { label: "Thông báo sinh viên", href: "/manager/notifications", icon: Bell },
   {
     label: "Thông tin và Tài khoản",
     href: "/manager/profile",
@@ -98,7 +103,8 @@ export function PortalShell({
         : adminNav
   ).filter(
     (item) =>
-      (item.href !== "/manager/campaigns" ||
+      ((item.href !== "/manager/campaigns" &&
+        item.href !== "/manager/notifications") ||
         profile.data?.role === "SCHOOL_PRESIDENT") &&
       (item.href !== "/manager" || profile.data?.role !== "FACULTY_SECRETARY"),
   );
@@ -129,138 +135,147 @@ export function PortalShell({
           ? "portal-role-admin"
           : "";
   return (
-    <main className={`portal portal-${portal} ${roleTheme}`}>
-      <a href="#portal-content" className="skip-link">
-        Đến nội dung chính
-      </a>
-      <aside className={`portal-sidebar ${open ? "is-open" : ""}`}>
-        <div className="sidebar-brand">
-          <Brand />
+    <NotificationProvider
+      userId={
+        profile.data?.role === "STUDENT" && profile.data.is_active
+          ? profile.data.id
+          : undefined
+      }
+    >
+      <main className={`portal portal-${portal} ${roleTheme}`}>
+        <a href="#portal-content" className="skip-link">
+          Đến nội dung chính
+        </a>
+        <aside className={`portal-sidebar ${open ? "is-open" : ""}`}>
+          <div className="sidebar-brand">
+            <Brand />
+            <button
+              className="mobile-menu"
+              aria-label="Đóng menu"
+              onClick={() => setOpen(false)}
+            >
+              <X size={22} />
+            </button>
+          </div>
+          <span className="nav-caption">
+            {portal === "student"
+              ? "GÓC CỦA BẠN"
+              : portal === "admin"
+                ? "QUẢN LÝ"
+                : "KHÔNG GIAN LÀM VIỆC"}
+          </span>
+          <nav aria-label="Điều hướng tài khoản">
+            {items.map(({ label, href, icon: Icon }, index) => {
+              const active =
+                pathname === href ||
+                (href !== "/manager" &&
+                  href !== "/admin" &&
+                  href !== "/dashboard" &&
+                  pathname.startsWith(`${href}/`));
+              return (
+                <Fragment key={href}>
+                  {portal === "admin" && index === 4 && (
+                    <span className="admin-nav-group">HỆ THỐNG</span>
+                  )}
+                  <Link
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={active ? "active" : ""}
+                    href={href}
+                    key={href}
+                  >
+                    <Icon size={19} />
+                    <span>{label}</span>
+                    {active && <i />}
+                  </Link>
+                </Fragment>
+              );
+            })}
+          </nav>
+          {portal === "student" && (
+            <div className="sidebar-inspiration">
+              <span>✦</span>
+              <strong>
+                Mỗi ngày <br /> một chút tốt hơn.
+              </strong>
+              <p>Hành trình của bạn bắt đầu từ những điều nhỏ nhất.</p>
+              <Link href="/documents">Khám phá tiêu chí ↗</Link>
+            </div>
+          )}
+          <div className="sidebar-bottom">
+            <Link href="/documents">
+              <HelpCircle size={18} /> Tài liệu & hướng dẫn
+            </Link>
+            <button
+              className="logout-button"
+              disabled={signingOut}
+              onClick={logout}
+            >
+              <LogOut size={18} />{" "}
+              {signingOut ? "Đang đăng xuất…" : "Đăng xuất"}
+            </button>
+          </div>
+        </aside>
+        {open && (
           <button
-            className="mobile-menu"
+            className="menu-backdrop"
             aria-label="Đóng menu"
             onClick={() => setOpen(false)}
-          >
-            <X size={22} />
-          </button>
-        </div>
-        <span className="nav-caption">
-          {portal === "student"
-            ? "GÓC CỦA BẠN"
-            : portal === "admin"
-              ? "QUẢN LÝ"
-              : "KHÔNG GIAN LÀM VIỆC"}
-        </span>
-        <nav aria-label="Điều hướng tài khoản">
-          {items.map(({ label, href, icon: Icon }, index) => {
-            const active =
-              pathname === href ||
-              (href !== "/manager" &&
-                href !== "/admin" &&
-                href !== "/dashboard" &&
-                pathname.startsWith(`${href}/`));
-            return (
-              <Fragment key={href}>
-                {portal === "admin" && index === 4 && (
-                  <span className="admin-nav-group">HỆ THỐNG</span>
-                )}
-                <Link
-                  onClick={() => setOpen(false)}
-                  aria-current={active ? "page" : undefined}
-                  className={active ? "active" : ""}
-                  href={href}
-                  key={href}
-                >
-                  <Icon size={19} />
-                  <span>{label}</span>
-                  {active && <i />}
-                </Link>
-              </Fragment>
-            );
-          })}
-        </nav>
-        {portal === "student" && (
-          <div className="sidebar-inspiration">
-            <span>✦</span>
-            <strong>Mỗi ngày <br/> một chút tốt hơn.</strong>
-            <p>Hành trình của bạn bắt đầu từ những điều nhỏ nhất.</p>
-            <Link href="/documents">Khám phá tiêu chí ↗</Link>
-          </div>
+          />
         )}
-        <div className="sidebar-bottom">
-          <Link href="/documents">
-            <HelpCircle size={18} /> Tài liệu & hướng dẫn
-          </Link>
-          <button
-            className="logout-button"
-            disabled={signingOut}
-            onClick={logout}
-          >
-            <LogOut size={18} /> {signingOut ? "Đang đăng xuất…" : "Đăng xuất"}
-          </button>
-        </div>
-      </aside>
-      {open && (
-        <button
-          className="menu-backdrop"
-          aria-label="Đóng menu"
-          onClick={() => setOpen(false)}
-        />
-      )}
-      <section className="portal-main">
-        <header className="portal-header">
-          <button
-            className="mobile-menu"
-            aria-label="Mở menu"
-            aria-expanded={open}
-            onClick={() => setOpen(true)}
-          >
-            <Menu size={22} />
-          </button>
-          <div className="portal-heading">
-            {portal === "admin" ? (
-              <nav className="admin-breadcrumb" aria-label="Đường dẫn">
-                <Link href="/admin">Quản trị</Link>
-                <ChevronRight size={14} />
-                <span>{title}</span>
-              </nav>
-            ) : (
-              <p>{subtitle ?? "HỘI SINH VIÊN - TRƯỜNG ĐẠI HỌC SÀI GÒN"}</p>
+        <section className="portal-main">
+          <header className="portal-header">
+            <button
+              className="mobile-menu"
+              aria-label="Mở menu"
+              aria-expanded={open}
+              onClick={() => setOpen(true)}
+            >
+              <Menu size={22} />
+            </button>
+            <div className="portal-heading">
+              {portal === "admin" ? (
+                <nav className="admin-breadcrumb" aria-label="Đường dẫn">
+                  <Link href="/admin">Quản trị</Link>
+                  <ChevronRight size={14} />
+                  <span>{title}</span>
+                </nav>
+              ) : (
+                <p>{subtitle ?? "HỘI SINH VIÊN - TRƯỜNG ĐẠI HỌC SÀI GÒN"}</p>
+              )}
+              {portal !== "admin" && <h1>{title}</h1>}
+            </div>
+            <ParticipationBanner profile={profile.data} />
+            <div className="portal-user">
+              {profile.data?.role === "STUDENT" && profile.data.is_active && (
+                <NotificationBell />
+              )}
+              <div className="portal-avatar">{initials}</div>
+              <span>
+                <strong>
+                  {profile.data?.full_name ?? "Tài khoản của bạn"}
+                </strong>
+                <small>
+                  {profile.data ? roleLabels[profile.data.role] : "Đang tải…"}
+                </small>
+              </span>
+            </div>
+          </header>
+          <div id="portal-content" className="portal-content">
+            {(error || profile.error) && (
+              <p className="form-error" role="alert">
+                {error || profile.error}{" "}
+                <Link
+                  href={portal === "student" ? "/login" : `/${portal}/login`}
+                >
+                  Đăng nhập lại
+                </Link>
+              </p>
             )}
-            {portal !== "admin" && <h1>{title}</h1>}
+            {children}
           </div>
-          <ParticipationBanner profile={profile.data} />
-          <div className="portal-user">
-            {portal === "student" && (
-              <Link
-                className="icon-button"
-                href="/dashboard/feedback"
-                aria-label="Xem phản hồi xét duyệt"
-              >
-                <Bell size={19} />
-              </Link>
-            )}
-            <div className="portal-avatar">{initials}</div>
-            <span>
-              <strong>{profile.data?.full_name ?? "Tài khoản của bạn"}</strong>
-              <small>
-                {profile.data ? roleLabels[profile.data.role] : "Đang tải…"}
-              </small>
-            </span>
-          </div>
-        </header>
-        <div id="portal-content" className="portal-content">
-          {(error || profile.error) && (
-            <p className="form-error" role="alert">
-              {error || profile.error}{" "}
-              <Link href={portal === "student" ? "/login" : `/${portal}/login`}>
-                Đăng nhập lại
-              </Link>
-            </p>
-          )}
-          {children}
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </NotificationProvider>
   );
 }
