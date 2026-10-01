@@ -16,7 +16,7 @@ type Portal = "student" | "manager" | "admin";
 const copy = {
   student: {
     title: "Chào mừng trở lại",
-    description: "Tiếp tục hành trình Sinh viên 5 Tốt của bạn.",
+    description: "Tiếp tục hành trình Sinh viên 5 Tốt.",
     identifier: "MSSV hoặc email",
   },
   manager: {
@@ -86,8 +86,8 @@ export function LoginForm({ portal }: { portal: Portal }) {
             required
             placeholder={
               portal === "student"
-                ? "3124… hoặc ten@sgu.edu.vn"
-                : "ten@sgu.edu.vn"
+                ? "3124… hoặc ten@gmail.com"
+                : "ten@gmail.com"
             }
           />
         </div>
@@ -113,7 +113,7 @@ export function LoginForm({ portal }: { portal: Portal }) {
         </div>
       </label>
       <div className="form-row">
-        <span>Đăng nhập bằng tài khoản của bạn</span>
+        {/* <span>Đăng nhập bằng tài khoản của bạn</span> */}
         <Link href="/forgot-password">Quên mật khẩu?</Link>
       </div>
       {error && (

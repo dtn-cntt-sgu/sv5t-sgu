@@ -132,7 +132,8 @@ button { color: inherit; }
 .landing-footer div { display: flex; gap: 25px; }
 
 /* Auth and registration */
-.auth-page { min-height: 100vh; display: grid; grid-template-columns: minmax(430px, 43%) 1fr; background: #fff; }
+.auth-page { min-height: 100vh; min-height: 100dvh; min-width: 0; display: grid; grid-template-columns: minmax(430px, 43%) minmax(0, 1fr); background: #fff; }
+.auth-page + .site-footer, .register-page + .site-footer { display: none; }
 .auth-aside { padding: 40px 56px; display: flex; flex-direction: column; position: relative; overflow: hidden; color: #fff; background: linear-gradient(145deg, #113b31, #0b664a); }
 .auth-page-manager .auth-aside { background: linear-gradient(145deg, #18354b, #16645f); }
 .auth-page-admin .auth-aside { background: linear-gradient(145deg, #26263d, #123b42); }
@@ -148,9 +149,9 @@ button { color: inherit; }
 .auth-benefits span { display: flex; align-items: center; gap: 10px; }
 .auth-benefits svg { color: var(--lime); }
 .auth-quote { margin: 0; position: relative; z-index: 2; color: rgba(255,255,255,.45); font-family: var(--font-lora), Georgia, serif; font-size: 12px; font-style: italic; }
-.auth-panel { padding: 39px 6vw; display: flex; flex-direction: column; background: #fbfcfa; }
+.auth-panel { min-width: 0; padding: 39px 6vw; display: flex; flex-direction: column; background: #fbfcfa; }
 .back-link { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; color: #697772; font-size: 12px; font-weight: 650; }
-.auth-form-wrap { width: min(410px, 100%); margin: auto; }
+.auth-form-wrap { width: min(410px, 100%); min-width: 0; margin: auto; }
 .auth-heading { margin-bottom: 31px; }
 .portal-badge { padding: 6px 10px; display: inline-flex; align-items: center; gap: 6px; color: var(--green); border-radius: 20px; background: #e5f5ec; font-size: 9px; font-weight: 850; letter-spacing: 1px; text-transform: uppercase; }
 .portal-manager { color: #286578; background: #e3f0f4; }
@@ -159,7 +160,7 @@ button { color: inherit; }
 .auth-heading p { margin: 0; color: var(--muted); font-size: 13px; }
 .auth-form > label { margin-bottom: 18px; display: grid; gap: 8px; }
 .auth-form > label > span, .register-form label > span { color: #42524e; font-size: 11px; font-weight: 750; }
-.input-wrap { height: 49px; padding: 0 13px; display: flex; align-items: center; gap: 10px; border: 1px solid #dce3de; border-radius: 11px; background: #fff; transition: border .18s ease, box-shadow .18s ease; }
+.input-wrap { min-width: 0; height: 49px; padding: 0 13px; display: flex; align-items: center; gap: 10px; border: 1px solid #dce3de; border-radius: 11px; background: #fff; transition: border .18s ease, box-shadow .18s ease; }
 .input-wrap:focus-within { border-color: #4b9c81; box-shadow: 0 0 0 3px rgba(38,132,99,.1); }
 .input-wrap svg { color: #84908c; }
 .input-wrap input { width: 100%; height: 100%; border: 0; outline: 0; background: transparent; font-size: 13px; }
@@ -177,7 +178,7 @@ button { color: inherit; }
 .recovery-page > section { width: min(440px, calc(100% - 32px)); margin: auto; padding: 42px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: var(--shadow); }
 .recovery-page > small { margin: 24px auto; color: #899590; font-size: 9px; }
 .auth-switch a { display: inline-flex; align-items: center; gap: 5px; }
-.register-page { min-height: 100vh; background: #f7f8f5; }
+.register-page { min-height: 100vh; min-height: 100dvh; background: #f7f8f5; }
 .register-header { height: 80px; padding: 0 max(4vw, 30px); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: #fff; }
 .register-header > a { color: var(--muted); font-size: 12px; }
 .register-header strong { color: var(--green); }
@@ -443,7 +444,13 @@ button { color: inherit; }
   .process-section { padding: 42px 24px; grid-template-columns: 1fr; gap: 35px; }
   .document-strip { padding: 30px 24px; grid-template-columns: 1fr; gap: 16px; }
   .landing-footer { width: calc(100% - 28px); flex-direction: column; gap: 18px; }
-  .auth-panel { padding: 27px 22px; }
+  .auth-panel { padding: 24px 16px 20px; }
+  .auth-form-wrap { margin: auto 0; }
+  .auth-heading { margin-bottom: 25px; }
+  .auth-heading h1 { font-size: 32px; letter-spacing: -.7px; }
+  .auth-heading p { max-width: 30ch; line-height: 1.5; }
+  .form-row { margin: -1px 0 21px; flex-wrap: wrap; gap: 8px 16px; line-height: 1.4; }
+  .auth-switch { line-height: 1.5; }
   .register-header { padding: 0 17px; }
   .register-layout { width: calc(100% - 28px); margin-top: 28px; }
   .register-intro .portal-badge { margin-top: 30px; }

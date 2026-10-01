@@ -878,6 +878,48 @@
     gap: 18px;
   }
 }
+
+@media (max-width: 980px) {
+  .auth-page {
+    width: calc(100% - 16px);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .auth-panel {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .auth-panel {
+    padding: 24px 16px 20px;
+  }
+
+  .auth-form-wrap {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .auth-heading {
+    margin-bottom: 25px;
+  }
+
+  .auth-heading h1 {
+    font-size: 32px;
+  }
+
+  .auth-heading p {
+    max-width: 30ch;
+    line-height: 1.5;
+  }
+
+  .form-row {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    line-height: 1.4;
+  }
+}
 .export-section-heading {
   display: flex;
   align-items: center;
