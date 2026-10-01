@@ -66,6 +66,12 @@ export function apiError(
       ? String(error.message)
       : "";
   const messages: Record<string, string> = {
+    QA_PENDING: "Bạn đang có câu hỏi chờ trả lời. Vui lòng đợi Chủ tịch phản hồi trước khi hỏi tiếp.",
+    QA_CHANGED: "Nội dung đã thay đổi. Vui lòng tải lại danh sách trước khi thao tác.",
+    QA_NOT_FOUND: "Câu hỏi không còn tồn tại. Vui lòng tải lại danh sách.",
+    QA_ANSWERED: "Câu hỏi này đã được trả lời. Vui lòng tải lại danh sách.",
+    QA_INVALID_ACTION: "Thao tác hỏi đáp không hợp lệ.",
+    QA_INVALID_ANSWER: "Câu trả lời phải có từ 1 đến 5.000 ký tự.",
     NOTIFICATION_NOT_FOUND: "Thông báo không tồn tại. Vui lòng tải lại danh sách.",
     NOTIFICATION_REQUEST_CONFLICT: "Nội dung gửi đã thay đổi. Vui lòng tải lại trang trước khi gửi lại.",
     BACKUP_CONFIRMATION_REQUIRED:

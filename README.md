@@ -75,3 +75,17 @@ Chạy `supabase/migrations/202609300020_student_notifications.sql` trong Supaba
 - Gửi lại cùng một yêu cầu không tạo bản sao. Thao tác gửi được ghi audit trong cùng transaction.
 
 Kiểm thử database cục bộ: `node --test scripts/tests/notifications.test.mjs`.
+
+## Hỏi đáp giữa sinh viên và Chủ tịch
+
+Chạy `supabase/migrations/202610010021_questions_and_answers.sql` trong Supabase SQL Editor sau các migration hiện có để kích hoạt chức năng.
+
+- Sinh viên: **Hỏi đáp** (`/dashboard/qa`). Bên trái là câu hỏi chung dạng đóng/mở; bên phải gửi câu hỏi riêng và xem lịch sử trả lời.
+- Chủ tịch (`SCHOOL_PRESIDENT`): **Hỏi đáp** (`/manager/qa`). Có thể thêm, sửa, xóa (có xác nhận) và đổi thứ tự câu hỏi chung bằng nút lên/xuống. Danh sách câu hỏi riêng có bộ lọc chờ trả lời/đã trả lời/tất cả và phân trang 20 câu.
+- Mỗi sinh viên chỉ có tối đa một câu hỏi chưa được trả lời. Database kiểm tra giới hạn này bằng khóa transaction và unique index, kể cả khi gửi từ nhiều tab. Sau khi Chủ tịch trả lời, sinh viên có thể hỏi tiếp.
+- Câu hỏi chung được chia sẻ cho sinh viên đã đăng nhập và Chủ tịch. Trao đổi cá nhân chỉ người hỏi và Chủ tịch được đọc; quản lý khoa và quản trị viên không được truy cập.
+- Nội dung là văn bản thuần, giữ xuống dòng. Câu hỏi chung tối đa 240 ký tự, câu hỏi riêng 3.000 ký tự, câu trả lời 5.000 ký tự. Không hỗ trợ tệp đính kèm.
+- Trang đang mở cập nhật qua Supabase Realtime, có đồng bộ lại mỗi 30 giây và khi quay lại tab/kết nối mạng. Không tự chuyển câu hỏi riêng thành câu hỏi chung.
+- Các thao tác quản lý FAQ/trả lời đều có audit. Câu trả lời riêng sau khi gửi được giữ nguyên; gửi lại cùng yêu cầu không tạo thêm câu hỏi hoặc câu trả lời.
+
+Kiểm thử database cục bộ: `node --test scripts/tests/qa.test.mjs`.

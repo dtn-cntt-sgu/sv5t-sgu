@@ -41,6 +41,7 @@ const studentNav = [
   { label: "Tổng quan", href: "/dashboard", icon: LayoutDashboard },
   { label: "Hồ sơ của tôi", href: "/application", icon: FileText },
   { label: "Thông báo", href: "/dashboard/notifications", icon: Bell },
+  { label: "Hỏi đáp", href: "/dashboard/qa", icon: HelpCircle },
   {
     label: "Phản hồi xét duyệt",
     href: "/dashboard/feedback",
@@ -62,6 +63,7 @@ const managerNav = [
   },
   { label: "Đợt xét duyệt", href: "/manager/campaigns", icon: Archive },
   { label: "Thông báo sinh viên", href: "/manager/notifications", icon: Bell },
+  { label: "Hỏi đáp", href: "/manager/qa", icon: HelpCircle },
   {
     label: "Thông tin và Tài khoản",
     href: "/manager/profile",
@@ -104,7 +106,8 @@ export function PortalShell({
   ).filter(
     (item) =>
       ((item.href !== "/manager/campaigns" &&
-        item.href !== "/manager/notifications") ||
+        item.href !== "/manager/notifications" &&
+        item.href !== "/manager/qa") ||
         profile.data?.role === "SCHOOL_PRESIDENT") &&
       (item.href !== "/manager" || profile.data?.role !== "FACULTY_SECRETARY"),
   );

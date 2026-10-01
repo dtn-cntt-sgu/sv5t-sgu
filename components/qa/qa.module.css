@@ -1,0 +1,372 @@
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 24px;
+  align-items: start;
+}
+.columns > * {
+  min-width: 0;
+}
+.common {
+  padding: 28px;
+  border: 1px solid #dfe9f6;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #f0edff 0%, #e7f8ff 50%, #effcfa 100%);
+}
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.heading h2 {
+  margin: 5px 0 0;
+  color: #203e69;
+  font-size: 23px;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 13px;
+  background: #ffffffbd;
+  color: #365ee0;
+}
+.eyebrow {
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.4px;
+  color: #5074b0;
+}
+.intro {
+  margin: 18px 0 24px;
+  color: #657d9d;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.faqList {
+  display: grid;
+  gap: 12px;
+}
+.faq {
+  overflow: hidden;
+  border: 1px solid #d6e5ed;
+  border-radius: 12px;
+  background: #ffffff40;
+  transition: background 0.2s;
+}
+.faq:has(details[open]) {
+  background: #fff;
+  box-shadow: 0 8px 24px #4c6e9510;
+}
+.faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px;
+  cursor: pointer;
+  color: #23465b;
+  font-size: 15px;
+  font-weight: 650;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq summary svg {
+  flex-shrink: 0;
+}
+.collapse {
+  display: none;
+}
+.faq details[open] .collapse {
+  display: block;
+}
+.faq details[open] .expand {
+  display: none;
+}
+.faqAnswer {
+  padding: 0 20px 22px;
+  color: #476477;
+  font-size: 14px;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.faqTools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  padding: 8px 12px;
+  border-top: 1px solid #dce7ef;
+  background: #ffffff60;
+}
+.faqTools button,
+.confirm button,
+.pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 6px 9px;
+  border: 1px solid #d6e2f3;
+  border-radius: 7px;
+  color: #3a5688;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.faqTools button:hover:not(:disabled) {
+  background: #eaf0ff;
+}
+.add {
+  margin-bottom: 18px;
+}
+.faqEditor {
+  padding: 20px;
+  margin-bottom: 18px;
+  border: 1px solid #ccdcf6;
+  border-radius: 13px;
+  background: white;
+}
+.faqEditor h3 {
+  margin: 0 0 16px;
+  font-size: 17px;
+  color: #244675;
+}
+.faqEditor label,
+.ask label,
+.replyForm label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 650;
+  color: #315079;
+}
+.faqEditor input,
+.faqEditor textarea,
+.ask textarea,
+.replyForm textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #d5e1f3;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.7;
+  background: #fff;
+  color: #243f63;
+}
+.columns textarea {
+  resize: vertical;
+}
+.columns input:focus,
+.columns textarea:focus {
+  outline: 2px solid #688bef;
+  outline-offset: 1px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.confirm {
+  padding: 0 16px 16px;
+  color: #9e4242;
+  font-size: 13px;
+}
+.confirm button {
+  margin-right: 8px;
+}
+.success {
+  color: #277954;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.empty {
+  padding: 28px 12px;
+  text-align: center;
+  color: #6b83a5;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.ask {
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e1e8f4;
+}
+.sendRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+.sendRow small {
+  color: #8393aa;
+  font-size: 11px;
+}
+.waiting {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid #f1dfad;
+  border-radius: 12px;
+  background: #fffaec;
+  color: #916b25;
+}
+.waiting > svg {
+  flex-shrink: 0;
+}
+.waiting strong {
+  font-size: 14px;
+}
+.waiting p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.historyHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0 18px;
+}
+.historyHeading h3 {
+  font-size: 17px;
+  margin: 0;
+  color: #294970;
+}
+.historyHeading select {
+  padding: 9px;
+  border: 1px solid #d9e3f2;
+  border-radius: 8px;
+  color: #3a5480;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+}
+.question {
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid #dfe7f4;
+  border-radius: 14px;
+}
+.questionMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: #33567f;
+  font-size: 13px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.answeredBadge,
+.waitingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 20px;
+  padding: 5px 8px;
+  font-size: 10px;
+  background: #eaf7f0;
+  color: #33795b;
+  white-space: nowrap;
+}
+.waitingBadge {
+  background: #fff5dd;
+  color: #9b752e;
+}
+.date {
+  display: block;
+  margin-top: 8px;
+  color: #8394ad;
+  font-size: 11px;
+}
+.questionText {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #2d4669;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.reply {
+  padding: 16px;
+  background: #f0f5ff;
+  border-left: 3px solid #6184e5;
+  border-radius: 0 10px 10px 0;
+}
+.reply strong {
+  color: #35558a;
+  font-size: 12px;
+}
+.reply p {
+  margin: 10px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #3a587c;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.reply small {
+  font-size: 10px;
+  color: #8396b3;
+}
+.replyForm {
+  border-top: 1px solid #e7edf6;
+  padding-top: 16px;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 13px;
+  margin-top: 20px;
+}
+.columns button:focus-visible,
+.faq summary:focus-visible {
+  outline: 2px solid #4b70d8;
+  outline-offset: 3px;
+}
+@media (max-width: 1100px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .common {
+    padding: 20px;
+  }
+  .heading h2 {
+    font-size: 21px;
+  }
+  .question {
+    padding: 15px;
+  }
+  .sendRow .button {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq {
+    transition: none;
+  }
+}
+
+.field {
+  margin-bottom: 14px;
+}
