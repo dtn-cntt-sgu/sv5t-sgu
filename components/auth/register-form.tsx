@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 
+const MAX_PASSWORD_LENGTH = 21;
+
 export function RegisterForm({
   initialFaculties = [],
 }: {
@@ -109,7 +111,20 @@ export function RegisterForm({
     setMessage(undefined);
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
-    if (form.get("password") !== form.get("confirmPassword")) {
+    const password = String(form.get("password") ?? "");
+    const confirmPassword = String(form.get("confirmPassword") ?? "");
+    if (
+      password.length > MAX_PASSWORD_LENGTH ||
+      confirmPassword.length > MAX_PASSWORD_LENGTH
+    ) {
+      setMessage({
+        type: "error",
+        text: `Mật khẩu không được dài quá ${MAX_PASSWORD_LENGTH} ký tự.`,
+      });
+      setPending(false);
+      return;
+    }
+    if (password !== confirmPassword) {
       setMessage({ type: "error", text: "Mật khẩu nhập lại chưa khớp." });
       setPending(false);
       return;
@@ -294,7 +309,7 @@ export function RegisterForm({
                 type="password"
                 required
                 minLength={10}
-                maxLength={72}
+                maxLength={MAX_PASSWORD_LENGTH}
                 autoComplete="new-password"
                 placeholder="Tối thiểu 10 ký tự"
               />
@@ -306,7 +321,7 @@ export function RegisterForm({
                 type="password"
                 required
                 minLength={10}
-                maxLength={72}
+                maxLength={MAX_PASSWORD_LENGTH}
                 autoComplete="new-password"
                 placeholder="Nhập lại mật khẩu"
               />
