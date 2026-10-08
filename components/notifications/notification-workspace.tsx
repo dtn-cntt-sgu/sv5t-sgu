@@ -394,7 +394,7 @@ function StudentInbox() {
           <div className={styles.empty}>
             <Megaphone size={32} />
             <h3>Chưa có thông báo</h3>
-            <p>Thông báo từ Chủ tịch Hội Sinh viên sẽ xuất hiện ở đây.</p>
+            <p>Thông báo từ Hội sinh viên Trường sẽ xuất hiện ở đây.</p>
           </div>
         )}
         {resource.data?.items.map((notice) => (

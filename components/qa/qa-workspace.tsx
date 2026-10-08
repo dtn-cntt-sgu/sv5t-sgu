@@ -506,7 +506,7 @@ function FaqPanel({
             Chưa có câu hỏi chung.{" "}
             {president
               ? "Thêm những giải đáp hữu ích cho sinh viên."
-              : "Bạn có thể gửi câu hỏi riêng cho Chủ tịch ở bên cạnh."}
+              : "Bạn có thể gửi câu hỏi riêng cho Hội sinh viên Trường ở bên cạnh."}
           </p>
         </div>
       )}
@@ -560,7 +560,7 @@ function AskForm({
           <Clock3 size={20} />
           <div>
             <strong>Câu hỏi của bạn đang chờ trả lời</strong>
-            <p>Bạn có thể gửi câu hỏi tiếp theo sau khi Chủ tịch phản hồi.</p>
+            <p>Bạn có thể gửi câu hỏi tiếp theo sau khi Hội sinh viên Trường phản hồi.</p>
           </div>
         </div>
       ) : (
@@ -600,7 +600,7 @@ function AskForm({
       )}
       {sent && (
         <p role="status" className={styles.success}>
-          Đã gửi câu hỏi đến Chủ tịch.
+          Đã gửi câu hỏi đến Hội sinh viên Trường.
         </p>
       )}
     </div>
