@@ -627,6 +627,14 @@
   font-size: 16px;
   line-height: 1.6;
 }
+/* Use the bundled, complete Vietnamese font for every auth display text. */
+.auth-aside h2,
+.auth-heading h1,
+.auth-quote,
+.register-intro h1,
+.register-form .form-title h2 {
+  font-family: var(--font-lora), "Times New Roman", serif;
+}
 .auth-page {
   min-height: calc(100vh - 16px);
   margin: 8px;
@@ -662,11 +670,15 @@
 }
 .auth-aside h2 {
   font-size: clamp(40px, 4vw, 60px);
-  letter-spacing: -2px;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+.auth-aside-copy {
+  max-width: 100%;
 }
 .auth-aside h2 span {
   display: block;
-  white-space: nowrap;
+  white-space: normal;
 }
 .auth-panel {
   padding: 48px 7vw;
@@ -767,13 +779,13 @@
   box-shadow: 0 4px 18px rgba(25, 54, 45, 0.035);
 }
 .register-intro h1 {
-  font-size: 54px;
-  line-height: 1.08;
-  letter-spacing: -1.5px;
+  font-size: clamp(36px, 3.5vw, 46px);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 .register-intro h1 span {
   display: block;
-  white-space: nowrap;
+  white-space: normal;
 }
 .register-intro > p {
   font-size: 17px;
@@ -880,6 +892,11 @@
 }
 
 @media (max-width: 980px) {
+  .register-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
   .auth-page {
     width: calc(100% - 16px);
     grid-template-columns: minmax(0, 1fr);

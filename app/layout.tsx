@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lora } from "next/font/google";
+import localFont from "next/font/local";
 import logo from "@/assets/logo/LOGO_SV5T.png";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteConsoleMessage } from "@/components/site-console-message";
@@ -7,10 +7,30 @@ import "./globals.css";
 import "./portal-readability.css";
 import "./admin-ui.css";
 
-const lora = Lora({
+// Keep Vietnamese letters and combining marks in the same font file. Static
+// faces also avoid differences in variable-font rendering on older devices.
+const lora = localFont({
   variable: "--font-lora",
-  subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
+  fallback: ["Times New Roman", "serif"],
+  src: [
+    {
+      path: "../assets/fonts/lora/Lora-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/lora/Lora-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/lora/Lora-Italic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+  ],
 });
 
 export const metadata: Metadata = {

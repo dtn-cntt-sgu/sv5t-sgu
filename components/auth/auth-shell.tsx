@@ -19,8 +19,8 @@ export function AuthShell({
           <h2>
             {portal === "student" ? (
               <>
-                <span>"Một hành trình tốt,</span>
-                <span>bắt đầu từ hôm nay."</span>
+                <span>&quot;Một hành trình tốt,</span>
+                <span>bắt đầu từ hôm nay.&quot;</span>
               </>
             ) : (
               <>

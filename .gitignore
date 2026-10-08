@@ -31,6 +31,9 @@ supabase/.temp/
 # Private export archives on worker disk
 /var/exports/
 
-/tests
+/tests/*
+!/tests/browser/
+/tests/browser/*
+!/tests/browser/auth-typography.spec.ts
 
 /secret
