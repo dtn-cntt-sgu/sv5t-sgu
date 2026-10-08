@@ -155,7 +155,7 @@ export function QaWorkspace({ president = false }: { president?: boolean }) {
         </section>
         <section
           className={`panel ${styles.private}`}
-          aria-label={president ? "Câu hỏi từ sinh viên" : "Hỏi Chủ tịch"}
+          aria-label={president ? "Câu hỏi từ sinh viên" : "Hỏi Hội sinh viên Trường"}
         >
           <div className={styles.heading}>
             <span className={styles.icon}>
@@ -163,13 +163,13 @@ export function QaWorkspace({ president = false }: { president?: boolean }) {
             </span>
             <div>
               <span className={styles.eyebrow}>TRAO ĐỔI RIÊNG</span>
-              <h2>{president ? "Câu hỏi từ sinh viên" : "Hỏi Chủ tịch"}</h2>
+              <h2>{president ? "Câu hỏi từ sinh viên" : "Hỏi Hội sinh viên Trường"}</h2>
             </div>
           </div>
           <p className={styles.intro}>
             {president
               ? `${data?.waiting ?? 0} câu hỏi đang chờ phản hồi.`
-              : "Câu hỏi và câu trả lời ở đây chỉ hiển thị với bạn và Chủ tịch Hội Sinh viên."}
+              : "Câu hỏi và câu trả lời ở đây chỉ hiển thị với bạn và Hội Sinh viên Trường."}
           </p>
           {!president && (
             <AskForm
@@ -656,7 +656,7 @@ function QuestionCard({
       <p className={styles.questionText}>{q.question}</p>
       {q.answer ? (
         <div className={styles.reply}>
-          <strong>Chủ tịch Hội Sinh viên · {q.answered_name}</strong>
+          <strong>Hội Sinh viên Trường · {q.answered_name}</strong>
           <p>{q.answer}</p>
           <small>{q.answered_at && date(q.answered_at)}</small>
         </div>
