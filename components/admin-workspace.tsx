@@ -709,7 +709,7 @@ export function UserManagement() {
                 Vai trò
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="FACULTY_SECRETARY">Liên chi Hội trưởng</option>
-                  <option value="SCHOOL_PRESIDENT">Hội Sinh viên trường</option>
+                  <option value="SCHOOL_PRESIDENT">Hội sinh viên Trường Đại học Sài Gòn</option>
                   <option value="STUDENT">Sinh viên</option>
                 </select>
               </label>
