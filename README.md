@@ -89,3 +89,15 @@ Chạy `supabase/migrations/202610010021_questions_and_answers.sql` trong Supaba
 - Các thao tác quản lý FAQ/trả lời đều có audit. Câu trả lời riêng sau khi gửi được giữ nguyên; gửi lại cùng yêu cầu không tạo thêm câu hỏi hoặc câu trả lời.
 
 Kiểm thử database cục bộ: `node --test scripts/tests/qa.test.mjs`.
+
+## Quản lý danh sách đăng kí tham gia
+
+Chạy `supabase/migrations/202610100022_manage_participation_registrations.sql` trong Supabase SQL Editor sau các migration hiện có.
+
+- Chỉ Chủ tịch (`SCHOOL_PRESIDENT`) đang hoạt động được vào **Danh sách đăng kí** (`/manager/participation`), đọc danh sách, xuất Excel và reset. Quyền được kiểm tra ở trang, API và RPC trong database.
+- Bên trái là bảng cuộn toàn bộ sinh viên đã đăng kí từ header, không phân trang; tìm kiếm không phân biệt dấu theo họ tên, MSSV, lớp, khoa/ngành, email, số điện thoại và lọc theo khoa. Danh sách tự cập nhật qua bộ đếm Realtime và đồng bộ lại mỗi 30 giây/khi quay lại tab.
+- Bên phải xuất Excel `.xlsx` gồm toàn bộ danh sách (không phụ thuộc bộ lọc), giữ số 0 đầu MSSV/số điện thoại và hiển thị thời gian Việt Nam.
+- Reset qua hai bước: nhập đúng `xacnhanresetdanhsachdangki` và bấm **Xác nhận bước 1**, rồi bấm **Xác nhận xóa toàn bộ danh sách**. Database cấp mã xác nhận riêng cho người thao tác, hiệu lực 5 phút. Bước đầu không xóa dữ liệu; hủy sẽ đóng luồng xác nhận.
+- Reset chỉ xóa lượt đăng kí, cập nhật bộ đếm và ghi audit trong cùng transaction. Hồ sơ xét duyệt/tài khoản được giữ nguyên; sinh viên có thể đăng kí lại. Gửi lại cùng yêu cầu sau lỗi mạng không xóa lượt đăng kí phát sinh sau lần reset đầu.
+
+Kiểm thử database cục bộ: `node --test scripts/tests/participation-management.test.mjs`.

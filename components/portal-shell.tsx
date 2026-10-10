@@ -21,6 +21,7 @@ import {
   Archive,
   UserCog,
   ShieldCheck,
+  ClipboardList,
 } from "lucide-react";
 import {
   NotificationProvider,
@@ -56,6 +57,11 @@ const studentNav = [
 const managerNav = [
   { label: "Tổng quan", href: "/manager", icon: LayoutDashboard },
   { label: "Danh sách hồ sơ", href: "/manager/applications", icon: Files },
+  {
+    label: "Danh sách đăng kí",
+    href: "/manager/participation",
+    icon: ClipboardList,
+  },
   {
     label: "Thống kê và Lưu trữ",
     href: "/manager/statistics",
@@ -107,6 +113,7 @@ export function PortalShell({
     (item) =>
       ((item.href !== "/manager/campaigns" &&
         item.href !== "/manager/notifications" &&
+        item.href !== "/manager/participation" &&
         item.href !== "/manager/qa") ||
         profile.data?.role === "SCHOOL_PRESIDENT") &&
       (item.href !== "/manager" || profile.data?.role !== "FACULTY_SECRETARY"),

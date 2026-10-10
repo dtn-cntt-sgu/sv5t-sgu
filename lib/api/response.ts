@@ -66,6 +66,10 @@ export function apiError(
       ? String(error.message)
       : "";
   const messages: Record<string, string> = {
+    PARTICIPATION_CONFIRMATION_REQUIRED:
+      "Vui lòng nhập đúng chuỗi xác nhận reset danh sách đăng kí.",
+    PARTICIPATION_RESET_INVALID:
+      "Xác nhận reset đã hết hạn hoặc không hợp lệ. Vui lòng thực hiện lại bước 1.",
     QA_PENDING: "Bạn đang có câu hỏi chờ trả lời. Vui lòng đợi Hội sinh viên Trường phản hồi trước khi hỏi tiếp.",
     QA_CHANGED: "Nội dung đã thay đổi. Vui lòng tải lại danh sách trước khi thao tác.",
     QA_NOT_FOUND: "Câu hỏi không còn tồn tại. Vui lòng tải lại danh sách.",
