@@ -7,9 +7,13 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 export async function GET() {
+  const requestId = crypto.randomUUID();
+  let stage = "authorize";
   try {
     await requireUser(["SCHOOL_PRESIDENT"]);
+    stage = "participation_registration_list";
     const { registrations } = await participationRegistrations();
+    stage = "build_workbook";
     const book = new ExcelJS.Workbook();
     book.creator = "SV5T SGU";
     const sheet = book.addWorksheet("Danh sách đăng kí");
@@ -59,6 +63,6 @@ export async function GET() {
       },
     });
   } catch (error) {
-    return apiError(error);
+    return apiError(error, { requestId, stage, operation: "PARTICIPATION" });
   }
 }

@@ -101,3 +101,12 @@ Chạy `supabase/migrations/202610100022_manage_participation_registrations.sql`
 - Reset chỉ xóa lượt đăng kí, cập nhật bộ đếm và ghi audit trong cùng transaction. Hồ sơ xét duyệt/tài khoản được giữ nguyên; sinh viên có thể đăng kí lại. Gửi lại cùng yêu cầu sau lỗi mạng không xóa lượt đăng kí phát sinh sau lần reset đầu.
 
 Kiểm thử database cục bộ: `node --test scripts/tests/participation-management.test.mjs`.
+
+### Xử lý lỗi khi mở danh sách đăng kí
+
+- `PGRST202`: PostgREST chưa tìm thấy RPC hoặc chữ ký hàm trong schema cache. Kiểm tra đúng Supabase project và đã áp dụng migration `202610100022`. Nếu các API sau đó trả 200 thì RPC đã sẵn sàng; không chạy lại migration tạo bảng chỉ vì các dòng lỗi cũ còn trong terminal.
+- Khi lỗi còn lặp lại, chạy `supabase/maintenance/check_participation_rpc.sql` trong SQL Editor để kiểm tra bảng, chữ ký/tham số, quyền thực thi và yêu cầu tải lại schema cache. Script không xóa dữ liệu. API danh sách, Excel và cả hai bước reset trả `503 / PARTICIPATION_RPC_UNAVAILABLE` khi thiếu RPC, kèm mã yêu cầu để đối chiếu log; lỗi khác vẫn được xử lý riêng.
+- Hydration warning có `bis_skin_checked`, `bis_register`, `__processed_*` cùng lỗi `M_ID` tại `chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/...`: log chỉ ra extension **Urban VPN Proxy** can thiệp vào DOM và phát sinh lỗi trong chính mã extension. Vào `chrome://extensions`, đối chiếu ID trên, tắt extension rồi tải lại trang. Có thể kiểm tra bằng một profile Chrome mới không có extension hoặc cửa sổ ẩn danh đã tắt quyền chạy extension. Nếu vẫn còn cảnh báo, kiểm tra extension khác cũng đang chèn các thuộc tính này.
+- Giữ kiểm tra hydration của React hoạt động để phát hiện lỗi ứng dụng. `suppressHydrationWarning` chỉ có tác dụng một cấp và không sửa được lỗi JavaScript `M_ID` trong extension.
+
+Tài liệu đối chiếu: [PostgREST errors](https://docs.postgrest.org/en/stable/references/errors.html), [schema cache reload](https://docs.postgrest.org/en/stable/references/schema_cache.html), [Next.js hydration](https://nextjs.org/docs/messages/react-hydration-error), [Urban VPN Proxy và ID extension](https://chromewebstore.google.com/detail/urban-vpn-proxy/eppiocemhmnlbhjplcgkofciiegomcon).

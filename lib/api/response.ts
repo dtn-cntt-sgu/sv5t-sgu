@@ -25,7 +25,9 @@ export function apiError(
   }
   if (
     context?.operation &&
-    ["SUBMIT", "REVIEW", "STATISTICS"].includes(context.operation) &&
+    ["SUBMIT", "REVIEW", "STATISTICS", "PARTICIPATION"].includes(
+      context.operation,
+    ) &&
     error &&
     typeof error === "object" &&
     "code" in error &&
@@ -40,7 +42,7 @@ export function apiError(
           requestId: context.requestId,
         },
       },
-      { status: 503 },
+      { status: 503, headers: { "Cache-Control": "private, no-store" } },
     );
   }
   if (error instanceof AuthError) {

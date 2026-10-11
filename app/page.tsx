@@ -7,7 +7,6 @@ import {
   FileText,
   LockKeyhole,
 } from "lucide-react";
-import { CampaignAnnouncement } from "@/components/campaign-announcement";
 import { LandingNav } from "@/components/landing-nav";
 import { PdfPreview } from "@/components/pdf-preview";
 import styles from "./landing.module.css";

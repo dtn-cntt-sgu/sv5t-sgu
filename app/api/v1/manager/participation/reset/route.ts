@@ -13,10 +13,17 @@ const resetSchema = z.discriminatedUnion("step", [
 ]);
 
 export async function POST(request: Request) {
+  const requestId = crypto.randomUUID();
+  let stage = "authorize";
   try {
     await requireUser(["SCHOOL_PRESIDENT"]);
+    stage = "validate_request";
     const input = resetSchema.parse(await request.json());
     const db = await createClient();
+    stage =
+      input.step === "prepare"
+        ? "prepare_participation_reset"
+        : "reset_participation_registrations";
     const { data, error } =
       input.step === "prepare"
         ? await db.rpc("prepare_participation_reset", {
@@ -31,6 +38,6 @@ export async function POST(request: Request) {
       { headers: { "Cache-Control": "private, no-store" } },
     );
   } catch (error) {
-    return apiError(error);
+    return apiError(error, { requestId, stage, operation: "PARTICIPATION" });
   }
 }
