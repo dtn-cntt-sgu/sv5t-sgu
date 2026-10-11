@@ -13,9 +13,9 @@ import {
 import { PortalShell } from "./portal-shell";
 import { ResourceState, EmptyState } from "./resource-state";
 import { useResource } from "@/lib/client/use-resource";
+import { usePortalProfile } from "@/components/portal-profile-provider";
 import {
   type Campaign,
-  type Profile,
   type Application,
   statusLabels,
   dateLabel,
@@ -39,7 +39,7 @@ export function ManagerWorkspace({
   view?: "overview" | "applications" | "statistics";
 }) {
   const campaigns = useResource<Campaign[]>("/campaigns");
-  const profile = useResource<Profile>("/users/me");
+  const profile = usePortalProfile();
   const faculties = useResource<Faculty[]>("/public/faculties");
   const [campaignId, setCampaignId] = useState("");
   const [filters, setFilters] = useState("");

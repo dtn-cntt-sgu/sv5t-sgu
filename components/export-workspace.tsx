@@ -4,8 +4,9 @@ import { Archive, Download, ShieldCheck } from "lucide-react";
 import { PortalShell } from "./portal-shell";
 import { ResourceState } from "./resource-state";
 import { useResource } from "@/lib/client/use-resource";
+import { usePortalProfile } from "@/components/portal-profile-provider";
 import { mutation } from "@/lib/client/api";
-import { type Campaign, type Profile, dateLabel } from "@/lib/domain/models";
+import { type Campaign, dateLabel } from "@/lib/domain/models";
 type Job = {
   id: string;
   campaign_id: string;
@@ -21,7 +22,7 @@ type Job = {
 };
 export function ExportWorkspace() {
   const campaigns = useResource<Campaign[]>("/campaigns");
-  const profile = useResource<Profile>("/users/me");
+  const profile = usePortalProfile();
   const [campaignId, setCampaignId] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");

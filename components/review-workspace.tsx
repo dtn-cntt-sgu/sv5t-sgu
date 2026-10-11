@@ -5,18 +5,18 @@ import { ArrowLeft, Download, Save } from "lucide-react";
 import { PortalShell } from "./portal-shell";
 import { ResourceState } from "./resource-state";
 import { useResource } from "@/lib/client/use-resource";
+import { usePortalProfile } from "@/components/portal-profile-provider";
 import { ApiError, mutation } from "@/lib/client/api";
 import {
   type Application,
   type ApplicationFile,
-  type Profile,
   fileLabels,
   statusLabels,
   dateLabel,
 } from "@/lib/domain/models";
 export function ReviewWorkspace({ id }: { id: string }) {
   const resource = useResource<Application>(`/manager/applications/${id}`);
-  const profile = useResource<Profile>("/users/me");
+  const profile = usePortalProfile();
   const [selected, setSelected] = useState("");
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");

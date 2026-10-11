@@ -29,9 +29,9 @@ import {
 } from "@/components/notifications/notification-context";
 import { ParticipationBanner } from "@/components/participation-banner";
 import { Brand } from "@/components/brand";
-import { useResource } from "@/lib/client/use-resource";
+import { usePortalProfile } from "@/components/portal-profile-provider";
 import { api } from "@/lib/client/api";
-import { roleLabels, type Profile } from "@/lib/domain/models";
+import { roleLabels } from "@/lib/domain/models";
 export type PortalNavItem = {
   label: string;
   href: string;
@@ -102,7 +102,7 @@ export function PortalShell({
   const [open, setOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const [error, setError] = useState("");
-  const profile = useResource<Profile>("/users/me");
+  const profile = usePortalProfile();
   const items = (
     portal === "student"
       ? studentNav

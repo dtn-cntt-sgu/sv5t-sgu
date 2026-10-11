@@ -94,6 +94,8 @@ Kiểm thử database cục bộ: `node --test scripts/tests/qa.test.mjs`.
 
 Chạy `supabase/migrations/202610100022_manage_participation_registrations.sql` trong Supabase SQL Editor sau các migration hiện có.
 
+Cổng quản lý dùng layout chung tại `app/manager/(workspace)/layout.tsx`; thông tin tài khoản được xác thực và lấy từ server ngay lần mở đầu, rồi giữ trong context khi chuyển giữa các mục menu. Các đường dẫn `/manager/...` vẫn giữ nguyên. Khi quay lại tab hoặc cập nhật hồ sơ cá nhân, context tải lại thông tin nhưng giữ menu trong lúc chờ; mất phiên hoặc bị từ chối quyền sẽ xóa thông tin cũ. Trang `/manager/login` nằm ngoài layout này.
+
 - Chỉ Chủ tịch (`SCHOOL_PRESIDENT`) đang hoạt động được vào **Danh sách đăng kí** (`/manager/participation`), đọc danh sách, xuất Excel và reset. Quyền được kiểm tra ở trang, API và RPC trong database.
 - Bên trái là bảng cuộn toàn bộ sinh viên đã đăng kí từ header, không phân trang; tìm kiếm không phân biệt dấu theo họ tên, MSSV, lớp, khoa/ngành, email, số điện thoại và lọc theo khoa. Danh sách tự cập nhật qua bộ đếm Realtime và đồng bộ lại mỗi 30 giây/khi quay lại tab.
 - Bên phải xuất Excel `.xlsx` gồm toàn bộ danh sách (không phụ thuộc bộ lọc), giữ số 0 đầu MSSV/số điện thoại và hiển thị thời gian Việt Nam.

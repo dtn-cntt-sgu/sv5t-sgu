@@ -5,9 +5,9 @@ import { ArrowRight, MessageSquareText, Save, ShieldCheck } from "lucide-react";
 import { PortalShell } from "./portal-shell";
 import { ResourceState, EmptyState } from "./resource-state";
 import { useResource } from "@/lib/client/use-resource";
+import { usePortalProfile } from "@/components/portal-profile-provider";
 import { mutation } from "@/lib/client/api";
 import {
-  type Profile,
   type Application,
   dateLabel,
   fileLabels,
@@ -93,7 +93,7 @@ export function ProfilePage({
 }: {
   portal?: "student" | "manager" | "admin";
 }) {
-  const resource = useResource<Profile>("/users/me");
+  const resource = usePortalProfile();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
