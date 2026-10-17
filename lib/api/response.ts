@@ -23,22 +23,23 @@ export function apiError(
       message: "message" in failure ? String(failure.message) : "Unknown error",
     });
   }
+  const databaseCode =
+    error && typeof error === "object" && "code" in error
+      ? String(error.code)
+      : "";
   if (
     context?.operation &&
     ["SUBMIT", "REVIEW", "STATISTICS", "PARTICIPATION"].includes(
       context.operation,
     ) &&
-    error &&
-    typeof error === "object" &&
-    "code" in error &&
-    error.code === "PGRST202"
+    ["PGRST202", "42P01", "42703", "42883", "42501"].includes(databaseCode)
   ) {
     return NextResponse.json(
       {
         error: {
-          code: `${context.operation}_RPC_UNAVAILABLE`,
+          code: `${context.operation}_${databaseCode === "PGRST202" ? "RPC" : "DATABASE"}_UNAVAILABLE`,
           message:
-            "Chức năng chưa sẵn sàng. Vui lòng báo quản trị viên cập nhật cơ sở dữ liệu.",
+            "Cơ sở dữ liệu chưa sẵn sàng cho thao tác này. Vui lòng gửi mã yêu cầu cho quản trị viên.",
           requestId: context.requestId,
         },
       },

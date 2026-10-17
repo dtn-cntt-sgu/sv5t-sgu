@@ -33,9 +33,11 @@ const date = new Intl.DateTimeFormat("vi-VN", {
   timeZone: "Asia/Ho_Chi_Minh",
 });
 const errorText = (error: unknown) =>
-  error instanceof Error
-    ? error.message
-    : "Chưa thể thực hiện thao tác. Vui lòng thử lại.";
+  error instanceof ApiError
+    ? `${error.message}${error.requestId ? ` (Mã yêu cầu: ${error.requestId})` : ""}`
+    : error instanceof Error
+      ? error.message
+      : "Chưa thể thực hiện thao tác. Vui lòng thử lại.";
 
 export function ParticipationWorkspace() {
   const [data, setData] = useState<ParticipationRegistrationList>();

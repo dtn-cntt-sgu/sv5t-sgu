@@ -71,7 +71,9 @@ begin
 
   -- Serialize resets with registrations; DELETE preserves the existing total trigger.
   lock table public.participation_registrations in share row exclusive mode;
-  delete from public.participation_registrations;
+  -- The primary key is NOT NULL; this still removes every row while satisfying
+  -- database safeguards that reject unqualified DELETE statements.
+  delete from public.participation_registrations where user_id is not null;
   get diagnostics removed = row_count;
   update public.participation_reset_requests set consumed_at = now(), deleted_count = removed where id = request_row.id;
   insert into public.system_audit_logs(user_id, actor_snapshot, action, resource_type, resource_id, metadata)

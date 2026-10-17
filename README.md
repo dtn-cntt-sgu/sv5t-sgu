@@ -92,8 +92,6 @@ Kiểm thử database cục bộ: `node --test scripts/tests/qa.test.mjs`.
 
 ## Quản lý danh sách đăng kí tham gia
 
-Chạy `supabase/migrations/202610100022_manage_participation_registrations.sql` trong Supabase SQL Editor sau các migration hiện có.
-
 Cổng quản lý dùng layout chung tại `app/manager/(workspace)/layout.tsx`; thông tin tài khoản được xác thực và lấy từ server ngay lần mở đầu, rồi giữ trong context khi chuyển giữa các mục menu. Các đường dẫn `/manager/...` vẫn giữ nguyên. Khi quay lại tab hoặc cập nhật hồ sơ cá nhân, context tải lại thông tin nhưng giữ menu trong lúc chờ; mất phiên hoặc bị từ chối quyền sẽ xóa thông tin cũ. Trang `/manager/login` nằm ngoài layout này.
 
 - Chỉ Chủ tịch (`SCHOOL_PRESIDENT`) đang hoạt động được vào **Danh sách đăng kí** (`/manager/participation`), đọc danh sách, xuất Excel và reset. Quyền được kiểm tra ở trang, API và RPC trong database.
@@ -107,7 +105,8 @@ Kiểm thử database cục bộ: `node --test scripts/tests/participation-manag
 ### Xử lý lỗi khi mở danh sách đăng kí
 
 - `PGRST202`: PostgREST chưa tìm thấy RPC hoặc chữ ký hàm trong schema cache. Kiểm tra đúng Supabase project và đã áp dụng migration `202610100022`. Nếu các API sau đó trả 200 thì RPC đã sẵn sàng; không chạy lại migration tạo bảng chỉ vì các dòng lỗi cũ còn trong terminal.
-- Khi lỗi còn lặp lại, chạy `supabase/maintenance/check_participation_rpc.sql` trong SQL Editor để kiểm tra bảng, chữ ký/tham số, quyền thực thi và yêu cầu tải lại schema cache. Script không xóa dữ liệu. API danh sách, Excel và cả hai bước reset trả `503 / PARTICIPATION_RPC_UNAVAILABLE` khi thiếu RPC, kèm mã yêu cầu để đối chiếu log; lỗi khác vẫn được xử lý riêng.
+- Khi lỗi còn lặp lại, chạy `supabase/maintenance/check_participation_rpc.sql` trong SQL Editor để kiểm tra bảng, trigger, chữ ký/tham số, quyền thực thi và yêu cầu tải lại schema cache. Script không xóa dữ liệu. API danh sách, Excel và cả hai bước reset trả `503` với mã yêu cầu khi thiếu RPC hoặc gặp lỗi phổ biến về schema/quyền. Giao diện reset hiển thị mã yêu cầu; đối chiếu mã đó với Vercel Function Logs (`stage: reset_participation_registrations`) để xem lỗi SQL cụ thể.
+- Mã SQL `21000` với thông điệp `DELETE requires a WHERE clause`: áp dụng migration `202610170023_fix_participation_reset_delete.sql`. Migration thay RPC để xóa theo khóa chính `user_id` vốn luôn khác `NULL`, nên vẫn reset toàn bộ lượt đăng kí và cập nhật bộ đếm/audit trong cùng transaction.
 - Hydration warning có `bis_skin_checked`, `bis_register`, `__processed_*` cùng lỗi `M_ID` tại `chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/...`: log chỉ ra extension **Urban VPN Proxy** can thiệp vào DOM và phát sinh lỗi trong chính mã extension. Vào `chrome://extensions`, đối chiếu ID trên, tắt extension rồi tải lại trang. Có thể kiểm tra bằng một profile Chrome mới không có extension hoặc cửa sổ ẩn danh đã tắt quyền chạy extension. Nếu vẫn còn cảnh báo, kiểm tra extension khác cũng đang chèn các thuộc tính này.
 - Giữ kiểm tra hydration của React hoạt động để phát hiện lỗi ứng dụng. `suppressHydrationWarning` chỉ có tác dụng một cấp và không sửa được lỗi JavaScript `M_ID` trong extension.
 

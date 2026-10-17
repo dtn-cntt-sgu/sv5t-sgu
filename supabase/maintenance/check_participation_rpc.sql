@@ -2,7 +2,14 @@
 -- This does not recreate tables/functions or modify student registrations.
 select
   to_regclass('public.participation_registrations') is not null as registrations_table_exists,
-  to_regclass('public.participation_reset_requests') is not null as reset_requests_table_exists;
+  to_regclass('public.participation_reset_requests') is not null as reset_requests_table_exists,
+  to_regclass('public.system_audit_logs') is not null as audit_log_table_exists,
+  exists (
+    select 1 from pg_trigger
+    where tgrelid = to_regclass('public.participation_registrations')
+      and tgname = 'participation_total_change'
+      and not tgisinternal
+  ) as participation_total_trigger_exists;
 
 with expected(signature, argument_names) as (
   values
