@@ -246,12 +246,17 @@ export function RegisterForm({
               />
             </label>
             <label>
-              <span>Email *</span>
+              <span>
+                Email *{" "}
+                <strong style={{ color: "#c62828" }}>
+                  (kiểm tra kĩ email)
+                </strong>
+              </span>
               <input
                 name="email"
                 type="email"
                 required
-                placeholder="ten@sgu.edu.vn"
+                placeholder="ten@gmail.com"
               />
             </label>
             <label>
