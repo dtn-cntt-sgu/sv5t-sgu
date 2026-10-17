@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Confirm your email address</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f3f6fa; font-family:Arial, Helvetica, sans-serif; color:#243247;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f3f6fa" style="width:100%; background-color:#f3f6fa;">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%; max-width:600px; border-collapse:separate;">
+            <tr>
+              <td align="center" bgcolor="#2454a6" style="padding:28px 32px; background-color:#2454a6; background-image:linear-gradient(135deg,#123c5a 0%,#2454a6 55%,#3976c5 100%); text-align:center; border-radius:12px 12px 0 0; border-bottom:4px solid #f28a2e;">
+                <p style="margin:0 0 12px; color:#dceaff; font-size:12px; line-height:18px; letter-spacing:1px; text-align:center;">Sent by <b>BCH Khoa Công nghệ Thông tin</b></p>
+                <p style="margin:0; color:#ffffff; font-size:24px; line-height:30px; font-weight:700; text-align:center;">hi, i'm nii</p>
+                <p style="margin:4px 0 0; color:#e5efff; font-size:14px; line-height:21px; text-align:center;">What is your story ?</p>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="padding:32px; background-color:#ffffff; border-radius:0 0 12px 12px;">
+                <h1 style="margin:0 0 16px; color:#18324b; font-size:24px; line-height:32px;">Confirm your email address</h1>
+                <p style="margin:0 0 24px; color:#526477; font-size:16px; line-height:25px;">Thanks for signing up. Confirm this email address to finish creating your account.</p>
+
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 24px;">
+                  <tr>
+                    <td align="center" bgcolor="#2454d8" style="border-radius:8px; background-color:#2454d8;">
+                      <a href="{{ .ConfirmationURL }}" style="display:inline-block; padding:14px 22px; color:#ffffff; font-size:16px; line-height:20px; font-weight:700; text-decoration:none; border:1px solid #2454d8; border-radius:8px;">Confirm email address</a>
+                    </td>
+                  </tr>
+                </table>
+
+                <p style="margin:0 0 8px; color:#526477; font-size:14px; line-height:22px;">If the button doesn't work, copy and paste this link into your browser:</p>
+                <p style="margin:0 0 24px; font-size:14px; line-height:22px; word-break:break-all;">
+                  <a href="{{ .ConfirmationURL }}" style="color:#2454d8; text-decoration:underline;">{{ .ConfirmationURL }}</a>
+                </p>
+                <p style="margin:0; color:#718096; font-size:14px; line-height:22px;">If you didn't create this account, you can ignore this email.</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" bgcolor="#eaf2ff" style="padding:14px 12px; background-color:#eaf2ff; background-image:linear-gradient(135deg,#eaf2ff 0%,#dbeaff 100%); color:#315b91; font-size:12px; line-height:18px; border-radius:8px;">
+                Sinh viên 5 Tốt · Trường Đại học Sài Gòn
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -12,7 +12,13 @@ export function created<T>(data: T) {
 
 export function apiError(
   error: unknown,
-  context?: { requestId: string; stage: string; operation?: string },
+  context?: {
+    requestId: string;
+    stage: string;
+    operation?: string;
+    status?: number;
+    name?: string;
+  },
 ) {
   if (context) {
     const failure = error && typeof error === "object" ? error : {};

@@ -144,8 +144,13 @@ export function RegisterForm({
         }),
       });
       const result = await response.json();
-      if (!response.ok)
-        throw new Error(result.error?.message ?? "Không thể tạo tài khoản.");
+      if (!response.ok) {
+        const requestId = result.error?.requestId;
+        const message = result.error?.message ?? "Không thể tạo tài khoản.";
+        throw new Error(
+          requestId ? `${message} (Mã yêu cầu: ${requestId})` : message,
+        );
+      }
       setMessage({
         type: "success",
         text: result.data.emailConfirmationRequired
