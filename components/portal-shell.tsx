@@ -31,6 +31,7 @@ import { ParticipationBanner } from "@/components/participation-banner";
 import { Brand } from "@/components/brand";
 import { usePortalProfile } from "@/components/portal-profile-provider";
 import { api } from "@/lib/client/api";
+import { STUDENT_APPLICATION_FEATURES_ENABLED } from "@/lib/config/student-features";
 import { roleLabels } from "@/lib/domain/models";
 export type PortalNavItem = {
   label: string;
@@ -41,15 +42,15 @@ export type PortalNavItem = {
 const studentNav = [
   { label: "Tổng quan", href: "/dashboard", icon: LayoutDashboard },
   { label: "Hồ sơ của tôi", href: "/application", icon: FileText },
-  { label: "Thông báo", href: "/dashboard/notifications", icon: Bell },
-  { label: "Hỏi đáp", href: "/dashboard/qa", icon: HelpCircle },
   {
     label: "Phản hồi xét duyệt",
     href: "/dashboard/feedback",
     icon: MessageSquareText,
   },
+  { label: "Thông báo", href: "/dashboard/notifications", icon: Bell },
+  { label: "Hỏi đáp", href: "/dashboard/qa", icon: HelpCircle },
   {
-    label: "Thông tin và Tài khoản",
+    label: "Thông tin & Tài khoản",
     href: "/dashboard/profile",
     icon: UserRound,
   },
@@ -182,22 +183,38 @@ export function PortalShell({
                   href !== "/admin" &&
                   href !== "/dashboard" &&
                   pathname.startsWith(`${href}/`));
+              const disabledStudentFeature =
+                portal === "student" &&
+                !STUDENT_APPLICATION_FEATURES_ENABLED &&
+                (href === "/application" || href === "/dashboard/feedback");
               return (
                 <Fragment key={href}>
                   {portal === "admin" && index === 4 && (
                     <span className="admin-nav-group">HỆ THỐNG</span>
                   )}
-                  <Link
-                    onClick={() => setOpen(false)}
-                    aria-current={active ? "page" : undefined}
-                    className={active ? "active" : ""}
-                    href={href}
-                    key={href}
-                  >
-                    <Icon size={19} />
-                    <span>{label}</span>
-                    {active && <i />}
-                  </Link>
+                  {disabledStudentFeature ? (
+                    <button
+                      type="button"
+                      className="nav-disabled"
+                      aria-label={`${label} — tạm thời chưa sử dụng`}
+                      title="Tính năng đang tạm thời tắt"
+                      disabled
+                    >
+                      <Icon size={19} />
+                      <span>{label}</span>
+                    </button>
+                  ) : (
+                    <Link
+                      onClick={() => setOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                      className={active ? "active" : ""}
+                      href={href}
+                    >
+                      <Icon size={19} />
+                      <span>{label}</span>
+                      {active && <i />}
+                    </Link>
+                  )}
                 </Fragment>
               );
             })}

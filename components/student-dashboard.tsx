@@ -27,6 +27,7 @@ import {
   dateLabel,
 } from "@/lib/domain/models";
 import { individualFiles, collectiveFiles } from "@/lib/validation/application";
+import { STUDENT_APPLICATION_FEATURES_ENABLED } from "@/lib/config/student-features";
 import { ResourceState, EmptyState } from "./resource-state";
 import styles from "./student-dashboard.module.css";
 const qualities = [
@@ -106,9 +107,15 @@ export function StudentDashboard() {
           </p>
           <Link
             className="button button-light"
-            href={campaign ? "/application" : "/documents"}
+            href={
+              campaign && STUDENT_APPLICATION_FEATURES_ENABLED
+                ? "/application"
+                : "/documents"
+            }
           >
-            {campaign ? "Đến hồ sơ của tôi" : "Khám phá tiêu chí"}{" "}
+            {campaign && STUDENT_APPLICATION_FEATURES_ENABLED
+              ? "Đến hồ sơ của tôi"
+              : "Khám phá tiêu chí"}{" "}
             <ArrowRight size={18} />
           </Link>
         </div>
@@ -137,7 +144,7 @@ export function StudentDashboard() {
           </Link>
         ))}
       </div>
-      {feedbackCount > 0 && (
+      {STUDENT_APPLICATION_FEATURES_ENABLED && feedbackCount > 0 && (
         <Link href="/dashboard/feedback" className="feedback-banner">
           <span>✉</span>
           <div>
@@ -163,9 +170,11 @@ export function StudentDashboard() {
                 <span className="section-kicker">TỪNG BƯỚC TIẾN GẦN</span>
                 <h2>Hồ sơ của bạn</h2>
               </div>
-              <Link className="inline-link" href="/application">
-                Xem tất cả <ArrowRight size={16} />
-              </Link>
+              {STUDENT_APPLICATION_FEATURES_ENABLED && (
+                <Link className="inline-link" href="/application">
+                  Xem tất cả <ArrowRight size={16} />
+                </Link>
+              )}
             </div>
             {current.length ? (
               current.map((a) => (
@@ -174,12 +183,25 @@ export function StudentDashboard() {
             ) : (
               <EmptyState title="Hành trình mới đang chờ bạn">
                 <p>
-                  {campaign
-                    ? "Tạo hồ sơ đầu tiên để bắt đầu ghi nhận những nỗ lực của mình."
-                    : "Chưa có đợt đang nhận hồ sơ. Bạn vẫn có thể xem hồ sơ cũ và chuẩn bị tài liệu."}
+                  {STUDENT_APPLICATION_FEATURES_ENABLED
+                    ? campaign
+                      ? "Tạo hồ sơ đầu tiên để bắt đầu ghi nhận những nỗ lực của mình."
+                      : "Chưa có đợt đang nhận hồ sơ. Bạn vẫn có thể xem hồ sơ cũ và chuẩn bị tài liệu."
+                    : "Chức năng hồ sơ đang tạm thời đóng. Bạn vẫn có thể xem tiêu chí và chuẩn bị tài liệu."}
                 </p>
-                <Link className="button button-primary" href="/application">
-                  {campaign ? "Tạo hồ sơ" : "Xem hồ sơ của tôi"}{" "}
+                <Link
+                  className="button button-primary"
+                  href={
+                    STUDENT_APPLICATION_FEATURES_ENABLED
+                      ? "/application"
+                      : "/documents"
+                  }
+                >
+                  {STUDENT_APPLICATION_FEATURES_ENABLED
+                    ? campaign
+                      ? "Tạo hồ sơ"
+                      : "Xem hồ sơ của tôi"
+                    : "Xem tiêu chí"}{" "}
                   <ArrowRight size={16} />
                 </Link>
               </EmptyState>
@@ -296,9 +318,11 @@ function ApplicationSummary({ application: a }: { application: Application }) {
           );
         })}
       </div>
-      <Link className="inline-link" href={`/application?id=${a.id}`}>
-        Xem chi tiết <ArrowRight size={16} />
-      </Link>
+      {STUDENT_APPLICATION_FEATURES_ENABLED && (
+        <Link className="inline-link" href={`/application?id=${a.id}`}>
+          Xem chi tiết <ArrowRight size={16} />
+        </Link>
+      )}
     </article>
   );
 }
