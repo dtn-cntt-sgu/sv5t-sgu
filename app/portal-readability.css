@@ -998,10 +998,21 @@
 .document-list {
   gap: 14px;
 }
+.document-section {
+  display: grid;
+  gap: 14px;
+}
+.document-section + .document-section {
+  margin-top: 24px;
+}
+.document-section > h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
 .document-list article {
   min-height: 116px;
   padding: 22px 24px;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
   gap: 18px;
   border-radius: 16px;
 }
@@ -1014,10 +1025,16 @@
   font-size: 11px;
   letter-spacing: 0.4px;
 }
-.document-list h2 {
+.document-list article h3,
+.document-section-intro h3 {
   margin: 5px 0 7px;
   font-size: 20px;
   line-height: 1.35;
+}
+.document-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .document-list p {
   margin: 0;
@@ -1065,15 +1082,24 @@
   .document-list article {
     min-height: 0;
     padding: 18px;
-    grid-template-columns: 46px 1fr;
+    grid-template-columns: 46px minmax(0, 1fr);
     gap: 13px;
   }
   .document-list article > i {
     width: 44px;
     height: 44px;
   }
-  .document-list h2 {
+  .document-list article h3,
+  .document-section-intro h3 {
     font-size: 18px;
+  }
+  .document-section > h2 {
+    font-size: 21px;
+  }
+  .document-actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
   .document-list p,
   .documents-page .guide-list {
