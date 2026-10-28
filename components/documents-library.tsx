@@ -91,7 +91,9 @@ function SelectionTimeline() {
           <CalendarDays size={23} />
         </span>
         <div>
-          <h2 id="selection-timeline-title">Tiến độ đánh giá và xét chọn</h2>
+          <h2 id="selection-timeline-title">
+            Tiến độ đánh giá và xét chọn
+          </h2>
           <p>Các mốc thời gian cần lưu ý trong đợt xét chọn năm 2026.</p>
         </div>
       </div>
@@ -203,79 +205,88 @@ export function DocumentsLibrary() {
           viên 5 Tốt.
         </p>
       </section>
-      <section className="document-list">
-        <section
-          className="document-section"
-          aria-labelledby="public-documents-title"
-        >
-          <h2 id="public-documents-title">
-            Phần 1: Tài liệu, quy định và hướng dẫn
-          </h2>
-          {publicDocuments.map((document) => (
-            <BuiltinDocumentCard key={document.id} document={document} />
-          ))}
-          {additionalDocuments
-            .filter((document) => document.category !== "TEMPLATE")
-            .map((document) => (
-              <AdditionalDocumentCard key={document.id} document={document} />
+      <div className="documents-layout">
+        <div className="document-list">
+          <section
+            className="document-section"
+            aria-labelledby="public-documents-title"
+          >
+            <h2 id="public-documents-title">
+              Phần 1: Tài liệu, quy định và hướng dẫn
+            </h2>
+            {publicDocuments.map((document) => (
+              <BuiltinDocumentCard key={document.id} document={document} />
             ))}
-        </section>
-        <section
-          className="document-section"
-          aria-labelledby="student-templates-title"
-        >
-          <h2 id="student-templates-title">
-            Phần 2: Các biểu mẫu dành cho sinh viên
-          </h2>
-          <div className="document-section-intro">
-            <h3>5. Mẫu khai thành tích cá nhân, tập thể cấp Trường năm 2026</h3>
-            <p className="document-template-note">
-              <Info size={20} aria-hidden="true" />
-              <strong>
-                Cá nhân, tập thể tách riêng từng mẫu khi nộp về LCH SV khoa
-              </strong>
-            </p>
-          </div>
-          {student ? (
-            <>
-              {studentTemplates.map((document) => (
-                <BuiltinDocumentCard key={document.id} document={document} />
+            {additionalDocuments
+              .filter((document) => document.category !== "TEMPLATE")
+              .map((document) => (
+                <AdditionalDocumentCard key={document.id} document={document} />
               ))}
-              {additionalDocuments
-                .filter((document) => document.category === "TEMPLATE")
-                .map((document, index) => (
-                  <AdditionalDocumentCard
-                    key={document.id}
-                    document={document}
-                    downloadLabel={`Tải Mẫu ${String(studentTemplates.length + index + 1).padStart(2, "0")}`}
-                  />
+          </section>
+          <section
+            className="document-section"
+            aria-labelledby="student-templates-title"
+          >
+            <h2 id="student-templates-title">
+              Phần 2: Các biểu mẫu dành cho sinh viên
+            </h2>
+            <div className="document-section-intro">
+              <h3>
+                5. Mẫu khai thành tích cá nhân, tập thể cấp Trường năm 2026
+              </h3>
+              <p className="document-template-note">
+                <Info size={20} aria-hidden="true" />
+                <strong>
+                  Cá nhân, tập thể tách riêng từng mẫu khi nộp về LCH SV khoa
+                </strong>
+              </p>
+            </div>
+            {student ? (
+              <>
+                {studentTemplates.map((document) => (
+                  <BuiltinDocumentCard key={document.id} document={document} />
                 ))}
-            </>
-          ) : (
-            <article>
-              <i>
-                <LockKeyhole size={24} />
-              </i>
-              <div>
-                <h3>Đăng nhập để tải biểu mẫu</h3>
-                <p>
-                  Đăng nhập tài khoản sinh viên để tải mẫu kê khai thành tích.
-                </p>
-              </div>
-              <Link className="button button-primary" href="/login">
-                Đăng nhập
-              </Link>
-            </article>
+                {additionalDocuments
+                  .filter((document) => document.category === "TEMPLATE")
+                  .map((document, index) => (
+                    <AdditionalDocumentCard
+                      key={document.id}
+                      document={document}
+                      downloadLabel={`Tải Mẫu ${String(studentTemplates.length + index + 1).padStart(2, "0")}`}
+                    />
+                  ))}
+              </>
+            ) : (
+              <article>
+                <i>
+                  <LockKeyhole size={24} />
+                </i>
+                <div>
+                  <h3>Đăng nhập để tải biểu mẫu</h3>
+                  <p>
+                    Đăng nhập tài khoản sinh viên để tải mẫu kê khai thành tích.
+                  </p>
+                </div>
+                <Link className="button button-primary" href="/login">
+                  Đăng nhập
+                </Link>
+              </article>
+            )}
+          </section>
+          {documents.error && (
+            <p className="notice">
+              Chưa tải được tài liệu bổ sung. Các tài liệu có sẵn ở trên vẫn có
+              thể tải xuống.
+            </p>
           )}
-        </section>
-        {documents.error && (
-          <p className="notice">
-            Chưa tải được tài liệu bổ sung. Các tài liệu có sẵn ở trên vẫn có
-            thể tải xuống.
-          </p>
-        )}
-        <SelectionTimeline />
-      </section>
+        </div>
+        <aside
+          className="documents-sidebar"
+          aria-labelledby="selection-timeline-title"
+        >
+          <SelectionTimeline />
+        </aside>
+      </div>
     </main>
   );
 }
