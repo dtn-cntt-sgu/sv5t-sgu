@@ -114,7 +114,7 @@ export default function HomePage() {
               <div>
                 <span className={styles.documentLabel}>TÀI LIỆU HƯỚNG DẪN</span>
                 <h2 id="document-title">
-                  Bộ tiêu chuẩn &amp; hướng dẫn danh hiệu SV5T cấp Thành phố
+                  Bộ tiêu chuẩn &amp; hướng dẫn danh hiệu SV5T
                 </h2>
               </div>
               <a
