@@ -1,0 +1,129 @@
+.dialog {
+  position: fixed;
+  inset: 0;
+  width: min(460px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 36px 32px 28px;
+  overflow-y: auto;
+  color: var(--ink, #172746);
+  text-align: center;
+  border: 1px solid #e0e8ff;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #f1f5ff 0, #fff 160px);
+  box-shadow: 0 24px 80px #10275a30;
+}
+
+.dialog::backdrop {
+  background: #10234466;
+  backdrop-filter: blur(5px);
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: #6c7790;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: #e5ecff;
+}
+
+.icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 24px;
+  color: #2855dc;
+  border: 1px solid #dce5ff;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 8px 24px #2855dc12;
+}
+
+.icon span {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  color: #193a9a;
+  border: 3px solid #f6f8ff;
+  border-radius: 50%;
+  background: #ffe289;
+}
+
+.eyebrow {
+  color: #2855dc;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.7px;
+}
+
+.dialog h2 {
+  margin: 10px 0 14px;
+  font-size: 23px;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+}
+
+.dialog p {
+  margin: 0;
+  color: #52627f;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.dialog .hint {
+  margin-top: 14px;
+  color: #778198;
+  font-size: 12px;
+}
+
+.confirm {
+  width: 100%;
+  margin-top: 26px;
+  padding: 13px 20px;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 12px;
+  background: #2855dc;
+  box-shadow: 0 5px 14px #2855dc20;
+  cursor: pointer;
+}
+
+.confirm:hover {
+  background: #2146b9;
+}
+.confirm:focus-visible,
+.close:focus-visible {
+  outline: 3px solid #8eaaff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .dialog {
+    padding: 32px 22px 24px;
+    border-radius: 20px;
+  }
+  .dialog h2 {
+    font-size: 21px;
+  }
+}

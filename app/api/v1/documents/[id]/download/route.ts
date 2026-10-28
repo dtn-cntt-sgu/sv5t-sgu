@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { requireUser } from "@/lib/auth/require-user";
+import { AuthError, requireUser } from "@/lib/auth/require-user";
+import { hasRegisteredParticipation } from "@/lib/participation/status";
 import { createClient } from "@/lib/supabase/server";
 import { createReadUrl } from "@/lib/r2/files";
 import { apiError } from "@/lib/api/response";
@@ -44,6 +45,16 @@ const contentTypes = {
   docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 };
 
+async function requireRegisteredStudent() {
+  await requireUser(["STUDENT"]);
+  if (!(await hasRegisteredParticipation())) {
+    throw new AuthError(
+      'Bạn hãy đăng ký tham gia xét duyệt danh hiệu "Sinh viên 5 tốt" để truy cập tính năng này',
+      403,
+    );
+  }
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -52,7 +63,7 @@ export async function GET(
     const { id } = await params;
     const download = builtinDownloads.find((item) => item.id === id);
     if (download) {
-      if (download.studentOnly) await requireUser(["STUDENT"]);
+      if (download.studentOnly) await requireRegisteredStudent();
       const buffer = await readFile(
         path.join(
           process.cwd(),
@@ -84,7 +95,7 @@ export async function GET(
       .maybeSingle();
     if (error) throw error;
     if (!data) return new Response("Không tìm thấy tài liệu.", { status: 404 });
-    if (data.category === "TEMPLATE") await requireUser(["STUDENT"]);
+    if (data.category === "TEMPLATE") await requireRegisteredStudent();
     if (data.r2_key)
       return Response.redirect(await createReadUrl(data.r2_key, data.title));
     const url = new URL(data.external_url);

@@ -17,6 +17,7 @@ import {
   Heart,
 } from "lucide-react";
 import { PortalShell } from "./portal-shell";
+import { DocumentsLink } from "./documents-access";
 import { useResource } from "@/lib/client/use-resource";
 import {
   type Application,
@@ -37,7 +38,11 @@ const qualities = [
   { label: "Tình nguyện tốt", icon: HeartHandshake, color: "violet" },
   { label: "Hội nhập tốt", icon: Globe2, color: "amber" },
 ];
-export function StudentDashboard() {
+export function StudentDashboard({
+  documentsRegistrationRequired,
+}: {
+  documentsRegistrationRequired?: boolean;
+}) {
   const [ledPaused, setLedPaused] = useState(false);
   const profile = useResource<Profile>("/users/me");
   const campaigns = useResource<Campaign | null>("/public/campaigns/active");
@@ -55,6 +60,7 @@ export function StudentDashboard() {
   return (
     <PortalShell
       portal="student"
+      documentsRegistrationRequired={documentsRegistrationRequired}
       title={`Xin chào${profile.data ? `, ${profile.data.full_name.split(" ").at(-1)}` : " bạn"}!`}
       subtitle="HÔM NAY LÀ MỘT NGÀY ĐỂ TIẾN XA HƠN ✦"
     >
@@ -71,7 +77,9 @@ export function StudentDashboard() {
                   {[0, 1].map((copy) => (
                     <span className={styles.ledMessage} key={copy}>
                       <span className={styles.ledStar}>✦</span>
-                      <span className={styles.ledText}>Tự hào Sinh viên SGU</span>
+                      <span className={styles.ledText}>
+                        Tự hào Sinh viên SGU
+                      </span>
                       <span className={styles.ledSpark}>✧</span>
                     </span>
                   ))}
@@ -105,7 +113,7 @@ export function StudentDashboard() {
               ? `${campaign.name} đang nhận hồ sơ. Sẵn sàng ghi dấu hành trình của riêng bạn?`
               : "Chuẩn bị minh chứng, khám phá tiêu chí và sẵn sàng cho đợt xét duyệt tiếp theo."}
           </p>
-          <Link
+          <DocumentsLink
             className="button button-light"
             href={
               campaign && STUDENT_APPLICATION_FEATURES_ENABLED
@@ -117,7 +125,7 @@ export function StudentDashboard() {
               ? "Đến hồ sơ của tôi"
               : "Khám phá tiêu chí"}{" "}
             <ArrowRight size={18} />
-          </Link>
+          </DocumentsLink>
         </div>
         <div className="student-hero-art" aria-hidden="true">
           <span className="art-spark one">✦</span>
@@ -133,7 +141,7 @@ export function StudentDashboard() {
       </section>
       <div className="student-strip">
         {qualities.map(({ label, icon: Icon, color }, i) => (
-          <Link href="/documents" className={`quality-${color}`} key={label}>
+          <DocumentsLink className={`quality-${color}`} key={label}>
             <span>
               <Icon size={20} />
             </span>
@@ -141,7 +149,7 @@ export function StudentDashboard() {
               <small>0{i + 1}</small>
               <strong>{label}</strong>
             </div>
-          </Link>
+          </DocumentsLink>
         ))}
       </div>
       {STUDENT_APPLICATION_FEATURES_ENABLED && feedbackCount > 0 && (
@@ -189,7 +197,7 @@ export function StudentDashboard() {
                       : "Chưa có đợt đang nhận hồ sơ. Bạn vẫn có thể xem hồ sơ cũ và chuẩn bị tài liệu."
                     : "Chức năng hồ sơ đang tạm thời đóng. Bạn vẫn có thể xem tiêu chí và chuẩn bị tài liệu."}
                 </p>
-                <Link
+                <DocumentsLink
                   className="button button-primary"
                   href={
                     STUDENT_APPLICATION_FEATURES_ENABLED
@@ -203,7 +211,7 @@ export function StudentDashboard() {
                       : "Xem hồ sơ của tôi"
                     : "Xem tiêu chí"}{" "}
                   <ArrowRight size={16} />
-                </Link>
+                </DocumentsLink>
               </EmptyState>
             )}
           </section>
