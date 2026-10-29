@@ -56,6 +56,16 @@ docs/                        Kiến trúc, API và kế hoạch
 
 Xem [hướng dẫn thiết lập từng bước](docs/SETUP.md), [kiến trúc và quyết định kỹ thuật](docs/ARCHITECTURE.md), [hợp đồng API](docs/API.md), [kế hoạch triển khai/giao việc](docs/ROADMAP.md) và [hướng dẫn đóng góp](CONTRIBUTING.md).
 
+## Đổi email tài khoản trong trang quản trị
+
+Trước khi triển khai API đổi email, áp dụng migration `supabase/migrations/202610290024_admin_email_availability.sql` trong Supabase SQL Editor (sau migration `202609220018_sync_auth_email.sql`). Migration chỉ thêm RPC kiểm tra, không thay đổi email hoặc xóa tài khoản. RPC chỉ cho `service_role` thực thi và kiểm tra cả `auth.users` lẫn `public.users`, bao gồm tài khoản Auth chưa hoàn tất đăng ký/chưa có hồ sơ.
+
+- Email đã thuộc tài khoản khác trả `409 EMAIL_EXISTS`. Không tự xóa hoặc gộp tài khoản để lấy lại email. Kiểm tra tài khoản sở hữu email trong **Supabase → Authentication → Users** và xác minh chủ tài khoản trước khi xử lý dữ liệu.
+- Supabase Auth có thể bọc lỗi SQL `23505`/`users_email_partial_key` thành HTTP 500 `unexpected_failure`; SDK có thể trả lỗi không có `code`. API kiểm tra trước cập nhật và kiểm tra lại sau lỗi Auth để nhận diện cả trường hợp yêu cầu đồng thời. Các lỗi không liên quan vẫn được ghi nhận là lỗi máy chủ.
+- Trigger migration 018 vẫn đồng bộ email Auth và hồ sơ trong cùng transaction. API kiểm tra lại hồ sơ trước khi báo thành công. Thiếu RPC/quyền/schema trả 503; mã yêu cầu nằm trong phản hồi API để đối chiếu log `[ADMIN_USER_EMAIL]` theo `requestId` và `stage`.
+
+Kiểm thử hồi quy: `npm run test:admin-email` (Postgres cục bộ qua PGlite và route với Auth giả lập; không thay đổi dữ liệu production).
+
 ## Xuất ZIP và giải phóng dung lượng
 
 Tốt nhất sau mỗi đợt xét duyệt, nên xuất toàn bộ dữ liệu của đợt đó và xóa dữ liệu của nó trên R2 và Supabase (chỉ lưu thống kê). Vì dung lượng R2 giới hạn.
